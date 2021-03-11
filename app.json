@@ -1,0 +1,12 @@
+{
+  "name": "PharmaDelivery",
+  "displayName": "PharmaDelivery",
+  "expo": {
+    "name": "PharmaDelivery",
+    "slug": "PharmaDelivery",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
