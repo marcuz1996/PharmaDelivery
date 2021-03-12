@@ -1,14 +1,6 @@
 import React, { useState } from "react";
 import * as firebase from "firebase";
-import {
-  ScrollView,
-  Image,
-  Text,
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  Alert,
-} from "react-native";
+import { ScrollView, Image, Text, View, StyleSheet } from "react-native";
 import { InputTextField } from "../components/InputTextField";
 import { LogRegButton } from "../components/LogRegButton";
 import { ErrorMessage } from "../components/ErrorMessage";
@@ -21,10 +13,11 @@ import {
   WHITE,
 } from "../constants/palette";
 import { ForgotPassPath, HomePath, RegisterPath } from "../constants/path";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 export const LoginScreen = ({ navigation, onLogin }) => {
-  const [mail, setMail] = useState("");
-  const [pass, setPass] = useState("");
+  const [mail, setMail] = useState("a@a.it");
+  const [pass, setPass] = useState("marco123");
   const [isValidCredential, setIsValidCredential] = useState(true);
 
   const handleLogIn = () => {
@@ -95,17 +88,20 @@ export const LoginScreen = ({ navigation, onLogin }) => {
             )}
           </View>
 
-          <TouchableOpacity style={{ justifyContent: "center" }}>
+          <TouchableOpacity
+            style={{ justifyContent: "center" }}
+            activeOpacity={0}
+          >
             <Text
-              style={{ ...styles.link, textAlign: "right", paddingTop: 20 }}
+              style={{
+                ...styles.link,
+                textAlign: "right",
+                paddingTop: 20,
+              }}
               onPress={() => navigation.navigate(ForgotPassPath)}
             >
               Forgot password?
             </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity>
-            <Text>PROVAAAAAAAAAAAAAAAAA</Text>
           </TouchableOpacity>
 
           <LogRegButton text="SIGN IN" onPress={() => handleLogIn()} />

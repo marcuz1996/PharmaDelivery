@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   SafeAreaView,
   Text,
@@ -27,70 +27,12 @@ import {
 } from "../constants/palette";
 
 export const HomeScreen = () => {
-  const [categories, setCategories] = React.useState(categoryData);
-  const [selectedCategory, setSelectedCategory] = React.useState(null);
-  const [pharmacies, setPharmacies] = React.useState(restaurantData);
-  const [currentLocation, setCurrentLocation] = React.useState(
+  const [categories, setCategories] = useState(categoryData);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [pharmacies, setPharmacies] = useState(restaurantData);
+  const [currentLocation, setCurrentLocation] = useState(
     initialCurrentLocation
   );
-
-  function renderHeader() {
-    return (
-      <View
-        style={{ flexDirection: "row", height: 50, backgroundColor: OKICOLOR }}
-      >
-        <TouchableOpacity
-          style={{
-            width: 50,
-            paddingLeft: 20,
-            justifyContent: "center",
-          }}
-        >
-          <Image
-            source={icons.nearby}
-            //resizeMode="contain"
-            style={{
-              width: 30,
-              height: 30,
-            }}
-          />
-        </TouchableOpacity>
-
-        <View
-          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-        >
-          <View
-            style={{
-              width: "70%",
-              height: "100%",
-              backgroundColor: LIGHTGREY,
-              alignItems: "center",
-              justifyContent: "center",
-              borderRadius: SIZES.radius,
-            }}
-          >
-            <Text style={{ ...FONTS.h3 }}>Something to put</Text>
-          </View>
-        </View>
-        <TouchableOpacity
-          style={{
-            width: 50,
-            paddingRight: 20,
-            justifyContent: "center",
-          }}
-        >
-          <Image
-            source={require("../assets/icon.png")}
-            //resizeMethod="contain"
-            style={{
-              width: 30,
-              height: 30,
-            }}
-          />
-        </TouchableOpacity>
-      </View>
-    );
-  }
 
   function renderMainCategories() {
     const renderItem = ({ item }) => {
@@ -283,7 +225,6 @@ export const HomeScreen = () => {
   }
   return (
     <View style={styles.container}>
-      {renderHeader()}
       {renderMainCategories()}
       {renderPharmacyList()}
     </View>

@@ -38,19 +38,19 @@ export default () => {
 
   const [sound, setSound] = useState();
 
-  async function startAudio() {
+  const startAudio = async () => {
     const { sound } = await Audio.Sound.createAsync(
       require("./app/assets/intro.mp3")
     );
     setSound(sound);
     await sound.playAsync();
-  }
+  };
 
   useEffect(() => {
     startAudio();
     setTimeout(() => {
       setIsDelayFinished(true);
-    }, 5000);
+    }, 1000);
   }, [loaded]);
 
   if (!firebase.apps.length) {

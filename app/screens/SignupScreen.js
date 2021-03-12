@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import {
   LIGHTGREY,
   SECONDARYCOLOR,
@@ -7,6 +7,8 @@ import {
   WHITE,
   LINKCOLOR,
 } from "../constants/palette";
+import { TouchableOpacity } from "react-native-gesture-handler";
+
 import { InputTextField } from "../components/InputTextField";
 import { LogRegButton } from "../components/LogRegButton";
 import * as firebase from "firebase";
@@ -166,6 +168,7 @@ const styles = StyleSheet.create({
     fontFamily: "MontserratBold",
     color: SECONDARYCOLOR,
     textAlign: "center",
+    paddingBottom: 30,
   },
   text: {
     fontFamily: "Montserrat",

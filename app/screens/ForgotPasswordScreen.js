@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import { LogRegButton } from "../components/LogRegButton";
 import { InputTextField } from "../components/InputTextField";
 import { LoginPath } from "../constants/path";
@@ -12,6 +12,7 @@ import {
 } from "../constants/palette";
 import { ErrorMessage } from "../components/ErrorMessage";
 import * as firebase from "firebase";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 export const ForgotPasswordScreen = ({ navigation }) => {
   const [mail, setMail] = useState("");

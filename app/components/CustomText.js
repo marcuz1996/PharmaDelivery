@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, StyleSheet, Platform } from "react-native";
 
-export default ({ variantName, color, children, style }) => (
+export const Typography = ({ variantName, color, children, style }) => (
   <Text style={{ ...styles[variantName], color, ...style }}>{children}</Text>
 );
 

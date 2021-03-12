@@ -5,7 +5,6 @@ import { Header } from "../components/Header";
 export const SettingScreen = () => {
   return (
     <>
-      <Header />
       <Text>This is setting Screen</Text>
     </>
   );

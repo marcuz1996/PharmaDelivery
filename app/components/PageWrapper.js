@@ -7,11 +7,12 @@ import {
   StatusBar,
   Text,
 } from "react-native";
-import { Header, Icon } from "react-native-elements";
 import { MAINCOLOR, GREEN, OKICOLOR, WHITE } from "../constants/palette";
+import { Header } from "../components/Header";
 
-export const PageWrapper = ({ children }) => (
+export const PageWrapper = ({ children, hideHeader }) => (
   <SafeAreaView style={styles.androidSafeArea}>
+    {!hideHeader && <Header />}
     <ScrollView>{children}</ScrollView>
   </SafeAreaView>
 );

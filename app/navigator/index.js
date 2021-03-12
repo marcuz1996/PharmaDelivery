@@ -25,6 +25,7 @@ import {
   ShopPath,
   ForgotPassPath,
 } from "../constants/path";
+import { Header } from "../components/Header";
 
 const {
   Screen: StackScreen,
@@ -35,8 +36,12 @@ const {
   Navigator: DrawerNavigator,
 } = createDrawerNavigator();
 
-const MainLayout = ({ component }) => {
-  return <PageWrapper>{component()}</PageWrapper>;
+const MainLayout = ({ component, hideHeader = false }) => {
+  return (
+    <>
+      <PageWrapper hideHeader={hideHeader}>{component()}</PageWrapper>
+    </>
+  );
 };
 
 export const Navigator = () => {
@@ -58,13 +63,17 @@ export const Navigator = () => {
                 component={() => (
                   <LoginScreen {...props} onLogin={() => setIsAuth(true)} />
                 )}
+                hideHeader
               />
             )}
           </StackScreen>
 
           <StackScreen name={RegisterPath}>
             {(props) => (
-              <MainLayout component={() => <SignupScreen {...props} />} />
+              <MainLayout
+                component={() => <SignupScreen {...props} />}
+                hideHeader
+              />
             )}
           </StackScreen>
 
@@ -72,6 +81,7 @@ export const Navigator = () => {
             {(props) => (
               <MainLayout
                 component={() => <ForgotPasswordScreen {...props} />}
+                hideHeader
               />
             )}
           </StackScreen>

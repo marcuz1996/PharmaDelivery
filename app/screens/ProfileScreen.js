@@ -1,18 +1,11 @@
 import React, { useEffect, useState } from "react";
-import {
-  Text,
-  View,
-  StyleSheet,
-  ActivityIndicator,
-  Typography,
-} from "react-native";
+import { Text, View, StyleSheet, ActivityIndicator } from "react-native";
 import * as firebase from "firebase";
 import { LogRegButton } from "../components/LogRegButton";
 import { SECONDARYCOLOR, WHITE } from "../constants/palette";
-import { InputTextField } from "../components/InputTextField";
-import CustomText from "../components/CustomText";
-import { Header } from "../components/Header";
 import { ErrorMessage } from "../components/ErrorMessage";
+import firestore from "@react-native-firebase/firestore";
+import { InputTextField } from "../components/InputTextField";
 
 export const ProfileScreen = ({ navigation }) => {
   const [user, setUser] = useState();
@@ -28,13 +21,18 @@ export const ProfileScreen = ({ navigation }) => {
   const [isValidPass, setIsValidPass] = useState(true);
   const [isMatchingPass, setIsMatchingPass] = useState(true);
 
-  const getInfo = () => {
+  const getInfo = async () => {
     firebase
       .database()
       .ref("Users/" + firebase.auth().currentUser.uid)
       .on("value", (snapshot) => {
         setUser(snapshot.val());
       });
+    const uss = await firestore()
+      .collection("Categories")
+      .doc("dLzMb4lRRZPPid7bwdDj")
+      .get();
+    console.log(uss);
   };
 
   const changingSetting = () => {
@@ -90,7 +88,6 @@ export const ProfileScreen = ({ navigation }) => {
     </View>
   ) : !changeSetting ? (
     <>
-      <Header />
       <View style={styles.container}>
         <Text style={styles.textDescriptor}>Name</Text>
         <Text style={styles.text}>{user["name"]}</Text>

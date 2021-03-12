@@ -2,8 +2,10 @@ import React from "react";
 import { Image, Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { Icon } from "react-native-elements";
 import { LIGHTGREY, RAISINBLACK, OKICOLOR, WHITE } from "../constants/palette";
+import { useNavigation } from "@react-navigation/native";
 
 export const Header = () => {
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <TouchableOpacity style={{ ...styles.opacity, paddingLeft: 5 }}>
@@ -13,7 +15,9 @@ export const Header = () => {
           name="bars"
           color={OKICOLOR}
           size={30}
-          //onPress()
+          onPress={() => {
+            navigation.toggleDrawer();
+          }}
         />
       </TouchableOpacity>
 

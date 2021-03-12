@@ -16,9 +16,10 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
     borderColor: SECONDARYCOLOR,
-    padding: 8,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
     margin: 8,
-    borderRadius: 4,
+    borderRadius: 15,
     backgroundColor: "white",
   },
   text: {
