@@ -3,11 +3,9 @@ import { Text, View, StyleSheet, ActivityIndicator } from "react-native";
 import * as firebase from "firebase";
 import { LogRegButton } from "../components/LogRegButton";
 import { SECONDARYCOLOR, WHITE } from "../constants/palette";
-import { ErrorMessage } from "../components/ErrorMessage";
-import firestore from "@react-native-firebase/firestore";
 import { InputTextField } from "../components/InputTextField";
 
-export const ProfileScreen = ({ navigation }) => {
+export const ProfileScreen = () => {
   const [user, setUser] = useState();
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
@@ -15,11 +13,6 @@ export const ProfileScreen = ({ navigation }) => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [mail, setMail] = useState("");
   const [changeSetting, setChangeSetting] = useState(false);
-  const [changePassword, setChangePassword] = useState(false);
-  const [pass, setPass] = useState("");
-  const [confirmPass, setConfirmPass] = useState("");
-  const [isValidPass, setIsValidPass] = useState(true);
-  const [isMatchingPass, setIsMatchingPass] = useState(true);
 
   const getInfo = async () => {
     firebase
@@ -28,11 +21,6 @@ export const ProfileScreen = ({ navigation }) => {
       .on("value", (snapshot) => {
         setUser(snapshot.val());
       });
-    const uss = await firestore()
-      .collection("Categories")
-      .doc("dLzMb4lRRZPPid7bwdDj")
-      .get();
-    console.log(uss);
   };
 
   const changingSetting = () => {
@@ -57,25 +45,7 @@ export const ProfileScreen = ({ navigation }) => {
         phoneNumber: phoneNumber,
       });
     tempUser.updateEmail(mail);
-    const check = passCheck();
-    if (check) {
-      tempUser.updatePassword(pass);
-      setChangeSetting(false);
-    }
-  };
-
-  const passCheck = () => {
-    if (pass.trim().length < 8 || !pass.match(/\d+/g)) {
-      setIsValidPass(false);
-      return false;
-    }
-    if (pass != confirmPass) {
-      setIsMatchingPass(false);
-      return false;
-    }
-    setIsValidPass(true);
-    setIsMatchingPass(true);
-    return true;
+    setChangeSetting(false);
   };
 
   useEffect(() => {
@@ -145,35 +115,6 @@ export const ProfileScreen = ({ navigation }) => {
         onChangeText={(val) => setMail(val)}
         keyboardType="visible-password"
       ></InputTextField>
-
-      {!changePassword ? (
-        <LogRegButton
-          text="Change Password"
-          onPress={() => setChangePassword(true)}
-        ></LogRegButton>
-      ) : (
-        <>
-          <Text style={styles.textDescriptor}>New password</Text>
-          <InputTextField
-            style={styles.text}
-            onChangeText={(val) => setPass(val)}
-          ></InputTextField>
-          {isValidPass ? null : (
-            <ErrorMessage
-              text="Password must contains at least 8 characters and include both
-                letters and numbers."
-            />
-          )}
-          <Text style={styles.textDescriptor}>Confirm new password</Text>
-          <InputTextField
-            style={styles.text}
-            onChangeText={(val) => setConfirmPass(val)}
-          ></InputTextField>
-          {isMatchingPass ? null : (
-            <ErrorMessage text="password and confir password does not match!" />
-          )}
-        </>
-      )}
       <LogRegButton
         text="Save changes"
         onPress={() => saveChanges()}

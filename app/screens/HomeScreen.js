@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
-  SafeAreaView,
   Text,
   StyleSheet,
   TouchableOpacity,
@@ -8,11 +7,8 @@ import {
   FlatList,
   View,
 } from "react-native";
-import {
-  categoryData,
-  restaurantData,
-  initialCurrentLocation,
-} from "../constants/data";
+import { restaurantData, initialCurrentLocation } from "../constants/data";
+import * as firebase from "firebase";
 import { FONTS, SIZES } from "../constants/theme";
 import icons from "../constants/icons";
 import {
@@ -27,12 +23,39 @@ import {
 } from "../constants/palette";
 
 export const HomeScreen = () => {
-  const [categories, setCategories] = useState(categoryData);
+  const [categories, setCategories] = useState();
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [pharmacies, setPharmacies] = useState(restaurantData);
   const [currentLocation, setCurrentLocation] = useState(
     initialCurrentLocation
   );
+  const [isDBReady, setIsDBReady] = useState(false);
+
+  useEffect(() => {
+    loadElements();
+  }, []);
+
+  const loadElements = async () => {
+    let temp = [];
+    await firebase
+      .firestore()
+      .collection("Categories")
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          for (let count = 1; count < 8; count++) {
+            const obj = {
+              id: count,
+              name: doc.data()[count][0],
+              icon: doc.data()[count][1],
+            };
+            temp.push(obj);
+          }
+        });
+      });
+    setCategories(temp);
+    setIsDBReady(true);
+  };
 
   function renderMainCategories() {
     const renderItem = ({ item }) => {
@@ -59,15 +82,15 @@ export const HomeScreen = () => {
               alignItems: "center",
               justifyContent: "center",
               backgroundColor:
-                selectedCategory?.id == item.id ? "white" : LIGHTGREY,
+                selectedCategory?.id == item.id ? "white" : OKICOLOR,
             }}
           >
             <Image
-              source={item.icon}
-              //resizeMethod="contain"
+              source={{ uri: item.icon }}
               style={{
                 width: 30,
                 height: 30,
+                resizeMethod: "contain",
               }}
             />
           </View>
@@ -223,7 +246,7 @@ export const HomeScreen = () => {
       />
     );
   }
-  return (
+  return !isDBReady ? null : (
     <View style={styles.container}>
       {renderMainCategories()}
       {renderPharmacyList()}

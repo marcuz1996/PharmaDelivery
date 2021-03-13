@@ -87,7 +87,7 @@ export const Navigator = () => {
           </StackScreen>
         </StackNavigator>
       ) : (
-        <DrawerNavigator initialRouteName={SettingPath} backBehavior="history">
+        <DrawerNavigator initialRouteName={ProfilePath} backBehavior="history">
           <DrawerScreen name={HomePath}>
             {(props) => (
               <MainLayout component={() => <HomeScreen {...props} />} />
