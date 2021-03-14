@@ -1,7 +1,13 @@
 import React from "react";
 import { Image, Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { Icon } from "react-native-elements";
-import { LIGHTGREY, RAISINBLACK, OKICOLOR, WHITE } from "../constants/palette";
+import {
+  LIGHTGREY,
+  RAISINBLACK,
+  OKICOLOR,
+  WHITE,
+  LIGHTBLUE,
+} from "../constants/palette";
 import { useNavigation } from "@react-navigation/native";
 
 export const Header = () => {
@@ -13,7 +19,7 @@ export const Header = () => {
           style={styles.icon}
           type="font-awesome-5"
           name="bars"
-          color={OKICOLOR}
+          color={LIGHTBLUE}
           size={30}
           onPress={() => {
             navigation.toggleDrawer();
@@ -30,7 +36,7 @@ export const Header = () => {
           style={styles.icon}
           type="font-awesome-5"
           name="shopping-cart"
-          color={OKICOLOR}
+          color={LIGHTBLUE}
           size={30}
         />
       </TouchableOpacity>

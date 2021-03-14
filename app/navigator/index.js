@@ -45,7 +45,7 @@ const MainLayout = ({ component, hideHeader = false }) => {
 };
 
 export const Navigator = () => {
-  const [welcome, setWelcome] = useState(false);
+  const [welcome, setWelcome] = useState(true);
   const [isAuth, setIsAuth] = useState(false);
 
   return welcome ? (
@@ -87,7 +87,7 @@ export const Navigator = () => {
           </StackScreen>
         </StackNavigator>
       ) : (
-        <DrawerNavigator initialRouteName={ProfilePath} backBehavior="history">
+        <DrawerNavigator initialRouteName={HomePath} backBehavior="history">
           <DrawerScreen name={HomePath}>
             {(props) => (
               <MainLayout component={() => <HomeScreen {...props} />} />
@@ -118,10 +118,3 @@ export const Navigator = () => {
     </NavigationContainer>
   );
 };
-
-/*<LogRegButton
-          text="Toggle"
-          onPress={() => {
-            navigation.toggleDrawer();
-          }}
-        ></LogRegButton> */

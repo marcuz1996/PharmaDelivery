@@ -50,7 +50,7 @@ export default () => {
     startAudio();
     setTimeout(() => {
       setIsDelayFinished(true);
-    }, 1000);
+    }, 5000);
   }, [loaded]);
 
   if (!firebase.apps.length) {

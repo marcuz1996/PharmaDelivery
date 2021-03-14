@@ -7,29 +7,21 @@ import {
   FlatList,
   View,
 } from "react-native";
-import { restaurantData, initialCurrentLocation } from "../constants/data";
+import { initialCurrentLocation } from "../constants/data";
 import * as firebase from "firebase";
 import { FONTS, SIZES } from "../constants/theme";
-import icons from "../constants/icons";
-import {
-  MAINCOLOR,
-  SECONDARYCOLOR,
-  LINKCOLOR,
-  RAISINBLACK,
-  LIGHTGREY,
-  OKICOLOR,
-  GREEN,
-  WHITE,
-} from "../constants/palette";
+import { LIGHTGREY, OKICOLOR, RAISINBLACK } from "../constants/palette";
 
 export const HomeScreen = () => {
   const [categories, setCategories] = useState();
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [pharmacies, setPharmacies] = useState(restaurantData);
+  const [product, setProduct] = useState(); //cambia in base alla categoria selezionata
+  const [productDB, setProductDB] = useState(); //rimane fisso con gli stessi dati
   const [currentLocation, setCurrentLocation] = useState(
     initialCurrentLocation
   );
   const [isDBReady, setIsDBReady] = useState(false);
+  const [displayTitle, setDisplayTitle] = useState(true);
 
   useEffect(() => {
     loadElements();
@@ -54,10 +46,35 @@ export const HomeScreen = () => {
         });
       });
     setCategories(temp);
+    temp = [];
+    await firebase
+      .firestore()
+      .collection("Products")
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          temp.push(doc.data());
+        });
+      });
+    setProduct(temp);
+    setProductDB(temp);
     setIsDBReady(true);
   };
 
-  function renderMainCategories() {
+  const onSelectedCategory = (category) => {
+    setDisplayTitle(false);
+    let ProductList = productDB.filter((a) => a.category.includes(category.id));
+    setProduct(ProductList);
+    setSelectedCategory(category);
+  };
+
+  const getCategoryByNameId = (id) => {
+    let category = categories.filter((a) => a.id == id);
+    if (category.length > 0) return category[0].name;
+    return "";
+  };
+
+  const renderMainCategories = () => {
     const renderItem = ({ item }) => {
       return (
         <TouchableOpacity
@@ -71,14 +88,16 @@ export const HomeScreen = () => {
             justifyContent: "center",
             marginRight: 10,
             ...styles.shadow,
+            width: 115,
+            height: 115,
           }}
           onPress={() => onSelectedCategory(item)}
         >
           <View
             style={{
-              width: 50,
-              height: 50,
-              borderRadius: 25,
+              width: 70,
+              height: 70,
+              borderRadius: 45,
               alignItems: "center",
               justifyContent: "center",
               backgroundColor:
@@ -88,15 +107,15 @@ export const HomeScreen = () => {
             <Image
               source={{ uri: item.icon }}
               style={{
-                width: 30,
-                height: 30,
-                resizeMethod: "contain",
+                width: 50,
+                height: 50,
+                //resizeMethod: "contain",
               }}
             />
           </View>
           <Text
             style={{
-              marginTop: 10,
+              marginTop: 2,
               color: selectedCategory?.id == item.id ? "white" : "black",
               ...FONTS.body5,
             }}
@@ -109,42 +128,25 @@ export const HomeScreen = () => {
 
     return (
       <View style={{ padding: 20 }}>
-        <Text style={{ ...FONTS.h1 }}>Main Categories</Text>
+        <Text style={styles.title}>Main Categories</Text>
 
         <FlatList
           data={categories}
           horizontal
           showsHorizontalScrollIndicator={false}
-          keyExtractor={(item) => "${item.id}"}
+          keyExtractor={(item) => item.id.toString()}
           renderItem={renderItem}
           contentContainerStyle={{ paddingVertical: 20 }}
         />
       </View>
     );
-  }
+  };
 
-  function onSelectedCategory(category) {
-    let PharmacyList = restaurantData.filter((a) =>
-      a.categories.includes(category.id)
-    );
-
-    setPharmacies(PharmacyList);
-    setSelectedCategory(category);
-  }
-
-  function getCategoryByNameId(id) {
-    let category = categories.filter((a) => a.id == id);
-
-    if (category.length > 0) return category[0].name;
-
-    return "";
-  }
-
-  function renderPharmacyList() {
+  const renderProductList = () => {
     const renderItem = ({ item }) => (
       <TouchableOpacity
         style={{ marginBottom: 20 }}
-        //onPress -> navigate to Pharmacy Screen
+        //onPress -> navigate to Product Screen
       >
         {/* Image*/}
         <View
@@ -153,12 +155,13 @@ export const HomeScreen = () => {
           }}
         >
           <Image
-            source={item.photo}
-            resizeMode="cover"
+            source={{ uri: item.image }}
             style={{
               width: "100%",
               height: 200,
               borderRadius: SIZES.radius,
+              borderColor: RAISINBLACK,
+              borderWidth: 0.5,
             }}
           />
           <View
@@ -175,10 +178,9 @@ export const HomeScreen = () => {
               ...styles.shadow,
             }}
           >
-            <Text style={{ ...FONTS.h4 }}>{item.duration}</Text>
+            <Text style={{ ...FONTS.h4 }}>{item.price} €</Text>
           </View>
         </View>
-
         {/* Restaurant Info */}
         <Text style={{ ...FONTS.body2 }}>{item.name}</Text>
         <View
@@ -187,18 +189,6 @@ export const HomeScreen = () => {
             flexDirection: "row",
           }}
         >
-          {/* Rating */}
-          <Image
-            source={icons.star}
-            style={{
-              height: 20,
-              width: 20,
-              tintColor: OKICOLOR,
-              marginRight: 10,
-            }}
-          />
-          <Text style={{ ...FONTS.body3 }}>{item.rating}</Text>
-
           {/* Categories */}
           <View
             style={{
@@ -206,7 +196,7 @@ export const HomeScreen = () => {
               marginLeft: 10,
             }}
           >
-            {item.categories.map((categoryId) => {
+            {item.category.map((categoryId) => {
               return (
                 <View style={{ flexDirection: "row" }} key={categoryId}>
                   <Text style={{ ...FONTS.body3 }}>
@@ -216,40 +206,34 @@ export const HomeScreen = () => {
                 </View>
               );
             })}
-
-            {/* Price*/}
-            {[1, 2, 3].map((priceRating) => (
-              <Text
-                key={priceRating}
-                style={{
-                  ...FONTS.body3,
-                  color: priceRating <= item.priceRating ? "black" : LIGHTGREY,
-                }}
-              >
-                $
-              </Text>
-            ))}
           </View>
         </View>
       </TouchableOpacity>
     );
 
     return (
-      <FlatList
-        data={pharmacies}
-        keyExtractor={(item) => "${item.id}"}
-        renderItem={renderItem}
-        contentContainerStyle={{
-          paddingHorizontal: 20,
-          paddingBottom: 30,
-        }}
-      />
+      <>
+        {!displayTitle ? null : (
+          <Text style={styles.title}>Best selling products</Text>
+        )}
+        <FlatList
+          data={product}
+          keyExtractor={(item) => item.id}
+          renderItem={renderItem}
+          contentContainerStyle={{
+            paddingHorizontal: 20,
+            paddingBottom: 30,
+            paddingTop: 20,
+          }}
+        />
+      </>
     );
-  }
+  };
+
   return !isDBReady ? null : (
     <View style={styles.container}>
       {renderMainCategories()}
-      {renderPharmacyList()}
+      {renderProductList()}
     </View>
   );
 };
@@ -267,5 +251,11 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 3,
     elevation: 1,
+  },
+  title: {
+    fontFamily: "MontserratBold",
+    fontSize: SIZES.h1,
+    lineHeight: 36,
+    textAlign: "center",
   },
 });

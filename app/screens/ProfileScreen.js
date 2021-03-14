@@ -79,7 +79,7 @@ export const ProfileScreen = () => {
     <View style={styles.container}>
       <Text style={styles.textDescriptor}>Name</Text>
       <InputTextField
-        style={styles.text}
+        //style={styles.text}
         defaultValue={name}
         onChangeText={(val) => setName(val)}
         keyboardType="visible-password"
