@@ -11,8 +11,9 @@ import { initialCurrentLocation } from "../constants/data";
 import * as firebase from "firebase";
 import { FONTS, SIZES } from "../constants/theme";
 import { LIGHTGREY, OKICOLOR, RAISINBLACK } from "../constants/palette";
+import { ShopPath } from "../constants/path";
 
-export const HomeScreen = () => {
+export const HomeScreen = ( { navigation }) => {
   const [categories, setCategories] = useState();
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [product, setProduct] = useState(); //cambia in base alla categoria selezionata
@@ -75,6 +76,7 @@ export const HomeScreen = () => {
   };
 
   const renderMainCategories = () => {
+    
     const renderItem = ({ item }) => {
       return (
         <TouchableOpacity
@@ -82,7 +84,7 @@ export const HomeScreen = () => {
             padding: 10,
             paddingBottom: 20,
             backgroundColor:
-              selectedCategory?.id == item.id ? OKICOLOR : "white",
+            selectedCategory?.id == item.id ? OKICOLOR : "white",
             borderRadius: 30,
             alignItems: "center",
             justifyContent: "center",
@@ -101,7 +103,7 @@ export const HomeScreen = () => {
               alignItems: "center",
               justifyContent: "center",
               backgroundColor:
-                selectedCategory?.id == item.id ? "white" : OKICOLOR,
+              selectedCategory?.id == item.id ? "white" : OKICOLOR,
             }}
           >
             <Image
@@ -146,7 +148,9 @@ export const HomeScreen = () => {
     const renderItem = ({ item }) => (
       <TouchableOpacity
         style={{ marginBottom: 20 }}
-        //onPress -> navigate to Product Screen
+        onPress={() => navigation.navigate(ShopPath,{ 
+          item
+        })}
       >
         {/* Image*/}
         <View
