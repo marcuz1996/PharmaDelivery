@@ -1,20 +1,28 @@
 import React, { useEffect, useState } from "react";
-import { Text, StyleSheet, SafeAreaView, View, TouchableOpacity, Image } from "react-native";
+import {
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  View,
+  TouchableOpacity,
+  Image,
+  FlatList,
+} from "react-native";
 import * as firebase from "firebase";
-import { LIGHTGREY, OKICOLOR } from "../constants/palette";
+import { LIGHTGREY, OKICOLOR, RAISINBLACK } from "../constants/palette";
 import { SIZES, FONTS } from "../constants/theme";
-import { Colors } from "react-native/Libraries/NewAppScreen";
 
 export const ShopScreen = ({ route }) => {
+  const [categories, setCategories] = useState([]);
+  const { item } = route.params;
+  const [productQty, setQuantity] = useState(1);
+  const [pharmacies, setPharmacies] = useState([]);
 
-const [categories, setCategories] = useState([]);
-const { item } = route.params;
+  useEffect(() => {
+    loadElements();
+  }, []);
 
-useEffect(() => {
-  loadElements();
-}, []);
-
-const loadElements = async () => {
+  const loadElements = async () => {
     let temp = [];
     await firebase
       .firestore()
@@ -33,12 +41,64 @@ const loadElements = async () => {
         });
       });
     setCategories(temp);
+
+    let temp2 = [];
+    await firebase
+      .firestore()
+      .collection("Pharmacies")
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          temp2.push(doc.data());
+        });
+      });
+
+    setPharmacies(temp2);
+  };
+
+  let pharmacyList = pharmacies.filter((a) => item.pharmacy.includes(a.id));
+
+  console.log(pharmacies);
+
+  let categoriesIcons = item.category.map((index) => {
+    return (
+      <View style={{ flexDirection: "row" }}>
+        <Image
+          source={
+            categories.length > 0 ? { uri: categories[index - 1].icon } : null
+          }
+          style={{
+            width: 20,
+            height: 20,
+            marginRight: 10,
+          }}
+        />
+      </View>
+    );
+  });
+
+  let categoriesNames = item.category.map((index) => {
+    return (
+      <View style={{ flexDirection: "row" }}>
+        <Text style={{ ...FONTS.body3, color: LIGHTGREY }}>
+          {categories.length > 0 ? categories[index - 1].name : null}
+        </Text>
+        <Text style={{ ...FONTS.h3, color: LIGHTGREY }}> . </Text>
+      </View>
+    );
+  });
+
+  function editOrder(action) {
+    temp = productQty;
+    if (action == "+") {
+      temp++;
+    } else {
+      if (temp != 1) temp--;
+    }
+    setQuantity(temp);
   }
 
-  console.log(categories);
-
-
-  function renderShopInfo() {
+  function renderProductInfo() {
     return (
       <View
         horizontal
@@ -47,142 +107,202 @@ const loadElements = async () => {
         snapToAlignment="center"
         showsHorizontalScrollIndicator={false}
       >
-              <View
-                style={{ alignItems: 'center'}}
-              >
-                <View style={{ height: SIZES.height * 0.35 }}>
-                  <Image
-                    source={{ uri: item.image }}
-                    //resizeMethod="cover"
-                    style={{
-                      width: SIZES.width,
-                      height: "100%"
-                    }}
-                  />
+        <View style={{ alignItems: "center" }}>
+          <View style={{ height: SIZES.height * 0.35 }}>
+            <Image
+              source={{ uri: item.image }}
+              //resizeMethod="cover"
+              style={{
+                width: SIZES.width,
+                height: "100%",
+              }}
+            />
 
-                  {/* Quantity */}
-                  <View
-                    style={{
-                      position: 'absolute',
-                      bottom: - 20,
-                      width: SIZES.width,
-                      height: 50,
-                      justifyContent: "center",
-                      flexDirection: "row"
-                    }}
-                  >
-                    <TouchableOpacity
-                      style={{
-                        width: 50,
-                        backgroundColor: "white",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        borderTopLeftRadius: 25,
-                        borderBottomLeftRadius: 25
-                      }}
-                    >
-                      <Text style={{...FONTS.body1 }}>-</Text>
-                    </TouchableOpacity>
-
-                    <View
-                      style={{
-                        width: 50,
-                        backgroundColor: "white",
-                        alignItems: "center",
-                        justifyContent: "center"
-                      }}
-                      >
-                      <Text style={{...FONTS.h2 }}>5</Text>
-                    </View>
-                    <TouchableOpacity
-                      style= {{
-                        width: 50,
-                        backgroundColor: "white",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        borderTopRightRadius: 25,
-                        borderBottomRightRadius: 25
-                      }}
-                    >
-                      <Text style={{...FONTS.body1}}>+</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-               
-                {/* Name & Description */}
-                <View
-                  style={{
-                    width: SIZES.width,
-                    alignItems: 'center',
-                    marginTop: 15,
-                    paddingHorizontal: SIZES.padding * 2
-                  }}
-                >
-                  <Text style={{ marginVertical: 10, textAlign: 'center', ...FONTS.h2 }}>{item.name} - {item.price}</Text>
-                  <Text style={{ ...FONTS.body3 }}>{item.description}</Text>
-                </View>
-
-                {/* Categories */}
-                <View
-                style= {{
-                  flexDirection: 'row',
-                  marginTop: 10
+            {/* Quantity */}
+            <View
+              style={{
+                position: "absolute",
+                bottom: -20,
+                width: SIZES.width,
+                height: 50,
+                justifyContent: "center",
+                flexDirection: "row",
+              }}
+            >
+              <TouchableOpacity
+                style={{
+                  width: 50,
+                  backgroundColor: "white",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderTopLeftRadius: 25,
+                  borderBottomLeftRadius: 25,
                 }}
-                >
-                <Image 
-                  source={ categories.length > 0 ? { uri: categories[item.category[0] - 1].icon } : null}
-                  style={{
-                    width: 20,
-                    height: 20,
-                    marginRight: 10
-                  }}
-                />
-                 <Text style={{ ...FONTS.body3, color: LIGHTGREY }}>{ categories.length > 0 ? categories[item.category[0] - 1].name : null}</Text>                      
-                </View>
+                onPress={() => editOrder("-")}
+              >
+                <Text style={{ ...FONTS.body1 }}>-</Text>
+              </TouchableOpacity>
+
+              <View
+                style={{
+                  width: 50,
+                  backgroundColor: "white",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Text style={{ ...FONTS.h2 }}>{productQty}</Text>
               </View>
+              <TouchableOpacity
+                style={{
+                  width: 50,
+                  backgroundColor: "white",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderTopRightRadius: 25,
+                  borderBottomRightRadius: 25,
+                }}
+                onPress={() => editOrder("+")}
+              >
+                <Text style={{ ...FONTS.body1 }}>+</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          {/* Name & Description */}
+          <View
+            style={{
+              width: SIZES.width,
+              alignItems: "center",
+              marginTop: 15,
+              paddingHorizontal: SIZES.padding * 2,
+            }}
+          >
+            <Text
+              style={{ marginVertical: 10, textAlign: "center", ...FONTS.h2 }}
+            >
+              {item.name} - {item.price}
+            </Text>
+            <Text style={{ ...FONTS.body3 }}>{item.description}</Text>
+          </View>
+
+          {/* Categories */}
+          <View
+            style={{
+              flexDirection: "row",
+              marginTop: 10,
+            }}
+          >
+            {categoriesIcons}
+            {categoriesNames}
+          </View>
+
+          {/* Order Button */}
+          <View
+            style={{
+              padding: SIZES.padding * 2,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <TouchableOpacity
+              style={{
+                width: SIZES.width * 0.9,
+                padding: SIZES.padding,
+                backgroundColor: OKICOLOR,
+                alignItems: "center",
+                borderRadius: SIZES.radius,
+              }}
+            >
+              <Text style={{ color: "white", ...FONTS.h2 }}>Add to Cart</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
-    )
-}
+    );
+  }
 
-function renderOrder() {
+  const renderPharmaciesList = () => {
+    const renderItem = ({ item }) => (
+      <TouchableOpacity style={{ marginBottom: 20 }}>
+        {/* Image*/}
+        <View
+          syle={{
+            marginBottom: SIZES.padding,
+          }}
+        >
+          <Image
+            source={{ uri: item.image }}
+            style={{
+              width: "100%",
+              height: 200,
+              borderRadius: SIZES.radius,
+              borderColor: RAISINBLACK,
+              borderWidth: 0.5,
+            }}
+          />
+          <View
+            style={{
+              position: "absolute",
+              bottom: 0,
+              height: 50,
+              width: SIZES.width * 0.4,
+              backgroundColor: "white",
+              borderTopRightRadius: SIZES.radius,
+              borderBottomLeftRadius: SIZES.radius,
+              alignItems: "center",
+              justifyContent: "center",
+              ...styles.shadow,
+            }}
+          >
+            <Text style={{ ...FONTS.h4 }}>{item.address}</Text>
+          </View>
+        </View>
+        {/* Pharmacy Info */}
+        <Text style={{ ...FONTS.body2 }}>{item.name}</Text>
+        <View
+          style={{
+            marginTop: SIZES.padding,
+            flexDirection: "row",
+          }}
+        ></View>
+      </TouchableOpacity>
+    );
+
+    return (
+      <>
+        <Text style={styles.title}>Where to find this product</Text>
+        <FlatList
+          data={pharmacyList}
+          keyExtractor={(item) => item.id}
+          renderItem={renderItem}
+          contentContainerStyle={{
+            paddingHorizontal: 20,
+            paddingBottom: 30,
+            paddingTop: 20,
+          }}
+        />
+      </>
+    );
+  };
+
   return (
-    <View>
-      <View
-        style={{
-          backgroundColor: "white",
-          borderTopLeftRadius: 40,
-          borderTopRightRadius: 40
-        }}
-      >
-    <View
-    style={{
-      flexDirection: "row",
-      justifyContent: "space-between",
-      paddingVertical: SIZES.padding * 2,
-      paddingHorizontal: SIZES.padding * 3,
-      borderBottomColor: LIGHTGREY
-    }}
-    >
-
-    </View>
-      </View>
-    </View>
-  )
-}
-
-
-  return (
-  <SafeAreaView style ={styles.container}>
-    {renderShopInfo()}
+    <SafeAreaView style={styles.container}>
+      {renderProductInfo()}
+      {renderPharmaciesList()}
     </SafeAreaView>
-    )
-
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white"
-  }
-})
-
+    backgroundColor: "white",
+  },
+  title: {
+    fontFamily: "MontserratBold",
+    fontSize: SIZES.h1,
+    lineHeight: 36,
+    textAlign: "center",
+  },
+});
