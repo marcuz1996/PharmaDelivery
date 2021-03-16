@@ -55,11 +55,43 @@ const cartReducer = (state = initialState, action) => {
         };
       }
     }
+    case "ADD_QTY": {
+      action.payload.quantity += 1;
+      const newTotal = state.total + parseFloat(action.payload.price);
+      return {
+        ...state,
+        total: newTotal,
+      };
+    }
+    case "SUBTRACT_QTY": {
+      if (action.payload.quantity > 1) {
+        action.payload.quantity -= 1;
+        const newTotal = state.total - parseFloat(action.payload.price);
+        return {
+          ...state,
+          total: newTotal,
+        };
+      } else {
+        return {
+          ...state,
+        };
+      }
+    }
 
-    case "REMOVE_ITEM":
-      return state.filter(
-        (cartReducer) => cartReducer.id !== action.payload.id
+    case "REMOVE_ITEM": {
+      let new_items = state.addedItems.filter(
+        (item) => action.payload.id !== item.id
       );
+      //calculating the total
+      let newTotal =
+        state.total -
+        parseFloat(action.payload.price) * action.payload.quantity;
+      return {
+        ...state,
+        addedItems: new_items,
+        total: newTotal,
+      };
+    }
   }
   return state;
 };

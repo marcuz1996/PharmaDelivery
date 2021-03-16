@@ -9,6 +9,7 @@ import {
   LIGHTBLUE,
 } from "../constants/palette";
 import { useNavigation } from "@react-navigation/native";
+import { ShopCartPath } from "../constants/path";
 
 export const Header = () => {
   const navigation = useNavigation();
@@ -38,6 +39,9 @@ export const Header = () => {
           name="shopping-cart"
           color={LIGHTBLUE}
           size={30}
+          onPress={() => {
+            navigation.navigate(ShopCartPath);
+          }}
         />
       </TouchableOpacity>
     </View>
