@@ -10,10 +10,13 @@ import {
 } from "react-native";
 import * as firebase from "firebase";
 import { LIGHTGREY, OKICOLOR, RAISINBLACK } from "../constants/palette";
+import { connect } from "react-redux";
 import { SIZES, FONTS } from "../constants/theme";
+import { LogRegButton } from "../components/LogRegButton";
 
-export const ShopScreen = ({ route }) => {
+const ProductScreen = (props) => {
   const [categories, setCategories] = useState([]);
+  const { route } = props;
   const { item } = route.params;
   const [productQty, setQuantity] = useState(1);
   const [pharmacies, setPharmacies] = useState([]);
@@ -57,9 +60,6 @@ export const ShopScreen = ({ route }) => {
   };
 
   let pharmacyList = pharmacies.filter((a) => item.pharmacy.includes(a.id));
-
-  console.log(pharmacies);
-
   let categoriesIcons = item.category.map((index) => {
     return (
       <View style={{ flexDirection: "row" }}>
@@ -205,7 +205,7 @@ export const ShopScreen = ({ route }) => {
               justifyContent: "center",
             }}
           >
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={{
                 width: SIZES.width * 0.9,
                 padding: SIZES.padding,
@@ -215,7 +215,13 @@ export const ShopScreen = ({ route }) => {
               }}
             >
               <Text style={{ color: "white", ...FONTS.h2 }}>Add to Cart</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
+            <LogRegButton
+              text="Add to Cart"
+              onPress={() => {
+                handleClick(item, props);
+              }}
+            />
           </View>
         </View>
       </View>
@@ -306,3 +312,17 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
+
+const handleClick = (product, props) => {
+  props.addToCart(product);
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addToCart: (product) => {
+      dispatch({ type: "ADD_ITEM", payload: product });
+    },
+  };
+};
+
+export default connect(null, mapDispatchToProps)(ProductScreen);

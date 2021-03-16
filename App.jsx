@@ -1,8 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useFonts } from "expo-font";
-import { ActivityIndicator, View, Image } from "react-native";
+import { View, Image } from "react-native";
 import { Navigator } from "./app/navigator";
-import { HomeScreen } from "./app/screens/HomeScreen";
+import { Provider } from "react-redux";
+import { createStore } from "redux";
 import { Audio } from "expo-av";
 
 import * as firebase from "firebase";
@@ -27,6 +28,44 @@ const firebaseConfig = {
   appId: APPID,
 };
 
+const initialState = {
+  addedItems: [],
+  total: 0.0,
+};
+
+const cartReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case "ADD_ITEM": {
+      const existed_item = state.addedItems.find(
+        (item) => action.payload.id === item.id
+      );
+      if (existed_item) {
+        action.payload.quantity += 1;
+        return {
+          ...state,
+          total: state.total + parseFloat(action.payload.price),
+        };
+      } else {
+        action.payload.quantity = 1;
+        const newTotal = state.total + parseFloat(action.payload.price);
+        return {
+          ...state,
+          addedItems: [...state.addedItems, action.payload],
+          total: newTotal,
+        };
+      }
+    }
+
+    case "REMOVE_ITEM":
+      return state.filter(
+        (cartReducer) => cartReducer.id !== action.payload.id
+      );
+  }
+  return state;
+};
+
+const store = createStore(cartReducer);
+
 export default () => {
   const [isDelayFinished, setIsDelayFinished] = useState(false);
 
@@ -50,7 +89,7 @@ export default () => {
     startAudio();
     setTimeout(() => {
       setIsDelayFinished(true);
-    }, 5000);
+    }, 1000);
   }, [loaded]);
 
   if (!firebase.apps.length) {
@@ -70,8 +109,6 @@ export default () => {
             backgroundColor: LIGHTBLUE,
           }}
         >
-          {/*         <ActivityIndicator size="large" color="#4335DB" />
-           */}
           <Image
             source={require("./app/assets/logo.gif")}
             style={{ width: 300, height: 300 }}
@@ -79,7 +116,11 @@ export default () => {
         </View>
       );
     } else {
-      return <Navigator />;
+      return (
+        <Provider store={store}>
+          <Navigator />
+        </Provider>
+      );
     }
   }
 };

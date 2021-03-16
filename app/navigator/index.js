@@ -10,8 +10,10 @@ import { SignupScreen } from "../screens/SignupScreen";
 import { HomeScreen } from "../screens/HomeScreen";
 import { MapScreen } from "../screens/MapScreen";
 import { ProfileScreen } from "../screens/ProfileScreen";
-import { SettingScreen } from "../screens/SettingScreen";
-import { ShopScreen } from "../screens/ShopScreen";
+import SettingScreen from "../screens/SettingScreen";
+import ProductScreen from "../screens/ProductScreen";
+import ShopCartScreen from "../screens/ShopCartScreen";
+
 import { ForgotPasswordScreen } from "../screens/ForgotPasswordScreen";
 
 import { PageWrapper } from "../components/PageWrapper";
@@ -22,10 +24,10 @@ import {
   MapPath,
   ProfilePath,
   SettingPath,
-  ShopPath,
+  ProductPath,
+  ShopCartPath,
   ForgotPassPath,
 } from "../constants/path";
-import { Header } from "../components/Header";
 
 const {
   Screen: StackScreen,
@@ -45,7 +47,7 @@ const MainLayout = ({ component, hideHeader = false }) => {
 };
 
 export const Navigator = () => {
-  const [welcome, setWelcome] = useState(true);
+  const [welcome, setWelcome] = useState(false);
   const [isAuth, setIsAuth] = useState(false);
 
   return welcome ? (
@@ -100,7 +102,11 @@ export const Navigator = () => {
           </DrawerScreen>
           <DrawerScreen name={ProfilePath}>
             {(props) => (
-              <MainLayout component={() => <ProfileScreen {...props} />} />
+              <MainLayout
+                component={() => (
+                  <ProfileScreen {...props} onLogout={() => setIsAuth(false)} />
+                )}
+              />
             )}
           </DrawerScreen>
           <DrawerScreen name={SettingPath}>
@@ -108,9 +114,21 @@ export const Navigator = () => {
               <MainLayout component={() => <SettingScreen {...props} />} />
             )}
           </DrawerScreen>
-          <DrawerScreen name={ShopPath}>
+          <DrawerScreen
+            name={ProductPath}
+            options={{
+              drawerLabel: () => null,
+              title: null,
+              drawerIcon: () => null,
+            }}
+          >
             {(props) => (
-              <MainLayout component={() => <ShopScreen {...props} />} />
+              <MainLayout component={() => <ProductScreen {...props} />} />
+            )}
+          </DrawerScreen>
+          <DrawerScreen name={ShopCartPath}>
+            {(props) => (
+              <MainLayout component={() => <ShopCartScreen {...props} />} />
             )}
           </DrawerScreen>
         </DrawerNavigator>

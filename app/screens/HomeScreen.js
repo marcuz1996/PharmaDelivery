@@ -7,20 +7,16 @@ import {
   FlatList,
   View,
 } from "react-native";
-import { initialCurrentLocation } from "../constants/data";
 import * as firebase from "firebase";
 import { FONTS, SIZES } from "../constants/theme";
 import { LIGHTGREY, OKICOLOR, RAISINBLACK } from "../constants/palette";
-import { ShopPath } from "../constants/path";
+import { ProductPath } from "../constants/path";
 
-export const HomeScreen = ( { navigation }) => {
+export const HomeScreen = ({ navigation }) => {
   const [categories, setCategories] = useState();
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [product, setProduct] = useState(); //cambia in base alla categoria selezionata
   const [productDB, setProductDB] = useState(); //rimane fisso con gli stessi dati
-  const [currentLocation, setCurrentLocation] = useState(
-    initialCurrentLocation
-  );
   const [isDBReady, setIsDBReady] = useState(false);
   const [displayTitle, setDisplayTitle] = useState(true);
 
@@ -76,7 +72,6 @@ export const HomeScreen = ( { navigation }) => {
   };
 
   const renderMainCategories = () => {
-    
     const renderItem = ({ item }) => {
       return (
         <TouchableOpacity
@@ -84,7 +79,7 @@ export const HomeScreen = ( { navigation }) => {
             padding: 10,
             paddingBottom: 20,
             backgroundColor:
-            selectedCategory?.id == item.id ? OKICOLOR : "white",
+              selectedCategory?.id == item.id ? OKICOLOR : "white",
             borderRadius: 30,
             alignItems: "center",
             justifyContent: "center",
@@ -103,7 +98,7 @@ export const HomeScreen = ( { navigation }) => {
               alignItems: "center",
               justifyContent: "center",
               backgroundColor:
-              selectedCategory?.id == item.id ? "white" : OKICOLOR,
+                selectedCategory?.id == item.id ? "white" : OKICOLOR,
             }}
           >
             <Image
@@ -148,9 +143,11 @@ export const HomeScreen = ( { navigation }) => {
     const renderItem = ({ item }) => (
       <TouchableOpacity
         style={{ marginBottom: 20 }}
-        onPress={() => navigation.navigate(ShopPath,{ 
-          item
-        })}
+        onPress={() =>
+          navigation.navigate(ProductPath, {
+            item,
+          })
+        }
       >
         {/* Image*/}
         <View

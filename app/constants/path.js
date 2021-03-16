@@ -4,5 +4,6 @@ export const HomePath = "Home";
 export const MapPath = "Map";
 export const ProfilePath = "Profile";
 export const SettingPath = "Setting";
-export const ShopPath = "Shop";
+export const ProductPath = "Product";
+export const ShopCartPath = "ShopCart";
 export const ForgotPassPath = "ForgotPass";

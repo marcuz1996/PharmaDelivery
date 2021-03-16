@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import * as firebase from "firebase";
 import { ScrollView, Image, Text, View, StyleSheet } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import { InputTextField } from "../components/InputTextField";
 import { LogRegButton } from "../components/LogRegButton";
 import { ErrorMessage } from "../components/ErrorMessage";
@@ -13,11 +14,11 @@ import {
   WHITE,
 } from "../constants/palette";
 import { ForgotPassPath, HomePath, RegisterPath } from "../constants/path";
-import { TouchableOpacity } from "react-native-gesture-handler";
 
 export const LoginScreen = ({ navigation, onLogin }) => {
-  const [mail, setMail] = useState("a@a.it");
-  const [pass, setPass] = useState("marco123");
+  const [mail, setMail] = useState("");
+  const [pass, setPass] = useState("");
+  const [user, setUser] = useState();
   const [isValidCredential, setIsValidCredential] = useState(true);
 
   const handleLogIn = () => {
@@ -33,24 +34,15 @@ export const LoginScreen = ({ navigation, onLogin }) => {
       });
   };
 
-  /*   // Handle user state changes
+  // Handle user state changes
   const onAuthStateChanged = (user) => {
-    setUser(user);
-    if (initializing) setInitializing(false);
-  };
-
-  const check = () => {
-    if (!user) {
-      console.log("not user");
-    } else {
-      console.log(user.email);
-    }
+    if (user) onLogin();
   };
 
   useEffect(() => {
     const subscriber = firebase.auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
-  }, []); */
+    return subscriber;
+  }, []);
 
   return (
     <ScrollView style={styles.container}>

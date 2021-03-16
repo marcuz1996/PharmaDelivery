@@ -5,7 +5,7 @@ import { LogRegButton } from "../components/LogRegButton";
 import { SECONDARYCOLOR, WHITE } from "../constants/palette";
 import { InputTextField } from "../components/InputTextField";
 
-export const ProfileScreen = () => {
+export const ProfileScreen = ({ onLogout }) => {
   const [user, setUser] = useState();
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
@@ -21,6 +21,14 @@ export const ProfileScreen = () => {
       .on("value", (snapshot) => {
         setUser(snapshot.val());
       });
+  };
+
+  const logout = () => {
+    firebase
+      .auth()
+      .signOut()
+      .then(() => console.log("User signed out!"));
+    onLogout();
   };
 
   const changingSetting = () => {
@@ -73,6 +81,7 @@ export const ProfileScreen = () => {
           text="Change your settings"
           onPress={() => changingSetting()}
         ></LogRegButton>
+        <LogRegButton text="LOGOUT" onPress={() => logout()}></LogRegButton>
       </View>
     </>
   ) : (
