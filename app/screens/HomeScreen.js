@@ -11,6 +11,7 @@ import * as firebase from "firebase";
 import { FONTS, SIZES } from "../constants/theme";
 import { LIGHTGREY, OKICOLOR, RAISINBLACK } from "../constants/palette";
 import { ProductPath } from "../constants/path";
+import { LogRegButton } from "../components/LogRegButton";
 
 export const HomeScreen = ({ navigation }) => {
   const [categories, setCategories] = useState();
@@ -124,7 +125,7 @@ export const HomeScreen = ({ navigation }) => {
     };
 
     return (
-      <View style={{ padding: 20 }}>
+      <View style={{ paddingTop: 10, paddingLeft: 20, paddingRight: 20 }}>
         <Text style={styles.title}>Main Categories</Text>
 
         <FlatList
@@ -133,7 +134,9 @@ export const HomeScreen = ({ navigation }) => {
           showsHorizontalScrollIndicator={false}
           keyExtractor={(item) => item.id.toString()}
           renderItem={renderItem}
-          contentContainerStyle={{ paddingVertical: 20 }}
+          contentContainerStyle={{
+            paddingVertical: 20,
+          }}
         />
       </View>
     );
@@ -177,6 +180,8 @@ export const HomeScreen = ({ navigation }) => {
               alignItems: "center",
               justifyContent: "center",
               ...styles.shadow,
+              backgroundColor: LIGHTGREY,
+              opacity: 0.8,
             }}
           >
             <Text style={{ ...FONTS.h4 }}>{item.price} €</Text>
@@ -214,7 +219,18 @@ export const HomeScreen = ({ navigation }) => {
 
     return (
       <>
-        {!displayTitle ? null : (
+        {!displayTitle ? (
+          <View style={{ marginLeft: 30, marginRight: 30 }}>
+            <LogRegButton
+              text="SHOW ALL CATEGORIES"
+              onPress={() => {
+                setDisplayTitle(true);
+                setProduct(productDB);
+                setSelectedCategory(null);
+              }}
+            />
+          </View>
+        ) : (
           <Text style={styles.title}>Best selling products</Text>
         )}
         <FlatList

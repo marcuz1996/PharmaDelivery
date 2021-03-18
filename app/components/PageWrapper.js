@@ -8,7 +8,7 @@ import {
   Text,
 } from "react-native";
 import { MAINCOLOR, GREEN, OKICOLOR, WHITE } from "../constants/palette";
-import { Header } from "../components/Header";
+import Header from "../components/Header";
 
 export const PageWrapper = ({ children, hideHeader }) => (
   <SafeAreaView style={styles.androidSafeArea}>

@@ -60,9 +60,10 @@ const ProductScreen = (props) => {
   };
 
   let pharmacyList = pharmacies.filter((a) => item.pharmacy.includes(a.id));
+
   let categoriesIcons = item.category.map((index) => {
     return (
-      <View style={{ flexDirection: "row" }}>
+      <View style={{ flexDirection: "row" }} key={index}>
         <Image
           source={
             categories.length > 0 ? { uri: categories[index - 1].icon } : null
@@ -79,7 +80,7 @@ const ProductScreen = (props) => {
 
   let categoriesNames = item.category.map((index) => {
     return (
-      <View style={{ flexDirection: "row" }}>
+      <View style={{ flexDirection: "row" }} key={index}>
         <Text style={{ ...FONTS.body3, color: LIGHTGREY }}>
           {categories.length > 0 ? categories[index - 1].name : null}
         </Text>
@@ -89,7 +90,7 @@ const ProductScreen = (props) => {
   });
 
   function editOrder(action) {
-    temp = productQty;
+    let temp = productQty;
     if (action == "+") {
       temp++;
     } else {
@@ -109,14 +110,18 @@ const ProductScreen = (props) => {
       >
         <View style={{ alignItems: "center" }}>
           <View style={{ height: SIZES.height * 0.35 }}>
-            <Image
-              source={{ uri: item.image }}
-              //resizeMethod="cover"
-              style={{
-                width: SIZES.width,
-                height: "100%",
-              }}
-            />
+            <View
+              style={{ borderBottomColor: RAISINBLACK, borderBottomWidth: 1 }}
+            >
+              <Image
+                source={{ uri: item.image }}
+                //resizeMethod="cover"
+                style={{
+                  width: SIZES.width,
+                  height: "100%",
+                }}
+              />
+            </View>
 
             {/* Quantity */}
             <View
@@ -137,6 +142,8 @@ const ProductScreen = (props) => {
                   justifyContent: "center",
                   borderTopLeftRadius: 25,
                   borderBottomLeftRadius: 25,
+                  borderColor: RAISINBLACK,
+                  borderWidth: 1,
                 }}
                 onPress={() => editOrder("-")}
               >
@@ -149,6 +156,10 @@ const ProductScreen = (props) => {
                   backgroundColor: "white",
                   alignItems: "center",
                   justifyContent: "center",
+                  borderTopColor: RAISINBLACK,
+                  borderTopWidth: 1,
+                  borderBottomColor: RAISINBLACK,
+                  borderBottomWidth: 1,
                 }}
               >
                 <Text style={{ ...FONTS.h2 }}>{productQty}</Text>
@@ -161,6 +172,8 @@ const ProductScreen = (props) => {
                   justifyContent: "center",
                   borderTopRightRadius: 25,
                   borderBottomRightRadius: 25,
+                  borderColor: RAISINBLACK,
+                  borderWidth: 1,
                 }}
                 onPress={() => editOrder("+")}
               >
@@ -219,7 +232,7 @@ const ProductScreen = (props) => {
             <LogRegButton
               text="Add to Cart"
               onPress={() => {
-                handleClick(item, props);
+                handleClick(item, productQty, props);
               }}
             />
           </View>
@@ -313,14 +326,14 @@ const styles = StyleSheet.create({
   },
 });
 
-const handleClick = (product, props) => {
-  props.addToCart(product);
+const handleClick = (product, productQty, props) => {
+  props.addToCart(product, productQty);
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addToCart: (product) => {
-      dispatch({ type: "ADD_ITEM", payload: product });
+    addToCart: (product, quantity) => {
+      dispatch({ type: "ADD_ITEM", payload: { product, quantity } });
     },
   };
 };

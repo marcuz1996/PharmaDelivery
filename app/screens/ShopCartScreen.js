@@ -134,8 +134,15 @@ const ShopCartScreen = (props) => {
         renderItem={renderItem}
         contentContainerStyle={{ paddingTop: 5 }}
       />
-      <Text style={{ ...styles.text, textAlign: "center" }}>
-        totale: {props.total}€
+      <Text
+        style={{
+          ...styles.text,
+          textAlign: "center",
+          fontSize: 30,
+          paddingTop: 20,
+        }}
+      >
+        Totale: {props.total}€
       </Text>
       <LogRegButton text="BUY" />
     </View>
