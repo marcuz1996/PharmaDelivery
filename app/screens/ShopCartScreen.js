@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   Text,
   View,
@@ -17,39 +17,7 @@ import {
   RAISINBLACK,
   WHITE,
 } from "../constants/palette";
-
-const mapStateToProps = (state) => {
-  return {
-    items: state.addedItems,
-    total: state.total,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    removeItem: (product) => {
-      dispatch({ type: "REMOVE_ITEM", payload: product });
-    },
-    addQuantity: (product) => {
-      dispatch({ type: "ADD_QTY", payload: product });
-    },
-    subtractQuantity: (product) => {
-      dispatch({ type: "SUBTRACT_QTY", payload: product });
-    },
-  };
-};
-
-const handleMinus = (product, props) => {
-  props.subtractQuantity(product);
-};
-
-const handlePlus = (product, props) => {
-  props.addQuantity(product);
-};
-
-const handleRemove = (product, props) => {
-  props.removeItem(product);
-};
+import { LinearGradient } from "expo-linear-gradient";
 
 const ShopCartScreen = (props) => {
   const renderItem = ({ item }) => (
@@ -58,21 +26,25 @@ const ShopCartScreen = (props) => {
         style={{
           alignSelf: "flex-end",
           marginTop: -5,
-          //position: "absolute",
         }}
         onPress={() => {
           handleRemove(item, props);
         }}
       >
         <Icon
-          //style={{ alignSelf: "flex-end" }}
           type="font-awesome-5"
           name="times-circle"
           color={ERRORCOLOR}
           size={25}
         />
       </TouchableOpacity>
-      <View style={styles.container}>
+      <LinearGradient
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 0 }}
+        colors={[WHITE, "#80F7FF", LIGHTBLUE]}
+        locations={[0.3, 0.7, 1]}
+        style={styles.container}
+      >
         <Image source={{ uri: item.image }} style={styles.image} />
         <View style={{ justifyContent: "center" }}>
           <Text style={{ ...styles.text, paddingLeft: 20 }}>
@@ -122,7 +94,7 @@ const ShopCartScreen = (props) => {
             />
           </TouchableOpacity>
         </View>
-      </View>
+      </LinearGradient>
     </View>
   );
 
@@ -157,19 +129,17 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     borderRadius: 30,
-    borderColor: RAISINBLACK,
-    borderWidth: 0.5,
     marginBottom: 3,
     backgroundColor: LIGHTBLUE,
     paddingRight: 160,
     alignItems: "center",
+    height: 90,
   },
   image: {
     width: 90,
     height: 90,
     borderRadius: 30,
-    borderColor: RAISINBLACK,
-    borderWidth: 1,
+
     backgroundColor: WHITE,
   },
   text: {
@@ -191,5 +161,38 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
 });
+
+const mapStateToProps = (state) => {
+  return {
+    items: state.addedItems,
+    total: state.total,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    removeItem: (product) => {
+      dispatch({ type: "REMOVE_ITEM", payload: product });
+    },
+    addQuantity: (product) => {
+      dispatch({ type: "ADD_QTY", payload: product });
+    },
+    subtractQuantity: (product) => {
+      dispatch({ type: "SUBTRACT_QTY", payload: product });
+    },
+  };
+};
+
+const handleMinus = (product, props) => {
+  props.subtractQuantity(product);
+};
+
+const handlePlus = (product, props) => {
+  props.addQuantity(product);
+};
+
+const handleRemove = (product, props) => {
+  props.removeItem(product);
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ShopCartScreen);

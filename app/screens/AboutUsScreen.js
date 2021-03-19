@@ -11,7 +11,7 @@ export const AboutUsScreen = () => {
         Find the medicine you need, wherever you are! The first service in Italy
         that lets you know the availability of medicine in your vicinity!
       </Text>
-      <Text style={styles.paragraph}>How does we work?</Text>
+      <Text style={styles.paragraph}>How do we work?</Text>
       <Text style={styles.text}>
         Can't you go to the pharmacy? We go there for you! We will purchase the
         products you need and deliver them to you in 1 hour or in the most

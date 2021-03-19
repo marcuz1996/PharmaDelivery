@@ -28,7 +28,7 @@ const Header = (props) => {
           style={styles.icon}
           type="font-awesome-5"
           name="bars"
-          color={LIGHTBLUE}
+          color={RAISINBLACK}
           size={30}
           onPress={() => {
             navigation.toggleDrawer();
@@ -46,7 +46,7 @@ const Header = (props) => {
               style={styles.icon}
               type="font-awesome-5"
               name="shopping-cart"
-              color={LIGHTBLUE}
+              color={RAISINBLACK}
               size={30}
               onPress={() => {
                 navigation.navigate(ShopCartPath);

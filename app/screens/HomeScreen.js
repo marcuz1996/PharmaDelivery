@@ -6,14 +6,24 @@ import {
   Image,
   FlatList,
   View,
+  ScrollView,
 } from "react-native";
 import * as firebase from "firebase";
 import { FONTS, SIZES } from "../constants/theme";
-import { LIGHTGREY, OKICOLOR, RAISINBLACK } from "../constants/palette";
+import { LinearGradient } from "expo-linear-gradient";
+import { Icon } from "react-native-elements";
+import { connect } from "react-redux";
+import {
+  LIGHTGREY,
+  OKICOLOR,
+  RAISINBLACK,
+  LIGHTBLUE,
+  WHITE,
+} from "../constants/palette";
 import { ProductPath } from "../constants/path";
 import { LogRegButton } from "../components/LogRegButton";
 
-export const HomeScreen = ({ navigation }) => {
+const HomeScreen = (props) => {
   const [categories, setCategories] = useState();
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [product, setProduct] = useState(); //cambia in base alla categoria selezionata
@@ -95,11 +105,11 @@ export const HomeScreen = ({ navigation }) => {
             style={{
               width: 70,
               height: 70,
-              borderRadius: 45,
+              borderRadius: 25,
               alignItems: "center",
               justifyContent: "center",
               backgroundColor:
-                selectedCategory?.id == item.id ? "white" : OKICOLOR,
+                selectedCategory?.id == item.id ? "white" : LIGHTBLUE,
             }}
           >
             <Image
@@ -107,7 +117,6 @@ export const HomeScreen = ({ navigation }) => {
               style={{
                 width: 50,
                 height: 50,
-                //resizeMethod: "contain",
               }}
             />
           </View>
@@ -144,77 +153,72 @@ export const HomeScreen = ({ navigation }) => {
 
   const renderProductList = () => {
     const renderItem = ({ item }) => (
-      <TouchableOpacity
-        style={{ marginBottom: 20 }}
-        onPress={() =>
-          navigation.navigate(ProductPath, {
-            item,
-          })
-        }
+      <LinearGradient
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 0 }}
+        colors={[WHITE, "#80F7FF", LIGHTBLUE]}
+        locations={[0.3, 0.7, 1]}
+        style={styles.containerProduct}
       >
-        {/* Image*/}
-        <View
-          syle={{
-            marginBottom: SIZES.padding,
-          }}
+        <TouchableOpacity
+          onPress={() =>
+            props.navigation.navigate(ProductPath, {
+              item,
+            })
+          }
         >
-          <Image
-            source={{ uri: item.image }}
-            style={{
-              width: "100%",
-              height: 200,
-              borderRadius: SIZES.radius,
-              borderColor: RAISINBLACK,
-              borderWidth: 0.5,
-            }}
-          />
-          <View
-            style={{
-              position: "absolute",
-              bottom: 0,
-              height: 50,
-              width: SIZES.width * 0.3,
-              backgroundColor: "white",
-              borderTopRightRadius: SIZES.radius,
-              borderBottomLeftRadius: SIZES.radius,
-              alignItems: "center",
-              justifyContent: "center",
-              ...styles.shadow,
-              backgroundColor: LIGHTGREY,
-              opacity: 0.8,
-            }}
-          >
-            <Text style={{ ...FONTS.h4 }}>{item.price} €</Text>
-          </View>
-        </View>
-        {/* Restaurant Info */}
-        <Text style={{ ...FONTS.body2 }}>{item.name}</Text>
-        <View
-          style={{
-            marginTop: SIZES.padding,
-            flexDirection: "row",
-          }}
+          <Image source={{ uri: item.image }} style={styles.imageProduct} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() =>
+            props.navigation.navigate(ProductPath, {
+              item,
+            })
+          }
         >
-          {/* Categories */}
-          <View
-            style={{
-              flexDirection: "row",
-              marginLeft: 10,
-            }}
-          >
+          <View style={{ justifyContent: "center" }}>
+            <Text style={{ ...styles.textProduct, paddingLeft: 20 }}>
+              Product: {item.name}
+            </Text>
+            <Text style={{ ...styles.textProduct, paddingLeft: 20 }}>
+              Price: {item.price}€
+            </Text>
             {item.category.map((categoryId) => {
               return (
                 <View style={{ flexDirection: "row" }} key={categoryId}>
-                  <Text style={{ ...FONTS.body3 }}>
-                    {getCategoryByNameId(categoryId)}
+                  <Text style={{ ...styles.textProduct, paddingLeft: 20 }}>
+                    Category: {getCategoryByNameId(categoryId)}
                   </Text>
-                  <Text style={{ ...FONTS.h3, color: LIGHTGREY }}> . </Text>
                 </View>
               );
             })}
           </View>
+        </TouchableOpacity>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+            paddingRight: 10,
+            position: "absolute",
+            right: 0,
+          }}
+        >
+          <TouchableOpacity
+            onPress={() => {
+              handleClick(item, props);
+            }}
+          >
+            <Icon
+              style={styles.buttonProduct}
+              type="material-community"
+              name="cart-plus"
+              color={RAISINBLACK}
+              size={32}
+            />
+          </TouchableOpacity>
         </View>
-      </TouchableOpacity>
+      </LinearGradient>
     );
 
     return (
@@ -259,6 +263,34 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  containerProduct: {
+    flex: 1,
+    flexDirection: "row",
+    borderRadius: 30,
+    marginBottom: 10,
+    paddingRight: 130,
+    alignItems: "center",
+    height: 90,
+  },
+  imageProduct: {
+    width: 90,
+    height: 90,
+    borderRadius: 30,
+
+    backgroundColor: WHITE,
+  },
+  textProduct: {
+    fontSize: 14,
+    color: RAISINBLACK,
+    fontFamily: "Montserrat",
+  },
+  buttonProduct: {
+    textAlign: "center",
+    justifyContent: "center",
+    alignContent: "center",
+    margin: 5,
+    borderRadius: 50,
+  },
   shadow: {
     shadowColor: "#000",
     shadowOffset: {
@@ -276,3 +308,17 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
+
+const handleClick = (product, props) => {
+  props.addToCart(product);
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addToCart: (product) => {
+      dispatch({ type: "ADD_ITEM", payload: { product, quantity: 1 } });
+    },
+  };
+};
+
+export default connect(null, mapDispatchToProps)(HomeScreen);

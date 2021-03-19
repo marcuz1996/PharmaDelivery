@@ -7,7 +7,7 @@ import { DrawerMenu } from "../components/DrawerMenu";
 import { WelcomeScreen } from "../screens/WelcomeScreen";
 import { LoginScreen } from "../screens/LoginScreen";
 import { SignupScreen } from "../screens/SignupScreen";
-import { HomeScreen } from "../screens/HomeScreen";
+import HomeScreen from "../screens/HomeScreen";
 import { MapScreen } from "../screens/MapScreen";
 import { ProfileScreen } from "../screens/ProfileScreen";
 import PharmaciesListScreen from "../screens/PharmaciesListScreen";
