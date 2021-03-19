@@ -5,7 +5,7 @@ import { LogRegButton } from "../components/LogRegButton";
 import { SECONDARYCOLOR, WHITE } from "../constants/palette";
 import { InputTextField } from "../components/InputTextField";
 
-export const ProfileScreen = ({ onLogout }) => {
+export const ProfileScreen = () => {
   const [user, setUser] = useState();
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
@@ -21,14 +21,6 @@ export const ProfileScreen = ({ onLogout }) => {
       .on("value", (snapshot) => {
         setUser(snapshot.val());
       });
-  };
-
-  const logout = () => {
-    firebase
-      .auth()
-      .signOut()
-      .then(() => console.log("User signed out!"));
-    onLogout();
   };
 
   const changingSetting = () => {
@@ -81,14 +73,13 @@ export const ProfileScreen = ({ onLogout }) => {
           text="Change your settings"
           onPress={() => changingSetting()}
         ></LogRegButton>
-        <LogRegButton text="LOGOUT" onPress={() => logout()}></LogRegButton>
       </View>
     </>
   ) : (
     <View style={styles.container}>
       <Text style={styles.textDescriptor}>Name</Text>
       <InputTextField
-        //style={styles.text}
+        style={styles.text}
         defaultValue={name}
         onChangeText={(val) => setName(val)}
         keyboardType="visible-password"
@@ -147,6 +138,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 30,
     backgroundColor: WHITE,
+    marginTop: 30,
   },
   textDescriptor: {
     textAlign: "center",

@@ -3,14 +3,14 @@ import { Text } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-
+import { DrawerMenu } from "../components/DrawerMenu";
 import { WelcomeScreen } from "../screens/WelcomeScreen";
 import { LoginScreen } from "../screens/LoginScreen";
 import { SignupScreen } from "../screens/SignupScreen";
 import { HomeScreen } from "../screens/HomeScreen";
 import { MapScreen } from "../screens/MapScreen";
 import { ProfileScreen } from "../screens/ProfileScreen";
-import SettingScreen from "../screens/SettingScreen";
+import PharmaciesListScreen from "../screens/PharmaciesListScreen";
 import ProductScreen from "../screens/ProductScreen";
 import ShopCartScreen from "../screens/ShopCartScreen";
 
@@ -23,11 +23,15 @@ import {
   HomePath,
   MapPath,
   ProfilePath,
-  SettingPath,
+  PharmaciesListPath,
   ProductPath,
   ShopCartPath,
   ForgotPassPath,
+  PrivacyPath,
+  AboutUsPath,
 } from "../constants/path";
+import { PrivacyScreen } from "../screens/PrivacyScreen";
+import { AboutUsScreen } from "../screens/AboutUsScreen";
 
 const {
   Screen: StackScreen,
@@ -89,7 +93,13 @@ export const Navigator = () => {
           </StackScreen>
         </StackNavigator>
       ) : (
-        <DrawerNavigator initialRouteName={HomePath} backBehavior="history">
+        <DrawerNavigator
+          initialRouteName={HomePath}
+          backBehavior="history"
+          drawerContent={(props) => (
+            <DrawerMenu {...props} onLogout={() => setIsAuth(false)} />
+          )}
+        >
           <DrawerScreen name={HomePath}>
             {(props) => (
               <MainLayout component={() => <HomeScreen {...props} />} />
@@ -102,26 +112,17 @@ export const Navigator = () => {
           </DrawerScreen>
           <DrawerScreen name={ProfilePath}>
             {(props) => (
+              <MainLayout component={() => <ProfileScreen {...props} />} />
+            )}
+          </DrawerScreen>
+          <DrawerScreen name={PharmaciesListPath}>
+            {(props) => (
               <MainLayout
-                component={() => (
-                  <ProfileScreen {...props} onLogout={() => setIsAuth(false)} />
-                )}
+                component={() => <PharmaciesListScreen {...props} />}
               />
             )}
           </DrawerScreen>
-          <DrawerScreen name={SettingPath}>
-            {(props) => (
-              <MainLayout component={() => <SettingScreen {...props} />} />
-            )}
-          </DrawerScreen>
-          <DrawerScreen
-            name={ProductPath}
-            options={{
-              drawerLabel: () => null,
-              title: null,
-              drawerIcon: () => null,
-            }}
-          >
+          <DrawerScreen name={ProductPath}>
             {(props) => (
               <MainLayout component={() => <ProductScreen {...props} />} />
             )}
@@ -129,6 +130,16 @@ export const Navigator = () => {
           <DrawerScreen name={ShopCartPath}>
             {(props) => (
               <MainLayout component={() => <ShopCartScreen {...props} />} />
+            )}
+          </DrawerScreen>
+          <DrawerScreen name={PrivacyPath}>
+            {(props) => (
+              <MainLayout component={() => <PrivacyScreen {...props} />} />
+            )}
+          </DrawerScreen>
+          <DrawerScreen name={AboutUsPath}>
+            {(props) => (
+              <MainLayout component={() => <AboutUsScreen {...props} />} />
             )}
           </DrawerScreen>
         </DrawerNavigator>

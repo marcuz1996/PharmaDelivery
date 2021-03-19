@@ -9,3 +9,4 @@ export const WHITE = "#FFFFFF";
 export const RAISINBLACK = "#1D2029";
 export const LIGHTGREY = "#ABB4BD";
 export const LIGHTBLUE = "#00BECC";
+export const DARKGREY = "#475152";

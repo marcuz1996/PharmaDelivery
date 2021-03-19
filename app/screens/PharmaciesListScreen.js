@@ -15,7 +15,7 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-const SettingScreen = (props) => {
+const PharmaciesListScreen = (props) => {
   const [products, setProducts] = useState();
   const [isDBReady, setIsDBReady] = useState(false);
 
@@ -64,4 +64,4 @@ const SettingScreen = (props) => {
   }
 };
 
-export default connect(null, mapDispatchToProps)(SettingScreen);
+export default connect(null, mapDispatchToProps)(PharmaciesListScreen);
