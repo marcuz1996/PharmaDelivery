@@ -1,11 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, StyleSheet, ActivityIndicator } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  ActivityIndicator,
+  TextInput,
+} from "react-native";
 import * as firebase from "firebase";
 import { LogRegButton } from "../components/LogRegButton";
-import { SECONDARYCOLOR, WHITE } from "../constants/palette";
-import { InputTextField } from "../components/InputTextField";
+import {
+  ERRORCOLOR,
+  LIGHTGREY,
+  LINKCOLOR,
+  OKICOLOR,
+  RAISINBLACK,
+  SECONDARYCOLOR,
+  WHITE,
+} from "../constants/palette";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { ForgotPassPath } from "../constants/path";
 
-export const ProfileScreen = () => {
+export const ProfileScreen = ({ navigation }) => {
   const [user, setUser] = useState();
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
@@ -15,7 +30,7 @@ export const ProfileScreen = () => {
   const [changeSetting, setChangeSetting] = useState(false);
 
   const getInfo = async () => {
-    firebase
+    await firebase
       .database()
       .ref("Users/" + firebase.auth().currentUser.uid)
       .on("value", (snapshot) => {
@@ -32,8 +47,8 @@ export const ProfileScreen = () => {
     setChangeSetting(true);
   };
 
-  const saveChanges = () => {
-    const tempUser = firebase.auth().currentUser;
+  const saveChanges = async () => {
+    const tempUser = await firebase.auth().currentUser;
     firebase
       .database()
       .ref("Users/" + tempUser.uid)
@@ -58,81 +73,109 @@ export const ProfileScreen = () => {
     </View>
   ) : !changeSetting ? (
     <>
+      <Text style={styles.title}>
+        Hello {user.name} {user.surname}!
+      </Text>
       <View style={styles.container}>
+        <Text style={styles.paragraph}>Account</Text>
+
         <Text style={styles.textDescriptor}>Name</Text>
-        <Text style={styles.text}>{user["name"]}</Text>
+        <Text style={styles.textInput}>{user.name}</Text>
+
         <Text style={styles.textDescriptor}>Surname</Text>
-        <Text style={styles.text}>{user["surname"]}</Text>
+        <Text style={styles.textInput}>{user.surname}</Text>
+
         <Text style={styles.textDescriptor}>Address</Text>
-        <Text style={styles.text}>{user["address"]}</Text>
+        <Text style={styles.textInput}>{user.address}</Text>
+
         <Text style={styles.textDescriptor}>Phone number</Text>
-        <Text style={styles.text}>{user["phoneNumber"]}</Text>
+        <Text style={styles.textInput}>{user.phoneNumber}</Text>
+
         <Text style={styles.textDescriptor}>Email</Text>
-        <Text style={styles.text}>{user["mail"]}</Text>
+        <Text style={styles.textInput}>{user.name}</Text>
+
+        <TouchableOpacity>
+          <Text
+            style={styles.link}
+            onPress={() => navigation.navigate(ForgotPassPath)}
+          >
+            Reset you password
+          </Text>
+        </TouchableOpacity>
+
         <LogRegButton
           text="Change your settings"
           onPress={() => changingSetting()}
         ></LogRegButton>
+
+        <Text style={{ ...styles.paragraph, marginTop: 8 }}>Payments</Text>
       </View>
     </>
   ) : (
-    <View style={styles.container}>
-      <Text style={styles.textDescriptor}>Name</Text>
-      <InputTextField
-        style={styles.text}
-        defaultValue={name}
-        onChangeText={(val) => setName(val)}
-        keyboardType="visible-password"
-      ></InputTextField>
+    <>
+      <Text style={styles.title}>
+        Hello {user.name} {user.surname}!
+      </Text>
+      <Text style={styles.text}>
+        Edit your fields and finally click on save changes to update your
+        profile. Remember that a correct address and a valid phone number will
+        help us to deliver your products right
+      </Text>
+      <View style={styles.container}>
+        <Text style={styles.textDescriptor}>Name</Text>
+        <TextInput
+          style={styles.textInput}
+          defaultValue={name}
+          onChangeText={(val) => setName(val)}
+          keyboardType="visible-password"
+        />
 
-      <Text style={styles.textDescriptor}>Surname</Text>
-      <InputTextField
-        style={styles.text}
-        defaultValue={surname}
-        onChangeText={(val) => setSurname(val)}
-        keyboardType="visible-password"
-      ></InputTextField>
+        <Text style={styles.textDescriptor}>Surname</Text>
+        <TextInput
+          style={styles.textInput}
+          defaultValue={surname}
+          onChangeText={(val) => setSurname(val)}
+          keyboardType="visible-password"
+        ></TextInput>
 
-      <Text style={styles.textDescriptor}>Address</Text>
-      <InputTextField
-        style={styles.text}
-        defaultValue={address}
-        onChangeText={(val) => setAddress(val)}
-        keyboardType="visible-password"
-      ></InputTextField>
+        <Text style={styles.textDescriptor}>Address</Text>
+        <TextInput
+          style={styles.textInput}
+          defaultValue={address}
+          onChangeText={(val) => setAddress(val)}
+          keyboardType="visible-password"
+        ></TextInput>
 
-      <Text style={styles.textDescriptor}>Phone number</Text>
-      <InputTextField
-        style={styles.text}
-        defaultValue={phoneNumber}
-        onChangeText={(val) => setPhoneNumber(val)}
-      ></InputTextField>
+        <Text style={styles.textDescriptor}>Phone number</Text>
+        <TextInput
+          style={styles.textInput}
+          defaultValue={phoneNumber}
+          onChangeText={(val) => setPhoneNumber(val)}
+        ></TextInput>
 
-      <Text style={styles.textDescriptor}>Email</Text>
-      <InputTextField
-        style={styles.text}
-        defaultValue={mail}
-        onChangeText={(val) => setMail(val)}
-        keyboardType="visible-password"
-      ></InputTextField>
-      <LogRegButton
-        text="Save changes"
-        onPress={() => saveChanges()}
-      ></LogRegButton>
-    </View>
+        <Text style={styles.textDescriptor}>Email</Text>
+        <TextInput
+          style={styles.textInput}
+          defaultValue={mail}
+          onChangeText={(val) => setMail(val)}
+          keyboardType="visible-password"
+        ></TextInput>
+        <LogRegButton
+          text="Save changes"
+          onPress={() => saveChanges()}
+        ></LogRegButton>
+      </View>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   text: {
-    borderWidth: 1,
-    borderColor: SECONDARYCOLOR,
-    padding: 8,
-    margin: 8,
-    borderRadius: 4,
-    backgroundColor: "white",
+    fontSize: 14,
+    color: RAISINBLACK,
+    marginTop: 15,
     fontFamily: "Montserrat",
-    fontSize: 20,
+    paddingHorizontal: 30,
   },
   container: {
     flex: 1,
@@ -141,8 +184,36 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   textDescriptor: {
-    textAlign: "center",
     fontFamily: "MontserratBold",
+    fontSize: 16,
+    color: LIGHTGREY,
+  },
+
+  textInput: {
+    flex: 1,
+    fontFamily: "Montserrat",
+    fontSize: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: "rgba(171, 180, 189, 0.4)",
+    marginBottom: 5,
+  },
+  title: {
+    textAlign: "center",
+    fontFamily: "Montserrat",
+    fontSize: 25,
+    color: OKICOLOR,
+    marginTop: 10,
+  },
+  paragraph: {
+    marginBottom: 10,
+    fontFamily: "MontserratBold",
+    fontSize: 20,
+    color: RAISINBLACK,
+  },
+  link: {
+    color: ERRORCOLOR,
     fontSize: 14,
+    fontFamily: "Montserrat",
+    paddingTop: 20,
   },
 });

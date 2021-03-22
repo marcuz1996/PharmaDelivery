@@ -80,26 +80,41 @@ export const SignupScreen = ({ navigation }) => {
     <View style={styles.container}>
       <Text style={styles.title}>CREATE ACCOUNT</Text>
       <InputTextField
+        iconName="account-outline"
+        iconType="material-community"
+        iconSize={30}
         placeholder="Name"
         onChangeText={(val) => setName(val)}
         keyboardType="visible-password"
       />
       <InputTextField
+        iconName="account-outline"
+        iconType="material-community"
+        iconSize={30}
         placeholder="Surname"
         onChangeText={(val) => setSurname(val)}
         keyboardType="visible-password"
       />
       <InputTextField
+        iconName="map-marker-outline"
+        iconType="material-community"
+        iconSize={30}
         placeholder="Address"
         onChangeText={(val) => setAddress(val)}
         keyboardType="visible-password"
       />
       <InputTextField
+        iconName="phone-outline"
+        iconType="material-community"
+        iconSize={30}
         placeholder="Phone number"
         onChangeText={(val) => setPhoneNumber(val)}
         keyboardType="visible-password"
       />
       <InputTextField
+        iconName="email-outline"
+        iconType="material-community"
+        iconSize={30}
         placeholder="E-mail"
         onChangeText={(val) => setMail(val)}
         keyboardType="visible-password"
@@ -110,6 +125,9 @@ export const SignupScreen = ({ navigation }) => {
         )}
       </View>
       <InputTextField
+        iconName="lock-outline"
+        iconType="material-community"
+        iconSize={30}
         placeholder="Password"
         onChangeText={(val) => setPass(val)}
         keyboardType="default"
@@ -124,6 +142,9 @@ export const SignupScreen = ({ navigation }) => {
         )}
       </View>
       <InputTextField
+        iconName="lock-outline"
+        iconType="material-community"
+        iconSize={30}
         placeholder="Confirm Password"
         onChangeText={(val) => setConfirmPass(val)}
         keyboardType="default"

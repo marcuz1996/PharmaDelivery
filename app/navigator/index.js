@@ -1,9 +1,11 @@
-import React, { useState } from "react";
-import { Text } from "react-native";
+import React, { useEffect, useState } from "react";
+import * as firebase from "firebase";
+
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { DrawerMenu } from "../components/DrawerMenu";
+
 import { WelcomeScreen } from "../screens/WelcomeScreen";
 import { LoginScreen } from "../screens/LoginScreen";
 import { SignupScreen } from "../screens/SignupScreen";
@@ -52,9 +54,9 @@ const MainLayout = ({ component, hideHeader = false }) => {
   );
 };
 
-export const Navigator = () => {
+export const Navigator = ({ auth }) => {
   const [welcome, setWelcome] = useState(false);
-  const [isAuth, setIsAuth] = useState(false);
+  const [isAuth, setIsAuth] = useState(auth);
 
   return welcome ? (
     <WelcomeScreen onFinish={() => setWelcome(false)} />
@@ -88,7 +90,7 @@ export const Navigator = () => {
           <StackScreen name={ForgotPassPath}>
             {(props) => (
               <MainLayout
-                component={() => <ForgotPasswordScreen {...props} />}
+                component={() => <ForgotPasswordScreen {...props} display />}
                 hideHeader
               />
             )}
@@ -147,6 +149,13 @@ export const Navigator = () => {
           <DrawerScreen name={PaymentPath}>
             {(props) => (
               <MainLayout component={() => <PaymentScreen {...props} />} />
+            )}
+          </DrawerScreen>
+          <DrawerScreen name={ForgotPassPath}>
+            {(props) => (
+              <MainLayout
+                component={() => <ForgotPasswordScreen {...props} />}
+              />
             )}
           </DrawerScreen>
           <DrawerScreen name={PurchasePath}>

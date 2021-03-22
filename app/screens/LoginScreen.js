@@ -35,14 +35,14 @@ export const LoginScreen = ({ navigation, onLogin }) => {
   };
 
   // Handle user state changes
-  const onAuthStateChanged = (user) => {
+  /*   const onAuthStateChanged = (user) => {
     if (user) onLogin();
   };
 
   useEffect(() => {
     const subscriber = firebase.auth().onAuthStateChanged(onAuthStateChanged);
     return subscriber;
-  }, []);
+  }, []); */
 
   return (
     <ScrollView style={styles.container}>
@@ -64,11 +64,15 @@ export const LoginScreen = ({ navigation, onLogin }) => {
 
         <View style={{ paddingTop: 25 }}>
           <InputTextField
+            iconName="email-outline"
+            iconType="material-community"
             placeholder="E-mail"
             onChangeText={(val) => setMail(val)}
             keyboardType="visible-password"
           />
           <InputTextField
+            iconName="lock-outline"
+            iconType="material-community"
             placeholder="Password"
             onChangeText={(val) => setPass(val)}
             keyboardType="default"

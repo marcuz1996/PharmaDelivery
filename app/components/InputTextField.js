@@ -1,46 +1,40 @@
 import React from "react";
-import { render } from "react-dom";
 import { TextInput } from "react-native";
-import { Image, Text, View, StyleSheet } from "react-native";
-import { LIGHTGREY, SECONDARYCOLOR } from "../constants/palette";
+import { View, StyleSheet } from "react-native";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { LIGHTGREY } from "../constants/palette";
 
-export const InputTextField = ({ text, caption, ...props }) => (
-  <View>
-    {text && <Text style={styles.text}>{text}</Text>}
-    <TextInput style={styles.input} {...props} />
-    {caption && <Text style={styles.caption}>{caption}</Text>}
+export const InputTextField = ({ iconName, iconType, iconSize, ...props }) => (
+  <View style={styles.input}>
+    <TextInput style={styles.textInput} {...props} />
+    <Icon
+      type={iconType}
+      name={iconName}
+      size={iconSize || 30}
+      color={LIGHTGREY}
+    />
   </View>
 );
 
 const styles = StyleSheet.create({
   input: {
-    borderWidth: 1,
-    borderColor: SECONDARYCOLOR,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: "rgba(171, 180, 189, 0.65)",
+    shadowColor: "rgba(171, 180, 189, 0.35)",
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 1,
+    shadowRadius: 20,
+    elevation: 5,
     paddingVertical: 10,
     paddingHorizontal: 20,
     margin: 8,
     borderRadius: 15,
     backgroundColor: "white",
+    flexDirection: "row",
   },
-  text: {
-    textAlign: "center",
-    justifyContent: "center",
+  textInput: {
+    flex: 1,
     fontFamily: "Montserrat",
     fontSize: 15,
   },
-  caption: {
-    alignItems: "center",
-    justifyContent: "center",
-    fontFamily: "Montserrat",
-    fontSize: 12,
-    color: LIGHTGREY,
-  },
 });
-
-//riga nera orizzontale
-/* <View
-style={{
-  borderBottomColor: "black",
-  borderBottomWidth: 1,
-}}
-/> */

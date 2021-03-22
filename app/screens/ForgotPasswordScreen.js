@@ -14,7 +14,7 @@ import { ErrorMessage } from "../components/ErrorMessage";
 import * as firebase from "firebase";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-export const ForgotPasswordScreen = ({ navigation }) => {
+export const ForgotPasswordScreen = ({ navigation, display }) => {
   const [mail, setMail] = useState("");
   const [isValidMail, setIsValidMail] = useState(true);
 
@@ -32,31 +32,42 @@ export const ForgotPasswordScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>ACCESS PROBLEM?</Text>
-      <Text style={styles.text}>
-        Insert you E-mail address and we send you a link to recover your
-        account.
-      </Text>
-      <InputTextField
-        placeholder="insert you email address"
-        onChangeText={(val) => setMail(val)}
-        keyboardType="default"
-      />
-      {isValidMail ? null : <ErrorMessage text="Please insert a valid mail!" />}
-      <LogRegButton text="forgot" onPress={() => handleForgot()} />
-      <Text style={{ ...styles.text, color: LIGHTGREY }}>
-        Come back to Sign in page?
-      </Text>
-      <TouchableOpacity>
-        <Text
-          style={styles.link}
-          onPress={() => navigation.navigate(LoginPath)}
-        >
-          Click here
+    <>
+      <View style={styles.container}>
+        <Text style={styles.title}>ACCESS PROBLEM?</Text>
+        <Text style={styles.text}>
+          Insert you E-mail address and we send you a link to recover your
+          account.
         </Text>
-      </TouchableOpacity>
-    </View>
+        <InputTextField
+          iconName="email-outline"
+          iconType="material-community"
+          iconSize={35}
+          placeholder="insert you email address"
+          onChangeText={(val) => setMail(val)}
+          keyboardType="default"
+        />
+        {isValidMail ? null : (
+          <ErrorMessage text="Please insert a valid mail!" />
+        )}
+        <LogRegButton text="forgot" onPress={() => handleForgot()} />
+      </View>
+      {display && (
+        <>
+          <Text style={{ ...styles.text, color: LIGHTGREY }}>
+            Come back to Sign in page?
+          </Text>
+          <TouchableOpacity>
+            <Text
+              style={styles.link}
+              onPress={() => navigation.navigate(LoginPath)}
+            >
+              Click here
+            </Text>
+          </TouchableOpacity>
+        </>
+      )}
+    </>
   );
 };
 const styles = StyleSheet.create({
@@ -70,6 +81,7 @@ const styles = StyleSheet.create({
     color: RAISINBLACK,
     textAlign: "center",
     marginTop: 24,
+    fontFamily: "Montserrat",
   },
   title: {
     fontSize: 30,

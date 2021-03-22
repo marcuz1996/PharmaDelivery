@@ -116,6 +116,7 @@ const store = createStore(cartReducer);
 
 export default () => {
   const [isDelayFinished, setIsDelayFinished] = useState(false);
+  const [isAuth, setIsAuth] = useState(false);
 
   const [loaded] = useFonts({
     Montserrat: require("./app/assets/fonts/Montserrat-Regular.ttf"),
@@ -128,6 +129,15 @@ export default () => {
       setIsDelayFinished(true);
     }, 1000);
   }, [loaded]);
+
+  useEffect(() => {
+    const subscriber = firebase.auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber;
+  }, []);
+
+  const onAuthStateChanged = (user) => {
+    if (user) setIsAuth(true);
+  };
 
   if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
@@ -152,7 +162,7 @@ export default () => {
   } else {
     return (
       <Provider store={store}>
-        <Navigator />
+        <Navigator auth={isAuth} />
       </Provider>
     );
   }
