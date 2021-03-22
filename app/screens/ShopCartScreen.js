@@ -13,11 +13,11 @@ import { LogRegButton } from "../components/LogRegButton";
 import {
   ERRORCOLOR,
   LIGHTBLUE,
-  OKICOLOR,
   RAISINBLACK,
   WHITE,
 } from "../constants/palette";
 import { LinearGradient } from "expo-linear-gradient";
+import { PurchasePath } from "../constants/path";
 
 const ShopCartScreen = (props) => {
   const renderItem = ({ item }) => (
@@ -116,7 +116,10 @@ const ShopCartScreen = (props) => {
       >
         Totale: {props.total}€
       </Text>
-      <LogRegButton text="BUY" />
+      <LogRegButton
+        text="BUY"
+        onPress={() => props.navigation.navigate(PurchasePath)}
+      />
     </View>
   ) : (
     <Text style={{ ...styles.text, textAlign: "center" }}>
@@ -157,7 +160,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignContent: "center",
     margin: 5,
-    backgroundColor: OKICOLOR,
     borderRadius: 50,
   },
 });

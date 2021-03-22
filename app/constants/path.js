@@ -9,3 +9,5 @@ export const ShopCartPath = "ShopCart";
 export const ForgotPassPath = "ForgotPass";
 export const PrivacyPath = "Privacy";
 export const AboutUsPath = "About us";
+export const PaymentPath = "Payment";
+export const PurchasePath = "Purchase";

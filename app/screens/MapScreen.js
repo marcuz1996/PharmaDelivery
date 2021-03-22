@@ -91,8 +91,8 @@ export const MapScreen = () => {
                   <Image style={styles.image} source={{ uri: marker.image }} />
                   {/* <Text style={styles.name}>{marker.name}</Text> */}
                 </View>
-                <View style={styles.arrowBorder} />
-                <View style={styles.arrow} />
+                <View style={styles.arrowBorder}></View>
+                <View style={styles.arrow}></View>
               </View>
             </Callout>
           </Marker>

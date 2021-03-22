@@ -13,9 +13,11 @@ import { ProfileScreen } from "../screens/ProfileScreen";
 import PharmaciesListScreen from "../screens/PharmaciesListScreen";
 import ProductScreen from "../screens/ProductScreen";
 import ShopCartScreen from "../screens/ShopCartScreen";
-
+import { PrivacyScreen } from "../screens/PrivacyScreen";
+import PurchaseScreen from "../screens/PurchaseScreen";
+import { AboutUsScreen } from "../screens/AboutUsScreen";
+import PaymentScreen from "../screens/PaymentScreen";
 import { ForgotPasswordScreen } from "../screens/ForgotPasswordScreen";
-
 import { PageWrapper } from "../components/PageWrapper";
 import {
   LoginPath,
@@ -29,9 +31,9 @@ import {
   ForgotPassPath,
   PrivacyPath,
   AboutUsPath,
+  PaymentPath,
+  PurchasePath,
 } from "../constants/path";
-import { PrivacyScreen } from "../screens/PrivacyScreen";
-import { AboutUsScreen } from "../screens/AboutUsScreen";
 
 const {
   Screen: StackScreen,
@@ -141,6 +143,14 @@ export const Navigator = () => {
             {(props) => (
               <MainLayout component={() => <AboutUsScreen {...props} />} />
             )}
+          </DrawerScreen>
+          <DrawerScreen name={PaymentPath}>
+            {(props) => (
+              <MainLayout component={() => <PaymentScreen {...props} />} />
+            )}
+          </DrawerScreen>
+          <DrawerScreen name={PurchasePath}>
+            {(props) => <PurchaseScreen {...props} />}
           </DrawerScreen>
         </DrawerNavigator>
       )}

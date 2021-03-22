@@ -84,7 +84,6 @@ const ProductScreen = (props) => {
         <Text style={{ ...FONTS.body3, color: LIGHTGREY }}>
           {categories.length > 0 ? categories[index - 1].name : null}
         </Text>
-        <Text style={{ ...FONTS.h3, color: LIGHTGREY }}> . </Text>
       </View>
     );
   });
@@ -115,7 +114,6 @@ const ProductScreen = (props) => {
             >
               <Image
                 source={{ uri: item.image }}
-                //resizeMethod="cover"
                 style={{
                   width: SIZES.width,
                   height: "100%",
@@ -246,8 +244,11 @@ const ProductScreen = (props) => {
       <TouchableOpacity style={{ marginBottom: 20 }}>
         {/* Image*/}
         <View
-          syle={{
+          style={{
             marginBottom: SIZES.padding,
+            borderRadius: SIZES.radius,
+            borderColor: RAISINBLACK,
+            borderWidth: 1,
           }}
         >
           <Image
@@ -256,8 +257,6 @@ const ProductScreen = (props) => {
               width: "100%",
               height: 200,
               borderRadius: SIZES.radius,
-              borderColor: RAISINBLACK,
-              borderWidth: 0.5,
             }}
           />
           <View
@@ -272,6 +271,7 @@ const ProductScreen = (props) => {
               alignItems: "center",
               justifyContent: "center",
               ...styles.shadow,
+              opacity: 0.8,
             }}
           >
             <Text style={{ ...FONTS.h4 }}>{item.address}</Text>

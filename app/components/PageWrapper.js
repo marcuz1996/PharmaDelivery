@@ -1,12 +1,6 @@
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import {
-  ScrollView,
-  StyleSheet,
-  Platform,
-  StatusBar,
-  Text,
-} from "react-native";
+import { ScrollView, StyleSheet, Platform, StatusBar } from "react-native";
 import { MAINCOLOR, GREEN, OKICOLOR, WHITE } from "../constants/palette";
 import Header from "../components/Header";
 
