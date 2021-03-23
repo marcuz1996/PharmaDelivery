@@ -2,24 +2,16 @@ import React from "react";
 import { Image, Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { Icon } from "react-native-elements";
 import IconBadge from "react-native-icon-badge";
-import {
-  RAISINBLACK,
-  WHITE,
-  LIGHTBLUE,
-  OKICOLOR,
-  ERRORCOLOR,
-} from "../constants/palette";
+import { RAISINBLACK, WHITE, ERRORCOLOR } from "../constants/palette";
 import { useNavigation } from "@react-navigation/native";
 import { ShopCartPath } from "../constants/path";
-import { connect } from "react-redux";
-
-const mapStateToProps = (state) => {
-  return {
-    totalQuantity: state.totalProduct,
-  };
-};
+import { useSelector } from "react-redux";
 
 const Header = (props) => {
+  const { totalQuantity } = useSelector((state) => ({
+    totalQuantity: state.totalProduct,
+  }));
+
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
@@ -27,11 +19,11 @@ const Header = (props) => {
         <Icon
           style={styles.icon}
           type="font-awesome-5"
-          name="bars"
+          name={props.comeback ? "angle-left" : "bars"}
           color={RAISINBLACK}
-          size={30}
+          size={props.comeback ? 40 : 30}
           onPress={() => {
-            navigation.toggleDrawer();
+            props.comeback ? navigation.goBack() : navigation.toggleDrawer();
           }}
         />
       </TouchableOpacity>
@@ -54,12 +46,12 @@ const Header = (props) => {
             />
           }
           BadgeElement={
-            props.totalQuantity === 0 ? null : (
-              <Text style={styles.quantityText}>{props.totalQuantity}</Text>
+            totalQuantity === 0 ? null : (
+              <Text style={styles.quantityText}>{totalQuantity}</Text>
             )
           }
           IconBadgeStyle={styles.badgeStyle}
-          Hidden={props.totalQuantity === 0}
+          Hidden={totalQuantity === 0}
         />
       </TouchableOpacity>
     </View>
@@ -97,4 +89,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect(mapStateToProps)(Header);
+export default Header;

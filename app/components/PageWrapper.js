@@ -1,13 +1,24 @@
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { ScrollView, StyleSheet, Platform, StatusBar } from "react-native";
-import { MAINCOLOR, GREEN, OKICOLOR, WHITE } from "../constants/palette";
+import {
+  ScrollView,
+  StyleSheet,
+  Platform,
+  StatusBar,
+  View,
+} from "react-native";
+import { WHITE } from "../constants/palette";
 import Header from "../components/Header";
 
-export const PageWrapper = ({ children, hideHeader }) => (
+export const PageWrapper = ({
+  children,
+  hideHeader,
+  isScrollView,
+  comeback,
+}) => (
   <SafeAreaView style={styles.androidSafeArea}>
-    {!hideHeader && <Header />}
-    <ScrollView>{children}</ScrollView>
+    {!hideHeader && <Header comeback={comeback} />}
+    {isScrollView ? <ScrollView>{children}</ScrollView> : <>{children}</>}
   </SafeAreaView>
 );
 

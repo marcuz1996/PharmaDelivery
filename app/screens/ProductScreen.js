@@ -7,12 +7,16 @@ import {
   TouchableOpacity,
   Image,
   FlatList,
+  Platform,
+  StatusBar,
 } from "react-native";
 import * as firebase from "firebase";
-import { LIGHTGREY, OKICOLOR, RAISINBLACK } from "../constants/palette";
+import { LIGHTGREY, OKICOLOR, RAISINBLACK, WHITE } from "../constants/palette";
 import { connect } from "react-redux";
 import { SIZES, FONTS } from "../constants/theme";
 import { LogRegButton } from "../components/LogRegButton";
+import Header from "../components/Header";
+import { ScrollView } from "react-native";
 
 const ProductScreen = (props) => {
   const [categories, setCategories] = useState([]);
@@ -140,8 +144,9 @@ const ProductScreen = (props) => {
                   justifyContent: "center",
                   borderTopLeftRadius: 25,
                   borderBottomLeftRadius: 25,
-                  borderColor: RAISINBLACK,
-                  borderWidth: 1,
+                  borderTopWidth: 1,
+                  borderBottomWidth: 1,
+                  borderLeftWidth: 1,
                 }}
                 onPress={() => editOrder("-")}
               >
@@ -170,8 +175,9 @@ const ProductScreen = (props) => {
                   justifyContent: "center",
                   borderTopRightRadius: 25,
                   borderBottomRightRadius: 25,
-                  borderColor: RAISINBLACK,
-                  borderWidth: 1,
+                  borderTopWidth: 1,
+                  borderBottomWidth: 1,
+                  borderRightWidth: 1,
                 }}
                 onPress={() => editOrder("+")}
               >
@@ -211,26 +217,15 @@ const ProductScreen = (props) => {
           {/* Order Button */}
           <View
             style={{
-              padding: SIZES.padding * 2,
-              alignItems: "center",
-              justifyContent: "center",
+              width: SIZES.width * 0.9,
+              marginBottom: 10,
             }}
           >
-            {/* <TouchableOpacity
-              style={{
-                width: SIZES.width * 0.9,
-                padding: SIZES.padding,
-                backgroundColor: OKICOLOR,
-                alignItems: "center",
-                borderRadius: SIZES.radius,
-              }}
-            >
-              <Text style={{ color: "white", ...FONTS.h2 }}>Add to Cart</Text>
-            </TouchableOpacity> */}
             <LogRegButton
               text="Add to Cart"
               onPress={() => {
                 handleClick(item, productQty, props);
+                setQuantity(1);
               }}
             />
           </View>
@@ -306,17 +301,18 @@ const ProductScreen = (props) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <ScrollView>
       {renderProductInfo()}
       {renderPharmaciesList()}
-    </SafeAreaView>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  androidSafeArea: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: WHITE,
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
   title: {
     fontFamily: "MontserratBold",

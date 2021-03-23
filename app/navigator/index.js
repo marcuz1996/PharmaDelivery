@@ -46,14 +46,20 @@ const {
   Navigator: DrawerNavigator,
 } = createDrawerNavigator();
 
-const MainLayout = ({ component, hideHeader = false }) => {
-  return (
-    <>
-      <PageWrapper hideHeader={hideHeader}>{component()}</PageWrapper>
-    </>
-  );
-};
-
+const MainLayout = ({
+  component,
+  hideHeader = false,
+  isScrollView = true,
+  comeback = false,
+}) => (
+  <PageWrapper
+    hideHeader={hideHeader}
+    isScrollView={isScrollView}
+    comeback={comeback}
+  >
+    {component()}
+  </PageWrapper>
+);
 export const Navigator = ({ auth }) => {
   const [welcome, setWelcome] = useState(false);
   const [isAuth, setIsAuth] = useState(auth);
@@ -106,7 +112,10 @@ export const Navigator = ({ auth }) => {
         >
           <DrawerScreen name={HomePath}>
             {(props) => (
-              <MainLayout component={() => <HomeScreen {...props} />} />
+              <MainLayout
+                isScrollView={false}
+                component={() => <HomeScreen {...props} />}
+              />
             )}
           </DrawerScreen>
           <DrawerScreen name={MapPath}>
@@ -128,7 +137,11 @@ export const Navigator = ({ auth }) => {
           </DrawerScreen>
           <DrawerScreen name={ProductPath}>
             {(props) => (
-              <MainLayout component={() => <ProductScreen {...props} />} />
+              <MainLayout
+                comeback
+                isScrollView={false}
+                component={() => <ProductScreen {...props} />}
+              />
             )}
           </DrawerScreen>
           <DrawerScreen name={ShopCartPath}>

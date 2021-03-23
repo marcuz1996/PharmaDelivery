@@ -28,6 +28,8 @@ export const ProfileScreen = ({ navigation }) => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [mail, setMail] = useState("");
   const [changeSetting, setChangeSetting] = useState(false);
+  const [payments, setPayments] = useState([]);
+  const [isDBReady, setIsDBReady] = useState(false);
 
   const getInfo = async () => {
     await firebase
@@ -36,6 +38,15 @@ export const ProfileScreen = ({ navigation }) => {
       .on("value", (snapshot) => {
         setUser(snapshot.val());
       });
+
+    await firebase
+      .firestore()
+      .collection("Purchases")
+      .doc(firebase.auth().currentUser.email)
+      .onSnapshot((documentSnapshot) => {
+        setPayments(documentSnapshot.data().payments);
+      });
+    setIsDBReady(true);
   };
 
   const changingSetting = () => {
@@ -67,7 +78,7 @@ export const ProfileScreen = ({ navigation }) => {
     getInfo();
   }, []);
 
-  return !user ? (
+  return !user || !isDBReady ? (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       <ActivityIndicator size="large" color="#4335DB" />
     </View>
@@ -79,20 +90,33 @@ export const ProfileScreen = ({ navigation }) => {
       <View style={styles.container}>
         <Text style={styles.paragraph}>Account</Text>
 
-        <Text style={styles.textDescriptor}>Name</Text>
-        <Text style={styles.textInput}>{user.name}</Text>
+        <View style={{ flexDirection: "row", marginBottom: 20 }}>
+          <View style={{ width: "50%" }}>
+            <Text style={styles.textDescriptor}>Name</Text>
+            <Text style={styles.textInput}>{user.name}</Text>
+          </View>
+          <View style={{ width: "50%" }}>
+            <Text style={styles.textDescriptor}>Surname</Text>
+            <Text style={styles.textInput}>{user.surname}</Text>
+          </View>
+        </View>
 
-        <Text style={styles.textDescriptor}>Surname</Text>
-        <Text style={styles.textInput}>{user.surname}</Text>
+        <View style={{ flexDirection: "row", marginBottom: 20 }}>
+          <View style={{ width: "50%" }}>
+            <Text style={styles.textDescriptor}>Address</Text>
+            <Text style={styles.textInput}>{user.address}</Text>
+          </View>
 
-        <Text style={styles.textDescriptor}>Address</Text>
-        <Text style={styles.textInput}>{user.address}</Text>
+          <View style={{ width: "50%" }}>
+            <Text style={styles.textDescriptor}>Phone number</Text>
+            <Text style={styles.textInput}>{user.phoneNumber}</Text>
+          </View>
+        </View>
 
-        <Text style={styles.textDescriptor}>Phone number</Text>
-        <Text style={styles.textInput}>{user.phoneNumber}</Text>
-
-        <Text style={styles.textDescriptor}>Email</Text>
-        <Text style={styles.textInput}>{user.name}</Text>
+        <View style={{ width: "50%" }}>
+          <Text style={styles.textDescriptor}>Email</Text>
+          <Text style={styles.textInput}>{user.mail}</Text>
+        </View>
 
         <TouchableOpacity>
           <Text
@@ -109,6 +133,21 @@ export const ProfileScreen = ({ navigation }) => {
         ></LogRegButton>
 
         <Text style={{ ...styles.paragraph, marginTop: 8 }}>Payments</Text>
+        <View>
+          {payments.length
+            ? payments.map((element) => (
+                <Text
+                  key={element.time}
+                  style={{
+                    ...styles.payments,
+                    color: element.status === "OK" ? "green" : ERRORCOLOR,
+                  }}
+                >
+                  {element.time} Price:{element.price}€
+                </Text>
+              ))
+            : null}
+        </View>
       </View>
     </>
   ) : (
@@ -215,5 +254,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: "Montserrat",
     paddingTop: 20,
+  },
+  payments: {
+    fontFamily: "Montserrat",
   },
 });

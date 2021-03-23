@@ -6,6 +6,8 @@ import {
   Image,
   FlatList,
   View,
+  Platform,
+  StatusBar,
   ScrollView,
 } from "react-native";
 import * as firebase from "firebase";
@@ -22,6 +24,8 @@ import {
 } from "../constants/palette";
 import { ProductPath } from "../constants/path";
 import { LogRegButton } from "../components/LogRegButton";
+import { SafeAreaView } from "react-native";
+import Header from "../components/Header";
 
 const HomeScreen = (props) => {
   const [categories, setCategories] = useState();
@@ -87,6 +91,7 @@ const HomeScreen = (props) => {
       return (
         <TouchableOpacity
           style={{
+            marginLeft: item.id === 1 ? 10 : 0,
             padding: 10,
             paddingBottom: 20,
             backgroundColor:
@@ -134,7 +139,7 @@ const HomeScreen = (props) => {
     };
 
     return (
-      <View style={{ paddingTop: 10, paddingLeft: 20, paddingRight: 20 }}>
+      <View style={{ paddingTop: 10 }}>
         <Text style={styles.title}>Main Categories</Text>
 
         <FlatList
@@ -306,6 +311,11 @@ const styles = StyleSheet.create({
     fontSize: SIZES.h1,
     lineHeight: 36,
     textAlign: "center",
+  },
+  androidSafeArea: {
+    flex: 1,
+    backgroundColor: WHITE,
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
 });
 
