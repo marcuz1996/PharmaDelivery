@@ -8,9 +8,10 @@ import {
   HomePath,
   MapPath,
   ProfilePath,
-  PharmaciesListPath,
   PrivacyPath,
   AboutUsPath,
+  ShopCartPath,
+  SavedProductPath,
 } from "../constants/path";
 import { OKICOLOR } from "../constants/palette";
 
@@ -66,27 +67,21 @@ export const DrawerMenu = (props) => {
             />
             <DrawerItem
               icon={({ size }) => (
-                <Icon
-                  name="hospital-box-outline"
-                  color={OKICOLOR}
-                  size={size}
-                />
+                <Icon name="heart-outline" color={OKICOLOR} size={size} />
               )}
-              label={PharmaciesListPath}
+              label={SavedProductPath}
               onPress={() => {
-                props.navigation.navigate(PharmaciesListPath);
+                props.navigation.navigate(SavedProductPath);
               }}
             />
             <DrawerItem
               icon={({ size }) => (
-                <Icon
-                  name="account-check-outline"
-                  color={OKICOLOR}
-                  size={size}
-                />
+                <Icon name="cart-outline" color={OKICOLOR} size={size} />
               )}
-              label="Support"
-              //onPress={() => {props.navigation.navigate('SupportScreen')}}
+              label={ShopCartPath}
+              onPress={() => {
+                props.navigation.navigate(ShopCartPath);
+              }}
             />
           </Drawer.Section>
           <Drawer.Section title="Information">

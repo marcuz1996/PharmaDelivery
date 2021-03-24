@@ -17,7 +17,7 @@ import {
   WHITE,
 } from "../constants/palette";
 import { LinearGradient } from "expo-linear-gradient";
-import { PurchasePath } from "../constants/path";
+import { PaymentPath, PurchasePath } from "../constants/path";
 
 const ShopCartScreen = (props) => {
   const renderItem = ({ item }) => (
@@ -118,11 +118,15 @@ const ShopCartScreen = (props) => {
       </Text>
       <LogRegButton
         text="BUY"
+        onPress={() => props.navigation.navigate(PaymentPath)}
+      />
+      <LogRegButton
+        text="QUICK BUY"
         onPress={() => props.navigation.navigate(PurchasePath)}
       />
     </View>
   ) : (
-    <Text style={{ ...styles.text, textAlign: "center" }}>
+    <Text style={{ ...styles.text, textAlign: "center", paddingTop: 20 }}>
       Your shopping chart is empty!
     </Text>
   );

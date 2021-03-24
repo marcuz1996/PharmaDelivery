@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import * as firebase from "firebase";
 import { ScrollView, Image, Text, View, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -6,19 +6,16 @@ import { InputTextField } from "../components/InputTextField";
 import { LogRegButton } from "../components/LogRegButton";
 import { ErrorMessage } from "../components/ErrorMessage";
 import {
-  MAINCOLOR,
   SECONDARYCOLOR,
   LINKCOLOR,
-  RAISINBLACK,
   LIGHTGREY,
   WHITE,
 } from "../constants/palette";
-import { ForgotPassPath, HomePath, RegisterPath } from "../constants/path";
+import { ForgotPassPath, RegisterPath } from "../constants/path";
 
 export const LoginScreen = ({ navigation, onLogin }) => {
   const [mail, setMail] = useState("");
   const [pass, setPass] = useState("");
-  const [user, setUser] = useState();
   const [isValidCredential, setIsValidCredential] = useState(true);
 
   const handleLogIn = () => {
@@ -33,16 +30,6 @@ export const LoginScreen = ({ navigation, onLogin }) => {
         setIsValidCredential(false);
       });
   };
-
-  // Handle user state changes
-  /*   const onAuthStateChanged = (user) => {
-    if (user) onLogin();
-  };
-
-  useEffect(() => {
-    const subscriber = firebase.auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber;
-  }, []); */
 
   return (
     <ScrollView style={styles.container}>

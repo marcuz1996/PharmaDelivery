@@ -6,15 +6,16 @@ import {
   ActivityIndicator,
   TextInput,
 } from "react-native";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import * as firebase from "firebase";
 import { LogRegButton } from "../components/LogRegButton";
 import {
   ERRORCOLOR,
+  GREENBG,
   LIGHTGREY,
-  LINKCOLOR,
   OKICOLOR,
   RAISINBLACK,
-  SECONDARYCOLOR,
+  REDBG,
   WHITE,
 } from "../constants/palette";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -30,6 +31,11 @@ export const ProfileScreen = ({ navigation }) => {
   const [changeSetting, setChangeSetting] = useState(false);
   const [payments, setPayments] = useState([]);
   const [isDBReady, setIsDBReady] = useState(false);
+  const [reverse, setReverse] = useState(false);
+
+  useEffect(() => {
+    getInfo();
+  }, []);
 
   const getInfo = async () => {
     await firebase
@@ -74,13 +80,9 @@ export const ProfileScreen = ({ navigation }) => {
     setChangeSetting(false);
   };
 
-  useEffect(() => {
-    getInfo();
-  }, []);
-
   return !user || !isDBReady ? (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <ActivityIndicator size="large" color="#4335DB" />
+      <ActivityIndicator size="large" color={OKICOLOR} />
     </View>
   ) : !changeSetting ? (
     <>
@@ -113,10 +115,8 @@ export const ProfileScreen = ({ navigation }) => {
           </View>
         </View>
 
-        <View style={{ width: "50%" }}>
-          <Text style={styles.textDescriptor}>Email</Text>
-          <Text style={styles.textInput}>{user.mail}</Text>
-        </View>
+        <Text style={styles.textDescriptor}>Email</Text>
+        <Text style={styles.textInput}>{user.mail}</Text>
 
         <TouchableOpacity>
           <Text
@@ -132,19 +132,42 @@ export const ProfileScreen = ({ navigation }) => {
           onPress={() => changingSetting()}
         ></LogRegButton>
 
-        <Text style={{ ...styles.paragraph, marginTop: 8 }}>Payments</Text>
+        <View
+          style={{ flexDirection: "row", paddingTop: 20, paddingBottom: 10 }}
+        >
+          <Text style={{ ...styles.paragraph, marginTop: 8 }}>Payments</Text>
+          <TouchableOpacity>
+            <Icon
+              style={{ marginTop: 8, marginLeft: 10 }}
+              name="swap-vertical"
+              color={LIGHTGREY}
+              size={30}
+              onPress={() => setReverse(!reverse)}
+            />
+          </TouchableOpacity>
+        </View>
         <View>
           {payments.length
-            ? payments.map((element) => (
-                <Text
+            ? payments.reverse().map((element) => (
+                <View
                   key={element.time}
                   style={{
-                    ...styles.payments,
-                    color: element.status === "OK" ? "green" : ERRORCOLOR,
+                    ...styles.paymentsView,
+                    backgroundColor: element.status === "OK" ? GREENBG : REDBG,
                   }}
                 >
-                  {element.time} Price:{element.price}€
-                </Text>
+                  <Text style={{ ...styles.payments, marginLeft: 5 }}>
+                    Date: {element.time}
+                  </Text>
+                  <Text
+                    style={{
+                      ...styles.payments,
+                      marginLeft: 70,
+                    }}
+                  >
+                    Price: {element.price}€
+                  </Text>
+                </View>
               ))
             : null}
         </View>
@@ -257,5 +280,12 @@ const styles = StyleSheet.create({
   },
   payments: {
     fontFamily: "Montserrat",
+    flex: 1,
+  },
+  paymentsView: {
+    flexDirection: "row",
+    marginBottom: 10,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderRadius: 5,
   },
 });

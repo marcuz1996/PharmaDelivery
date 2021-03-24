@@ -2,34 +2,47 @@ import React, { useEffect, useState } from "react";
 import {
   Text,
   StyleSheet,
-  SafeAreaView,
   View,
   TouchableOpacity,
   Image,
   FlatList,
-  Platform,
-  StatusBar,
 } from "react-native";
+import { Icon } from "react-native-elements";
 import * as firebase from "firebase";
-import { LIGHTGREY, OKICOLOR, RAISINBLACK, WHITE } from "../constants/palette";
+import {
+  ERRORCOLOR,
+  LIGHTGREY,
+  OKICOLOR,
+  RAISINBLACK,
+  WHITE,
+} from "../constants/palette";
 import { connect } from "react-redux";
 import { SIZES, FONTS } from "../constants/theme";
 import { LogRegButton } from "../components/LogRegButton";
-import Header from "../components/Header";
 import { ScrollView } from "react-native";
 
 const ProductScreen = (props) => {
   const [categories, setCategories] = useState([]);
+  const [saved, setSaved] = useState([]);
   const { route } = props;
   const { item } = route.params;
   const [productQty, setQuantity] = useState(1);
   const [pharmacies, setPharmacies] = useState([]);
+  const [iconSaved, setIconSaved] = useState(true);
 
   useEffect(() => {
     loadElements();
   }, []);
 
   const loadElements = async () => {
+    await firebase
+      .firestore()
+      .collection("Purchases")
+      .doc(firebase.auth().currentUser.email)
+      .onSnapshot((documentSnapshot) => {
+        setSaved(documentSnapshot.data().saved);
+      });
+
     let temp = [];
     await firebase
       .firestore()
@@ -59,8 +72,30 @@ const ProductScreen = (props) => {
           temp2.push(doc.data());
         });
       });
-
     setPharmacies(temp2);
+  };
+
+  const handleClick = (id) => {
+    if (!saved.includes(id)) {
+      //console.log(item.id);
+      firebase
+        .firestore()
+        .collection("Purchases")
+        .doc(firebase.auth().currentUser.email)
+        .update({
+          saved: firebase.firestore.FieldValue.arrayUnion(item.id),
+        });
+    }
+    if (saved.includes(id)) {
+      //console.log(item.id);
+      firebase
+        .firestore()
+        .collection("Purchases")
+        .doc(firebase.auth().currentUser.email)
+        .update({
+          saved: firebase.firestore.FieldValue.arrayRemove(item.id),
+        });
+    }
   };
 
   let pharmacyList = pharmacies.filter((a) => item.pharmacy.includes(a.id));
@@ -198,7 +233,7 @@ const ProductScreen = (props) => {
             <Text
               style={{ marginVertical: 10, textAlign: "center", ...FONTS.h2 }}
             >
-              {item.name} - {item.price}
+              {item.name} - {item.price}€
             </Text>
             <Text style={{ ...FONTS.body3 }}>{item.description}</Text>
           </View>
@@ -213,7 +248,29 @@ const ProductScreen = (props) => {
             {categoriesIcons}
             {categoriesNames}
           </View>
-
+          <TouchableOpacity
+            onPress={() => {
+              handleClick(item.id);
+            }}
+          >
+            {!saved.length ? null : saved.includes(item.id) ? (
+              <Icon
+                style={styles.buttonProduct}
+                type="material-community"
+                name={"heart"}
+                color={ERRORCOLOR}
+                size={32}
+              />
+            ) : (
+              <Icon
+                style={styles.buttonProduct}
+                type="material-community"
+                name={"heart-outline"}
+                color={ERRORCOLOR}
+                size={32}
+              />
+            )}
+          </TouchableOpacity>
           {/* Order Button */}
           <View
             style={{
@@ -309,16 +366,17 @@ const ProductScreen = (props) => {
 };
 
 const styles = StyleSheet.create({
-  androidSafeArea: {
-    flex: 1,
-    backgroundColor: WHITE,
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-  },
   title: {
     fontFamily: "MontserratBold",
     fontSize: SIZES.h1,
     lineHeight: 36,
     textAlign: "center",
+  },
+  buttonProduct: {
+    textAlign: "center",
+    justifyContent: "center",
+    alignContent: "center",
+    marginTop: 5,
   },
 });
 

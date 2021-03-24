@@ -82,7 +82,6 @@ export const SignupScreen = ({ navigation }) => {
       <InputTextField
         iconName="account-outline"
         iconType="material-community"
-        iconSize={30}
         placeholder="Name"
         onChangeText={(val) => setName(val)}
         keyboardType="visible-password"
@@ -90,7 +89,6 @@ export const SignupScreen = ({ navigation }) => {
       <InputTextField
         iconName="account-outline"
         iconType="material-community"
-        iconSize={30}
         placeholder="Surname"
         onChangeText={(val) => setSurname(val)}
         keyboardType="visible-password"
@@ -98,7 +96,6 @@ export const SignupScreen = ({ navigation }) => {
       <InputTextField
         iconName="map-marker-outline"
         iconType="material-community"
-        iconSize={30}
         placeholder="Address"
         onChangeText={(val) => setAddress(val)}
         keyboardType="visible-password"
@@ -106,7 +103,6 @@ export const SignupScreen = ({ navigation }) => {
       <InputTextField
         iconName="phone-outline"
         iconType="material-community"
-        iconSize={30}
         placeholder="Phone number"
         onChangeText={(val) => setPhoneNumber(val)}
         keyboardType="visible-password"
@@ -114,7 +110,6 @@ export const SignupScreen = ({ navigation }) => {
       <InputTextField
         iconName="email-outline"
         iconType="material-community"
-        iconSize={30}
         placeholder="E-mail"
         onChangeText={(val) => setMail(val)}
         keyboardType="visible-password"

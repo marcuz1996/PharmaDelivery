@@ -10,3 +10,6 @@ export const RAISINBLACK = "#1D2029";
 export const LIGHTGREY = "#ABB4BD";
 export const LIGHTBLUE = "#00BECC";
 export const DARKGREY = "#475152";
+
+export const GREENBG = "rgba(53, 219, 103, 0.5)";
+export const REDBG = "rgba(219, 53, 53, 0.5)";

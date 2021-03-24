@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { WebView } from "react-native-webview";
 import { STRIPE } from "../constants/stripeSettings";
 import { HomePath } from "../constants/path";
@@ -13,8 +13,9 @@ import {
   View,
   ActivityIndicator,
 } from "react-native";
-import { WHITE } from "../constants/palette";
+import { OKICOLOR, WHITE } from "../constants/palette";
 import { stripeCheckoutRedirectHTML } from "../components/StripeCheckout";
+import { RefreshControlComponent } from "react-native";
 
 const PurchaseScreen = (props) => {
   const [user, setUser] = useState();
@@ -38,7 +39,7 @@ const PurchaseScreen = (props) => {
       .update({
         payments: firebase.firestore.FieldValue.arrayUnion({
           price: props.total.toString(),
-          time: new Date().toLocaleString(),
+          time: new Date().toUTCString().split(" GMT")[0],
           status: status,
         }),
       });
@@ -47,13 +48,12 @@ const PurchaseScreen = (props) => {
   // Called everytime the URL stats to load in the webview
   const onLoadStart = (syntheticEvent) => {
     const { nativeEvent } = syntheticEvent;
-
     //console.log(nativeEvent);
 
     if (nativeEvent.url === STRIPE.SUCCESS_URL) {
+      //setUser(null);
       //mettere notifica pagamento ok
       handleEmpty(props);
-      //setUser(null);
       updatePaymentList("OK");
       props.navigation.navigate(HomePath);
     }
@@ -66,15 +66,17 @@ const PurchaseScreen = (props) => {
 
   return !user ? (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <ActivityIndicator size="large" color="#4335DB" />
+      <ActivityIndicator size="large" color={OKICOLOR} />
     </View>
   ) : (
     <SafeAreaView style={styles.androidSafeArea}>
-      <Header />
+      <Header comeback />
       <WebView
         originWhitelist={["*"]}
         source={{ html: stripeCheckoutRedirectHTML(user.mail) }}
         onLoadStart={onLoadStart}
+        //onError={console.log("a")}
+        //onHttpError={console.log("b")}
       />
     </SafeAreaView>
   );

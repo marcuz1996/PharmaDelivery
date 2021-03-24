@@ -6,28 +6,18 @@ import {
   Image,
   FlatList,
   View,
-  Platform,
-  StatusBar,
-  ScrollView,
 } from "react-native";
 import * as firebase from "firebase";
 import { FONTS, SIZES } from "../constants/theme";
 import { LinearGradient } from "expo-linear-gradient";
 import { Icon } from "react-native-elements";
 import { connect } from "react-redux";
-import {
-  LIGHTGREY,
-  OKICOLOR,
-  RAISINBLACK,
-  LIGHTBLUE,
-  WHITE,
-} from "../constants/palette";
+import { OKICOLOR, RAISINBLACK, LIGHTBLUE, WHITE } from "../constants/palette";
 import { ProductPath } from "../constants/path";
 import { LogRegButton } from "../components/LogRegButton";
-import { SafeAreaView } from "react-native";
-import Header from "../components/Header";
 
 const HomeScreen = (props) => {
+  const [saved, setSaved] = useState([]);
   const [categories, setCategories] = useState();
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [product, setProduct] = useState(); //cambia in base alla categoria selezionata
@@ -311,11 +301,6 @@ const styles = StyleSheet.create({
     fontSize: SIZES.h1,
     lineHeight: 36,
     textAlign: "center",
-  },
-  androidSafeArea: {
-    flex: 1,
-    backgroundColor: WHITE,
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
 });
 

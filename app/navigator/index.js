@@ -12,7 +12,7 @@ import { SignupScreen } from "../screens/SignupScreen";
 import HomeScreen from "../screens/HomeScreen";
 import { MapScreen } from "../screens/MapScreen";
 import { ProfileScreen } from "../screens/ProfileScreen";
-import PharmaciesListScreen from "../screens/PharmaciesListScreen";
+import PharmacyProductsScreen from "../screens/PharmacyProductsScreen";
 import ProductScreen from "../screens/ProductScreen";
 import ShopCartScreen from "../screens/ShopCartScreen";
 import { PrivacyScreen } from "../screens/PrivacyScreen";
@@ -20,6 +20,7 @@ import PurchaseScreen from "../screens/PurchaseScreen";
 import { AboutUsScreen } from "../screens/AboutUsScreen";
 import PaymentScreen from "../screens/PaymentScreen";
 import { ForgotPasswordScreen } from "../screens/ForgotPasswordScreen";
+import SavedProductScreen from "../screens/SavedProductScreen";
 import { PageWrapper } from "../components/PageWrapper";
 import {
   LoginPath,
@@ -27,7 +28,7 @@ import {
   HomePath,
   MapPath,
   ProfilePath,
-  PharmaciesListPath,
+  PharmacyProductsPath,
   ProductPath,
   ShopCartPath,
   ForgotPassPath,
@@ -35,6 +36,7 @@ import {
   AboutUsPath,
   PaymentPath,
   PurchasePath,
+  SavedProductPath,
 } from "../constants/path";
 
 const {
@@ -128,10 +130,10 @@ export const Navigator = ({ auth }) => {
               <MainLayout component={() => <ProfileScreen {...props} />} />
             )}
           </DrawerScreen>
-          <DrawerScreen name={PharmaciesListPath}>
+          <DrawerScreen name={PharmacyProductsPath}>
             {(props) => (
               <MainLayout
-                component={() => <PharmaciesListScreen {...props} />}
+                component={() => <PharmacyProductsScreen {...props} />}
               />
             )}
           </DrawerScreen>
@@ -169,6 +171,11 @@ export const Navigator = ({ auth }) => {
               <MainLayout
                 component={() => <ForgotPasswordScreen {...props} />}
               />
+            )}
+          </DrawerScreen>
+          <DrawerScreen name={SavedProductPath}>
+            {(props) => (
+              <MainLayout component={() => <SavedProductScreen {...props} />} />
             )}
           </DrawerScreen>
           <DrawerScreen name={PurchasePath}>
