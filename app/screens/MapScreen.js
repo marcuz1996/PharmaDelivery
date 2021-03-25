@@ -1,12 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, StyleSheet, Dimensions, Image } from "react-native";
-import MapView, { PROVIDER_GOOGLE, Marker, Callout } from "react-native-maps";
+import {
+  Alert,
+  Modal,
+  Text,
+  Pressable,
+  View,
+  StyleSheet,
+  Dimensions,
+  Image,
+  TouchableOpacity,
+} from "react-native";
+import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import * as firebase from "firebase";
 import { OKICOLOR } from "../constants/palette";
 import icons from "../constants/icons";
 
 export const MapScreen = () => {
   const [pharmacies, setPharmacies] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     loadElements();
@@ -37,8 +48,7 @@ export const MapScreen = () => {
     };
   });
 
-  console.log(markers);
-
+  
   return (
     <View style={styles.container}>
       <MapView
@@ -54,7 +64,7 @@ export const MapScreen = () => {
           <Marker
             key={index}
             coordinate={marker.coordinates}
-            calloutOffset={{ x: 0, y: 40 }}
+            onPress={() => setModalVisible(true)}
           >
             <View
               style={{
@@ -85,16 +95,33 @@ export const MapScreen = () => {
                 />
               </View>
             </View>
-            <Callout tooltip>
-              <View>
-                <View style={styles.bubble}>
-                  <Image style={styles.image} source={{ uri: marker.image }} />
-                  {/* <Text style={styles.name}>{marker.name}</Text> */}
-                </View>
-                <View style={styles.arrowBorder}></View>
-                <View style={styles.arrow}></View>
-              </View>
-            </Callout>
+              <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                key={index}
+              >
+                <TouchableOpacity
+                  style={styles.centeredView}
+                  activeOpacity={1}
+                  onPressOut={() => {
+                    setModalVisible(false);
+                  }}
+                >
+                  <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
+                      <View style={styles.imageContainer}>
+                        <Text>{marker.name}</Text>
+      
+                        {/* <Image
+                          style={styles.image}
+                          source={{ uri: marker.image }}
+                        /> */}
+                      </View>
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              </Modal>
           </Marker>
         ))}
       </MapView>
@@ -129,15 +156,15 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginTop: -0.5,
   },
-  bubble: {
-    flexDirection: "column",
-    alignSelf: "flex-start",
+  imageContainer: {
+    flexDirection: "row",
+    alignContent: "center",
     backgroundColor: "white",
     borderRadius: 6,
     borderColor: "#ccc",
     padding: 5,
-    width: 150,
-    height: 100,
+    width: "80%",
+    height: "80%",
   },
   name: {
     fontSize: 15,
@@ -146,5 +173,22 @@ const styles = StyleSheet.create({
   image: {
     width: "100%",
     height: "100%",
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "flex-end",
+    alignSelf: "center",
+    width: "100%",
+    height: "60%",
+    bottom: 20,
+  },
+  modalView: {
+    flex: 0.3,
+    backgroundColor: "#f8f8ff",
+    borderRadius: 10,
+    justifyContent: "center",
+    width: "100%",
+    marginVertical: -40,
+    alignSelf: "center",
   },
 });

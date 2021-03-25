@@ -20,6 +20,7 @@ import { connect } from "react-redux";
 import { SIZES, FONTS } from "../constants/theme";
 import { LogRegButton } from "../components/LogRegButton";
 import { ScrollView } from "react-native";
+import { PharmacyProductsPath } from "../constants/path";
 
 const ProductScreen = (props) => {
   const [categories, setCategories] = useState([]);
@@ -293,7 +294,13 @@ const ProductScreen = (props) => {
 
   const renderPharmaciesList = () => {
     const renderItem = ({ item }) => (
-      <TouchableOpacity style={{ marginBottom: 20 }}>
+      <TouchableOpacity style={{ marginBottom: 20 }}
+      onPress={() =>
+        props.navigation.navigate(PharmacyProductsPath, {
+          item,
+        })
+      }
+      >
         {/* Image*/}
         <View
           style={{
