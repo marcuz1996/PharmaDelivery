@@ -281,7 +281,7 @@ const ProductScreen = (props) => {
             <LogRegButton
               text="Add to Cart"
               onPress={() => {
-                handleClick(item, productQty, props);
+                handleAddToCart(item, productQty, props);
                 setQuantity(1);
               }}
             />
@@ -380,7 +380,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const handleClick = (product, productQty, props) => {
+const handleAddToCart = (product, productQty, props) => {
   props.addToCart(product, productQty);
 };
 
