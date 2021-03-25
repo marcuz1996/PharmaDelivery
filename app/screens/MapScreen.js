@@ -17,7 +17,7 @@ import icons from "../constants/icons";
 
 export const MapScreen = () => {
   const [pharmacies, setPharmacies] = useState([]);
-  const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState([]);
 
   useEffect(() => {
     loadElements();
@@ -35,6 +35,7 @@ export const MapScreen = () => {
         });
       });
     setPharmacies(temp);
+    setModalVisible(temp.map(() => false))
   };
 
   let markers = pharmacies.map((a) => {
@@ -48,6 +49,7 @@ export const MapScreen = () => {
     };
   });
 
+  console.log(modalVisible);
   
   return (
     <View style={styles.container}>
@@ -64,7 +66,7 @@ export const MapScreen = () => {
           <Marker
             key={index}
             coordinate={marker.coordinates}
-            onPress={() => setModalVisible(true)}
+            onPress={() => setModalVisible(modalVisible.map((value, modalIndex) => modalIndex === index))}
           >
             <View
               style={{
@@ -98,14 +100,14 @@ export const MapScreen = () => {
               <Modal
                 animationType="slide"
                 transparent={true}
-                visible={modalVisible}
+                visible={modalVisible[index]}
                 key={index}
               >
                 <TouchableOpacity
                   style={styles.centeredView}
                   activeOpacity={1}
                   onPressOut={() => {
-                    setModalVisible(false);
+                    setModalVisible(modalVisible.map(() => false));
                   }}
                 >
                   <View style={styles.centeredView}>
