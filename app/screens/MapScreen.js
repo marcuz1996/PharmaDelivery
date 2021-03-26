@@ -10,8 +10,9 @@ import {
 } from "react-native";
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import * as firebase from "firebase";
-import { OKICOLOR } from "../constants/palette";
-import { SIZES, FONTS } from "../constants/theme";
+import { OKICOLOR, RAISINBLACK } from "../constants/palette";
+import { FONTS } from "../constants/theme";
+import { Icon } from "react-native-elements";
 import icons from "../constants/icons";
 import { LogRegButton } from "../components/LogRegButton";
 import { PharmacyProductsPath } from "../constants/path";
@@ -124,42 +125,38 @@ export const MapScreen = (props) => {
                         style={styles.image}
                         source={{ uri: marker.image }}
                       />
-                      <View
-                        style={{
-                          position: "absolute",
-                          bottom: 0,
-                          height: 50,
-                          width: SIZES.width * 0.7,
-                          backgroundColor: "white",
-                          borderTopRightRadius: SIZES.radius,
-                          alignItems: "flex-start",
-                          ...styles.shadow,
-                          opacity: 0.8,
-                        }}
-                      >
-                        <View
-                          style={{
-                            position: "absolute",
-                            left: 7,
-                          }}
-                        >
-                          <Text style={{ ...FONTS.h2 }}>{marker.name}</Text>
-                          <Text style={{ ...FONTS.body3 }}>
-                            {marker.address} {"   "} {marker.open} -{" "}
-                            {marker.close}
+                      <Text style={{ ...FONTS.h2, textAlign: "center" }}>
+                        {marker.name}
+                      </Text>
+                      <View style={{ flexDirection: "row", paddingTop: 10 }}>
+                        <View style={{ width: "50%", flexDirection: "row" }}>
+                          <Icon
+                            type="material-community"
+                            name="map-marker-outline"
+                            color={RAISINBLACK}
+                            size={20}
+                          />
+                          <Text
+                            style={{
+                              ...FONTS.body3,
+                              paddingLeft: 4,
+                            }}
+                          >
+                            {marker.address}
+                          </Text>
+                        </View>
+                        <View style={{ width: "50%", flexDirection: "row" }}>
+                          <Icon
+                            type="material-community"
+                            name="clock-time-four-outline"
+                            color={RAISINBLACK}
+                            size={20}
+                          />
+                          <Text style={{ ...FONTS.body3, paddingLeft: 4 }}>
+                            {marker.open} - {marker.close}
                           </Text>
                         </View>
                       </View>
-                    </View>
-                    <View
-                      style={{
-                        width: SIZES.width * 0.9,
-                        position: "absolute",
-                        bottom: 30,
-                        alignItems: "center",
-                        alignSelf: "center",
-                      }}
-                    >
                       <LogRegButton
                         text="Go To Pharmacy Page"
                         onPress={() => {
@@ -193,14 +190,14 @@ const styles = StyleSheet.create({
     height: Dimensions.get("window").height,
   },
   imageContainer: {
-    flexDirection: "column",
+    //flexDirection: "column",
     alignContent: "center",
     backgroundColor: "white",
     borderRadius: 6,
     borderColor: "#ccc",
     padding: 5,
     width: "100%",
-    height: "70%",
+    height: "60%",
     alignSelf: "center",
     position: "absolute",
     top: 0,
@@ -212,6 +209,7 @@ const styles = StyleSheet.create({
   image: {
     width: "100%",
     height: "100%",
+    borderRadius: 10,
   },
   centeredView: {
     flex: 1,
@@ -222,7 +220,7 @@ const styles = StyleSheet.create({
     bottom: 20,
   },
   modalView: {
-    flex: 0.3,
+    flex: 0.4,
     backgroundColor: "#f8f8ff",
     borderRadius: 10,
     justifyContent: "center",
