@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
-  Alert,
   Modal,
   Text,
-  Pressable,
   View,
   StyleSheet,
   Dimensions,
@@ -13,9 +11,12 @@ import {
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import * as firebase from "firebase";
 import { OKICOLOR } from "../constants/palette";
+import { SIZES, FONTS } from "../constants/theme";
 import icons from "../constants/icons";
+import { LogRegButton } from "../components/LogRegButton";
+import { PharmacyProductsPath } from "../constants/path";
 
-export const MapScreen = () => {
+export const MapScreen = (props) => {
   const [pharmacies, setPharmacies] = useState([]);
   const [modalVisible, setModalVisible] = useState([]);
 
@@ -35,22 +36,24 @@ export const MapScreen = () => {
         });
       });
     setPharmacies(temp);
-    setModalVisible(temp.map(() => false))
+    setModalVisible(temp.map(() => false));
   };
 
   let markers = pharmacies.map((a) => {
     return {
+      address: a.address,
+      close: a.close,
+      id: a.id,
+      image: a.image,
       coordinates: {
         latitude: a.location.latitude,
         longitude: a.location.longitude,
       },
       name: a.name,
-      image: a.image,
+      open: a.open,
     };
   });
 
-  console.log(modalVisible);
-  
   return (
     <View style={styles.container}>
       <MapView
@@ -66,7 +69,11 @@ export const MapScreen = () => {
           <Marker
             key={index}
             coordinate={marker.coordinates}
-            onPress={() => setModalVisible(modalVisible.map((value, modalIndex) => modalIndex === index))}
+            onPress={() =>
+              setModalVisible(
+                modalVisible.map((value, modalIndex) => modalIndex === index)
+              )
+            }
           >
             <View
               style={{
@@ -97,33 +104,76 @@ export const MapScreen = () => {
                 />
               </View>
             </View>
-              <Modal
-                animationType="slide"
-                transparent={true}
-                visible={modalVisible[index]}
-                key={index}
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={modalVisible[index]}
+              key={index}
+            >
+              <TouchableOpacity
+                style={styles.centeredView}
+                activeOpacity={1}
+                onPressOut={() => {
+                  setModalVisible(modalVisible.map(() => false));
+                }}
               >
-                <TouchableOpacity
-                  style={styles.centeredView}
-                  activeOpacity={1}
-                  onPressOut={() => {
-                    setModalVisible(modalVisible.map(() => false));
-                  }}
-                >
-                  <View style={styles.centeredView}>
-                    <View style={styles.modalView}>
-                      <View style={styles.imageContainer}>
-                        <Text>{marker.name}</Text>
-      
-                        {/* <Image
-                          style={styles.image}
-                          source={{ uri: marker.image }}
-                        /> */}
+                <View style={styles.centeredView}>
+                  <View style={styles.modalView}>
+                    <View style={styles.imageContainer}>
+                      <Image
+                        style={styles.image}
+                        source={{ uri: marker.image }}
+                      />
+                      <View
+                        style={{
+                          position: "absolute",
+                          bottom: 0,
+                          height: 50,
+                          width: SIZES.width * 0.7,
+                          backgroundColor: "white",
+                          borderTopRightRadius: SIZES.radius,
+                          alignItems: "flex-start",
+                          ...styles.shadow,
+                          opacity: 0.8,
+                        }}
+                      >
+                        <View
+                          style={{
+                            position: "absolute",
+                            left: 7,
+                          }}
+                        >
+                          <Text style={{ ...FONTS.h2 }}>{marker.name}</Text>
+                          <Text style={{ ...FONTS.body3 }}>
+                            {marker.address} {"   "} {marker.open} -{" "}
+                            {marker.close}
+                          </Text>
+                        </View>
                       </View>
                     </View>
+                    <View
+                      style={{
+                        width: SIZES.width * 0.9,
+                        position: "absolute",
+                        bottom: 30,
+                        alignItems: "center",
+                        alignSelf: "center",
+                      }}
+                    >
+                      <LogRegButton
+                        text="Go To Pharmacy Page"
+                        onPress={() => {
+                          props.navigation.navigate(PharmacyProductsPath, {
+                            marker,
+                          }),
+                            setModalVisible(modalVisible.map(() => false));
+                        }}
+                      />
+                    </View>
                   </View>
-                </TouchableOpacity>
-              </Modal>
+                </View>
+              </TouchableOpacity>
+            </Modal>
           </Marker>
         ))}
       </MapView>
@@ -142,31 +192,18 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height,
   },
-  arrow: {
-    backgroundColor: "transparent",
-    borderColor: "transparent",
-    borderTopColor: "#fff",
-    borderWidth: 16,
-    alignSelf: "center",
-    marginTop: -32,
-  },
-  arrowBorder: {
-    backgroundColor: "transparent",
-    borderColor: "transparent",
-    borderTopColor: "#007a87",
-    borderWidth: 16,
-    alignSelf: "center",
-    marginTop: -0.5,
-  },
   imageContainer: {
-    flexDirection: "row",
+    flexDirection: "column",
     alignContent: "center",
     backgroundColor: "white",
     borderRadius: 6,
     borderColor: "#ccc",
     padding: 5,
-    width: "80%",
-    height: "80%",
+    width: "100%",
+    height: "70%",
+    alignSelf: "center",
+    position: "absolute",
+    top: 0,
   },
   name: {
     fontSize: 15,

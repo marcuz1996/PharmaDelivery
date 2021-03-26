@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
     shadowRadius: 20,
     elevation: 5,
+    width:"100%",
   },
   text: {
     fontFamily: "Montserrat",
