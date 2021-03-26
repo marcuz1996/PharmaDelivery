@@ -27,7 +27,8 @@ const Header = (props) => {
           }}
         />
       </TouchableOpacity>
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+
+      <View style={styles.centralItem}>
         <Image source={require("../assets/logo2.png")} style={styles.logo} />
       </View>
 
@@ -86,6 +87,11 @@ const styles = StyleSheet.create({
     height: 20,
     backgroundColor: ERRORCOLOR,
     marginTop: -10,
+  },
+  centralItem: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
 

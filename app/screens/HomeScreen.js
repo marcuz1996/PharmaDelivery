@@ -12,12 +12,19 @@ import { FONTS, SIZES } from "../constants/theme";
 import { LinearGradient } from "expo-linear-gradient";
 import { Icon } from "react-native-elements";
 import { connect } from "react-redux";
-import { OKICOLOR, RAISINBLACK, LIGHTBLUE, WHITE } from "../constants/palette";
+import {
+  OKICOLOR,
+  RAISINBLACK,
+  LIGHTBLUE,
+  WHITE,
+  LIGHTGREY,
+} from "../constants/palette";
 import { ProductPath } from "../constants/path";
 import { LogRegButton } from "../components/LogRegButton";
+import { TextInput } from "react-native";
 
 const HomeScreen = (props) => {
-  const [saved, setSaved] = useState([]);
+  const [search, setSearch] = useState("");
   const [categories, setCategories] = useState();
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [product, setProduct] = useState(); //cambia in base alla categoria selezionata
@@ -74,6 +81,21 @@ const HomeScreen = (props) => {
     let category = categories.filter((a) => a.id == id);
     if (category.length > 0) return category[0].name;
     return "";
+  };
+
+  const searchFilter = (text) => {
+    if (text) {
+      const newData = productDB.filter((item) => {
+        const itemData = item.name ? item.name.toUpperCase() : "".toUpperCase();
+        const textData = text.toUpperCase();
+        return itemData.indexOf(textData) > -1;
+      });
+      setProduct(newData);
+      setSearch(text);
+    } else {
+      setProduct(productDB);
+      setSearch(text);
+    }
   };
 
   const renderMainCategories = () => {
@@ -229,9 +251,9 @@ const HomeScreen = (props) => {
               }}
             />
           </View>
-        ) : (
+        ) : search === "" ? (
           <Text style={styles.title}>Best selling products</Text>
-        )}
+        ) : null}
         <FlatList
           data={product}
           keyExtractor={(item) => item.id}
@@ -248,7 +270,27 @@ const HomeScreen = (props) => {
 
   return !isDBReady ? null : (
     <View style={styles.container}>
-      {renderMainCategories()}
+      <View style={styles.searchBar}>
+        <Icon
+          style={{ paddingLeft: 10 }}
+          type="font-awesome-5"
+          name="search"
+          color={LIGHTGREY}
+          size={20}
+        />
+        <TextInput
+          style={{
+            flex: 1,
+            paddingLeft: 10,
+            fontFamily: "Montserrat",
+            fontSize: 18,
+          }}
+          value={search}
+          placeholder="Search products"
+          onChangeText={(text) => searchFilter(text)}
+        />
+      </View>
+      {search === "" ? renderMainCategories() : null}
       {renderProductList()}
     </View>
   );
@@ -301,6 +343,18 @@ const styles = StyleSheet.create({
     fontSize: SIZES.h1,
     lineHeight: 36,
     textAlign: "center",
+  },
+  searchBar: {
+    flexDirection: "row",
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: RAISINBLACK,
+    borderRadius: 100,
+    marginTop: 10,
+    marginRight: 15,
+    marginLeft: 15,
+    padding: 3,
+    alignContent: "center",
+    alignItems: "center",
   },
 });
 

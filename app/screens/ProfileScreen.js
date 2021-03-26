@@ -31,7 +31,7 @@ export const ProfileScreen = ({ navigation }) => {
   const [changeSetting, setChangeSetting] = useState(false);
   const [payments, setPayments] = useState([]);
   const [isDBReady, setIsDBReady] = useState(false);
-  const [reverse, setReverse] = useState(false);
+  //const [reverse, setReverse] = useState(false);
 
   useEffect(() => {
     getInfo();
@@ -142,13 +142,20 @@ export const ProfileScreen = ({ navigation }) => {
               name="swap-vertical"
               color={LIGHTGREY}
               size={30}
-              onPress={() => setReverse(!reverse)}
+              onPress={() => {
+                //console.log("1: ", payments);
+                const reversePaymentsArray = payments.reverse();
+                //console.log("2: ", reversePaymentsArray);
+
+                //setPayments(reversePaymentsArray);
+                //console.log("3: ", payments);
+              }}
             />
           </TouchableOpacity>
         </View>
         <View>
           {payments.length
-            ? payments.reverse().map((element) => (
+            ? payments.map((element) => (
                 <View
                   key={element.time}
                   style={{
