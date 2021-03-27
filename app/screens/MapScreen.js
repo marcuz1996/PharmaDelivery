@@ -16,10 +16,12 @@ import { Icon } from "react-native-elements";
 import icons from "../constants/icons";
 import { LogRegButton } from "../components/LogRegButton";
 import { PharmacyProductsPath } from "../constants/path";
+import { useNavigation } from "@react-navigation/native";
 
-export const MapScreen = (props) => {
+export const MapScreen = () => {
   const [pharmacies, setPharmacies] = useState([]);
   const [modalVisible, setModalVisible] = useState([]);
+  const navigation = useNavigation();
 
   useEffect(() => {
     loadElements();
@@ -40,7 +42,7 @@ export const MapScreen = (props) => {
     setModalVisible(temp.map(() => false));
   };
 
-  let markers = pharmacies.map((a) => {
+  const markers = pharmacies.map((a) => {
     return {
       address: a.address,
       close: a.close,
@@ -66,10 +68,10 @@ export const MapScreen = (props) => {
           longitudeDelta: 0.0421,
         }}
       >
-        {markers.map((marker, index) => (
+        {markers.map((item, index) => (
           <Marker
             key={index}
-            coordinate={marker.coordinates}
+            coordinate={item.coordinates}
             onPress={() =>
               setModalVisible(
                 modalVisible.map((value, modalIndex) => modalIndex === index)
@@ -123,10 +125,10 @@ export const MapScreen = (props) => {
                     <View style={styles.imageContainer}>
                       <Image
                         style={styles.image}
-                        source={{ uri: marker.image }}
+                        source={{ uri: item.image }}
                       />
                       <Text style={{ ...FONTS.h2, textAlign: "center" }}>
-                        {marker.name}
+                        {item.name}
                       </Text>
                       <View style={{ flexDirection: "row", paddingTop: 10 }}>
                         <View style={{ width: "50%", flexDirection: "row" }}>
@@ -142,7 +144,7 @@ export const MapScreen = (props) => {
                               paddingLeft: 4,
                             }}
                           >
-                            {marker.address}
+                            {item.address}
                           </Text>
                         </View>
                         <View style={{ width: "50%", flexDirection: "row" }}>
@@ -153,15 +155,15 @@ export const MapScreen = (props) => {
                             size={20}
                           />
                           <Text style={{ ...FONTS.body3, paddingLeft: 4 }}>
-                            {marker.open} - {marker.close}
+                            {item.open} - {item.close}
                           </Text>
                         </View>
                       </View>
                       <LogRegButton
                         text="Go To Pharmacy Page"
                         onPress={() => {
-                          props.navigation.navigate(PharmacyProductsPath, {
-                            marker,
+                          navigation.navigate(PharmacyProductsPath, {
+                            item,
                           }),
                             setModalVisible(modalVisible.map(() => false));
                         }}
@@ -190,7 +192,6 @@ const styles = StyleSheet.create({
     height: Dimensions.get("window").height,
   },
   imageContainer: {
-    //flexDirection: "column",
     alignContent: "center",
     backgroundColor: "white",
     borderRadius: 6,

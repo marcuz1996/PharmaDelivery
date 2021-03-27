@@ -49,7 +49,8 @@
     "react-native-webview": "^11.0.0",
     "react-redux": "^7.2.2",
     "react-stripe-checkout": "^2.6.3",
-    "redux": "^4.0.5"
+    "redux": "^4.0.5",
+    "styled-components": "^5.2.1"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",

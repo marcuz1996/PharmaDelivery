@@ -1,8 +1,17 @@
-import  React, { useEffect, useState} from "react";
-import { ScrollView, Image, Text, View, TouchableOpacity, FlatList, StyleSheet} from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  ScrollView,
+  Image,
+  Text,
+  View,
+  TouchableOpacity,
+  FlatList,
+  StyleSheet,
+} from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { Icon } from "react-native-elements"
+import { Icon } from "react-native-elements";
 import { SIZES, FONTS } from "../constants/theme";
+import { useNavigation } from "@react-navigation/native";
 import {
   ERRORCOLOR,
   LIGHTGREY,
@@ -14,9 +23,11 @@ import {
 import * as firebase from "firebase";
 import { ProductPath } from "../constants/path";
 import { connect } from "react-redux";
+import { useRoute } from "@react-navigation/core";
 
 const PharmacyProductScreen = (props) => {
-  const { route } = props;
+  const route = useRoute();
+  const navigation = useNavigation();
   const { item } = route.params;
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState();
@@ -25,7 +36,7 @@ const PharmacyProductScreen = (props) => {
     loadElements();
   }, []);
 
-   const loadElements = async () => {
+  const loadElements = async () => {
     let temp = [];
     await firebase
       .firestore()
@@ -55,7 +66,7 @@ const PharmacyProductScreen = (props) => {
         });
       });
     setProducts(temp);
-  }; 
+  };
 
   let productsList = products.filter((a) => a.pharmacy.includes(item.id));
 
@@ -63,6 +74,10 @@ const PharmacyProductScreen = (props) => {
     let category = categories.filter((a) => a.id == id);
     if (category.length > 0) return category[0].name;
     return "";
+  };
+
+  const getStockByItem = (temp) => {
+    return temp.stock[item.id - 1];
   };
 
   function renderPharmacy() {
@@ -103,7 +118,7 @@ const PharmacyProductScreen = (props) => {
               {item.name}
             </Text>
             <Text style={{ ...FONTS.body3 }}>{item.address}</Text>
-          </View> 
+          </View>
         </View>
       </View>
     );
@@ -120,7 +135,7 @@ const PharmacyProductScreen = (props) => {
       >
         <TouchableOpacity
           onPress={() =>
-            props.navigation.navigate(ProductPath, {
+            navigation.navigate(ProductPath, {
               item,
             })
           }
@@ -129,7 +144,7 @@ const PharmacyProductScreen = (props) => {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() =>
-            props.navigation.navigate(ProductPath, {
+            navigation.navigate(ProductPath, {
               item,
             })
           }
@@ -150,6 +165,9 @@ const PharmacyProductScreen = (props) => {
                 </View>
               );
             })}
+            <Text style={{ ...styles.textProduct, paddingLeft: 20 }}>
+              Available quantity: {getStockByItem(item)}
+            </Text>
           </View>
         </TouchableOpacity>
         <View
@@ -180,16 +198,16 @@ const PharmacyProductScreen = (props) => {
     );
 
     return (
-        <FlatList
-          data={productsList}
-          keyExtractor={(item) => item.id}
-          renderItem={renderItem}
-          contentContainerStyle={{
-            paddingHorizontal: 20,
-            paddingBottom: 30,
-            paddingTop: 20,
-          }}
-        />
+      <FlatList
+        data={productsList}
+        keyExtractor={(item) => item.id}
+        renderItem={renderItem}
+        contentContainerStyle={{
+          paddingHorizontal: 20,
+          paddingBottom: 30,
+          paddingTop: 20,
+        }}
+      />
     );
   };
 
@@ -264,4 +282,3 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
-

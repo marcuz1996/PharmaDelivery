@@ -9,18 +9,13 @@ import {
 } from "react-native";
 import { Icon } from "react-native-elements";
 import * as firebase from "firebase";
-import {
-  ERRORCOLOR,
-  LIGHTGREY,
-  OKICOLOR,
-  RAISINBLACK,
-  WHITE,
-} from "../constants/palette";
+import { ERRORCOLOR, LIGHTGREY, RAISINBLACK } from "../constants/palette";
 import { connect } from "react-redux";
 import { SIZES, FONTS } from "../constants/theme";
 import { LogRegButton } from "../components/LogRegButton";
 import { ScrollView } from "react-native";
 import { PharmacyProductsPath } from "../constants/path";
+import { PharmacyComponent } from "../components/PharmacyComponent";
 
 const ProductScreen = (props) => {
   const [categories, setCategories] = useState([]);
@@ -100,6 +95,10 @@ const ProductScreen = (props) => {
   };
 
   let pharmacyList = pharmacies.filter((a) => item.pharmacy.includes(a.id));
+
+  const getStockByProductItem = (temp) => {
+    return item.stock[temp.id - 1];
+  };
 
   let categoriesIcons = item.category.map((index) => {
     return (
@@ -294,57 +293,19 @@ const ProductScreen = (props) => {
 
   const renderPharmaciesList = () => {
     const renderItem = ({ item }) => (
-      <TouchableOpacity style={{ marginBottom: 20 }}
-      onPress={() =>
-        props.navigation.navigate(PharmacyProductsPath, {
-          item,
-        })
-      }
-      >
-        {/* Image*/}
-        <View
-          style={{
-            marginBottom: SIZES.padding,
-            borderRadius: SIZES.radius,
-            borderColor: RAISINBLACK,
-            borderWidth: 1,
-          }}
-        >
-          <Image
-            source={{ uri: item.image }}
-            style={{
-              width: "100%",
-              height: 200,
-              borderRadius: SIZES.radius,
-            }}
-          />
-          <View
-            style={{
-              position: "absolute",
-              bottom: 0,
-              height: 50,
-              width: SIZES.width * 0.4,
-              backgroundColor: "white",
-              borderTopRightRadius: SIZES.radius,
-              borderBottomLeftRadius: SIZES.radius,
-              alignItems: "center",
-              justifyContent: "center",
-              ...styles.shadow,
-              opacity: 0.8,
-            }}
-          >
-            <Text style={{ ...FONTS.h4 }}>{item.address}</Text>
-          </View>
-        </View>
-        {/* Pharmacy Info */}
-        <Text style={{ ...FONTS.body2 }}>{item.name}</Text>
-        <View
-          style={{
-            marginTop: SIZES.padding,
-            flexDirection: "row",
-          }}
-        ></View>
-      </TouchableOpacity>
+      <PharmacyComponent
+        source={{ uri: item.image }}
+        onPress={() =>
+          props.navigation.navigate(PharmacyProductsPath, {
+            item,
+          })
+        }
+        name={item.name}
+        address={item.address}
+        open={item.open}
+        close={item.close}
+        stock={getStockByProductItem(item)}
+      />
     );
 
     return (
