@@ -1,29 +1,14 @@
 import React, { useEffect, useState } from "react";
-import {
-  ScrollView,
-  Image,
-  Text,
-  View,
-  TouchableOpacity,
-  FlatList,
-  StyleSheet,
-} from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
-import { Icon } from "react-native-elements";
-import { SIZES, FONTS } from "../constants/theme";
+import { ScrollView, Text, View, FlatList, StyleSheet } from "react-native";
+import { SIZES } from "../constants/theme";
 import { useNavigation } from "@react-navigation/native";
-import {
-  ERRORCOLOR,
-  LIGHTGREY,
-  OKICOLOR,
-  RAISINBLACK,
-  WHITE,
-  LIGHTBLUE,
-} from "../constants/palette";
+import { RAISINBLACK } from "../constants/palette";
 import * as firebase from "firebase";
 import { ProductPath } from "../constants/path";
 import { connect } from "react-redux";
 import { useRoute } from "@react-navigation/core";
+import { PharmacyComponent } from "../components/PharmacyComponent";
+import { ProductComponent } from "../components/ProductComponent";
 
 const PharmacyProductScreen = (props) => {
   const route = useRoute();
@@ -31,6 +16,7 @@ const PharmacyProductScreen = (props) => {
   const { item } = route.params;
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState();
+  const [hideStock, setHideStock] = useState(true);
 
   useEffect(() => {
     loadElements();
@@ -82,132 +68,61 @@ const PharmacyProductScreen = (props) => {
 
   function renderPharmacy() {
     return (
-      <View
-        horizontal
-        pagingEnabled
-        scrollEventThrottle={16}
-        snapToAlignment="center"
-        showsHorizontalScrollIndicator={false}
-      >
-        <View style={{ alignItems: "center" }}>
-          <View style={{ height: SIZES.height * 0.35 }}>
-            <View
-              style={{ borderBottomColor: RAISINBLACK, borderBottomWidth: 1 }}
-            >
-              <Image
-                source={{ uri: item.image }}
-                style={{
-                  width: SIZES.width,
-                  height: "100%",
-                }}
-              />
-            </View>
-          </View>
-          {/* Name & Description */}
-          <View
-            style={{
-              width: SIZES.width,
-              alignItems: "center",
-              marginTop: 15,
-              paddingHorizontal: SIZES.padding * 2,
-            }}
-          >
-            <Text
-              style={{ marginVertical: 10, textAlign: "center", ...FONTS.h2 }}
-            >
-              {item.name}
-            </Text>
-            <Text style={{ ...FONTS.body3 }}>{item.address}</Text>
-          </View>
-        </View>
-      </View>
+      <PharmacyComponent
+        source={{ uri: item.image }}
+        name={item.name}
+        address={item.address}
+        open={item.open}
+        close={item.close}
+        imgStyleOverride={{ borderRadius: 0, height: 250 }}
+        mainInfoOverride={{ position: "absolute", top: "60%" }}
+        hideStock={hideStock}
+      />
     );
   }
 
   const renderProductList = () => {
     const renderItem = ({ item }) => (
-      <LinearGradient
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 0 }}
-        colors={[WHITE, "#80F7FF", LIGHTBLUE]}
-        locations={[0.3, 0.7, 1]}
-        style={styles.containerProduct}
-      >
-        <TouchableOpacity
-          onPress={() =>
-            navigation.navigate(ProductPath, {
-              item,
-            })
-          }
-        >
-          <Image source={{ uri: item.image }} style={styles.imageProduct} />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() =>
-            navigation.navigate(ProductPath, {
-              item,
-            })
-          }
-        >
-          <View style={{ justifyContent: "center" }}>
-            <Text style={{ ...styles.textProduct, paddingLeft: 20 }}>
-              Product: {item.name}
-            </Text>
-            <Text style={{ ...styles.textProduct, paddingLeft: 20 }}>
-              Price: {item.price}€
-            </Text>
-            {item.category.map((categoryId) => {
-              return (
-                <View style={{ flexDirection: "row" }} key={categoryId}>
-                  <Text style={{ ...styles.textProduct, paddingLeft: 20 }}>
-                    Category: {getCategoryByNameId(categoryId)}
-                  </Text>
-                </View>
-              );
-            })}
-            <Text style={{ ...styles.textProduct, paddingLeft: 20 }}>
-              Available quantity: {getStockByItem(item)}
-            </Text>
-          </View>
-        </TouchableOpacity>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
-            paddingRight: 10,
-            position: "absolute",
-            right: 0,
-          }}
-        >
-          <TouchableOpacity
-            onPress={() => {
-              handleClick(item, props);
-            }}
-          >
-            <Icon
-              style={styles.buttonProduct}
-              type="material-community"
-              name="cart-plus"
-              color={RAISINBLACK}
-              size={32}
-            />
-          </TouchableOpacity>
-        </View>
-      </LinearGradient>
+      <ProductComponent
+        onPressProduct={() =>
+          navigation.navigate(ProductPath, {
+            item,
+          })
+        }
+        source={{ uri: item.image }}
+        name={item.name}
+        price={item.price}
+        item={item}
+        getStock={getStockByItem(item)}
+        onPressCart={() => {
+          handleClick(item, props);
+        }}
+        map={item.category.map((categoryId) => {
+          return (
+            <View style={{ flexDirection: "row" }} key={categoryId}>
+              <Text style={{ ...styles.textProduct, paddingLeft: 20 }}>
+                Category: {getCategoryByNameId(categoryId)}
+              </Text>
+            </View>
+          );
+        })}
+      />
     );
 
     return (
-      <FlatList
-        data={productsList}
-        keyExtractor={(item) => item.id}
-        renderItem={renderItem}
-        contentContainerStyle={{
-          paddingHorizontal: 20,
-          paddingBottom: 30,
-          paddingTop: 20,
-        }}
-      />
+      <>
+        <Text style={styles.title}>Products available in this pharmacy</Text>
+        <FlatList
+          data={productsList}
+          keyExtractor={(item) => item.id}
+          renderItem={renderItem}
+          contentContainerStyle={{
+            paddingHorizontal: 20,
+            paddingBottom: 30,
+            paddingTop: 20,
+          }}
+        />
+      </>
     );
   };
 
@@ -234,46 +149,10 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(null, mapDispatchToProps)(PharmacyProductScreen);
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  containerProduct: {
-    flex: 1,
-    flexDirection: "row",
-    borderRadius: 30,
-    marginBottom: 10,
-    paddingRight: 130,
-    alignItems: "center",
-    height: 90,
-  },
-  imageProduct: {
-    width: 90,
-    height: 90,
-    borderRadius: 30,
-
-    backgroundColor: WHITE,
-  },
   textProduct: {
     fontSize: 14,
     color: RAISINBLACK,
     fontFamily: "Montserrat",
-  },
-  buttonProduct: {
-    textAlign: "center",
-    justifyContent: "center",
-    alignContent: "center",
-    margin: 5,
-    borderRadius: 50,
-  },
-  shadow: {
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-    elevation: 1,
   },
   title: {
     fontFamily: "MontserratBold",

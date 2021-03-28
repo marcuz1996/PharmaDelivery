@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import * as firebase from "firebase";
 import { FONTS, SIZES } from "../constants/theme";
-import { LinearGradient } from "expo-linear-gradient";
 import { Icon } from "react-native-elements";
 import { connect } from "react-redux";
 import {
@@ -22,6 +21,8 @@ import {
 import { ProductPath } from "../constants/path";
 import { LogRegButton } from "../components/LogRegButton";
 import { TextInput } from "react-native";
+import { ProductComponent } from "../components/ProductComponent";
+import { useNavigation } from "@react-navigation/native";
 
 const HomeScreen = (props) => {
   const [search, setSearch] = useState("");
@@ -31,6 +32,8 @@ const HomeScreen = (props) => {
   const [productDB, setProductDB] = useState(); //rimane fisso con gli stessi dati
   const [isDBReady, setIsDBReady] = useState(false);
   const [displayTitle, setDisplayTitle] = useState(true);
+  const [hideStock, setHideStock] = useState(true);
+  const navigation = useNavigation();
 
   useEffect(() => {
     loadElements();
@@ -170,72 +173,30 @@ const HomeScreen = (props) => {
 
   const renderProductList = () => {
     const renderItem = ({ item }) => (
-      <LinearGradient
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 0 }}
-        colors={[WHITE, "#80F7FF", LIGHTBLUE]}
-        locations={[0.3, 0.7, 1]}
-        style={styles.containerProduct}
-      >
-        <TouchableOpacity
-          onPress={() =>
-            props.navigation.navigate(ProductPath, {
-              item,
-            })
-          }
-        >
-          <Image source={{ uri: item.image }} style={styles.imageProduct} />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() =>
-            props.navigation.navigate(ProductPath, {
-              item,
-            })
-          }
-        >
-          <View style={{ justifyContent: "center" }}>
-            <Text style={{ ...styles.textProduct, paddingLeft: 20 }}>
-              Product: {item.name}
-            </Text>
-            <Text style={{ ...styles.textProduct, paddingLeft: 20 }}>
-              Price: {item.price}€
-            </Text>
-            {item.category.map((categoryId) => {
-              return (
-                <View style={{ flexDirection: "row" }} key={categoryId}>
-                  <Text style={{ ...styles.textProduct, paddingLeft: 20 }}>
-                    Category: {getCategoryByNameId(categoryId)}
-                  </Text>
-                </View>
-              );
-            })}
-          </View>
-        </TouchableOpacity>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
-            paddingRight: 10,
-            position: "absolute",
-            right: 0,
-          }}
-        >
-          <TouchableOpacity
-            onPress={() => {
-              handleClick(item, props);
-            }}
-          >
-            <Icon
-              style={styles.buttonProduct}
-              type="material-community"
-              name="cart-plus"
-              color={RAISINBLACK}
-              size={32}
-            />
-          </TouchableOpacity>
-        </View>
-      </LinearGradient>
+      <ProductComponent
+        onPressProduct={() =>
+          navigation.navigate(ProductPath, {
+            item,
+          })
+        }
+        source={{ uri: item.image }}
+        name={item.name}
+        price={item.price}
+        item={item}
+        hideStock={hideStock}
+        onPressCart={() => {
+          handleClick(item, props);
+        }}
+        map={item.category.map((categoryId) => {
+          return (
+            <View style={{ flexDirection: "row" }} key={categoryId}>
+              <Text style={{ ...styles.textProduct, paddingLeft: 20 }}>
+                Category: {getCategoryByNameId(categoryId)}
+              </Text>
+            </View>
+          );
+        })}
+      />
     );
 
     return (
@@ -300,33 +261,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  containerProduct: {
-    flex: 1,
-    flexDirection: "row",
-    borderRadius: 30,
-    marginBottom: 10,
-    paddingRight: 130,
-    alignItems: "center",
-    height: 90,
-  },
-  imageProduct: {
-    width: 90,
-    height: 90,
-    borderRadius: 30,
-
-    backgroundColor: WHITE,
-  },
   textProduct: {
     fontSize: 14,
     color: RAISINBLACK,
     fontFamily: "Montserrat",
-  },
-  buttonProduct: {
-    textAlign: "center",
-    justifyContent: "center",
-    alignContent: "center",
-    margin: 5,
-    borderRadius: 50,
   },
   shadow: {
     shadowColor: "#000",

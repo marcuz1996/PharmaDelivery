@@ -4,18 +4,18 @@ import styled from "styled-components";
 import { FONTS } from "../constants/theme";
 import { LinearGradient } from "expo-linear-gradient";
 import { Icon } from "react-native-elements";
-import { OKICOLOR, RAISINBLACK, WHITE, LIGHTBLUE } from "../constants/palette";
+import { RAISINBLACK, WHITE } from "../constants/palette";
 
 export const PharmacyComponent = (props) => (
   <TouchableOpacity style={{ marginBottom: 20 }} onPress={props.onPress}>
-    <PharmacyImage source={props.source}>
+    <PharmacyImage source={props.source} style={props.imgStyleOverride}>
       <LinearGradient
-        colors={["transparent", RAISINBLACK]}
+        colors={["transparent", RAISINBLACK, RAISINBLACK]}
         locations={[0.5, 0.9, 1]}
         style={styles.containerProduct}
       ></LinearGradient>
     </PharmacyImage>
-    <MainInfo>
+    <MainInfo style={props.mainInfoOverride}>
       <PharmacyText style={{ ...FONTS.h2 }}>{props.name}</PharmacyText>
       <Divider />
       <IconTextContainer>
@@ -35,8 +35,13 @@ export const PharmacyComponent = (props) => (
           size={20}
         />
         <PharmacyText style={{ ...FONTS.body3 }}>
-          {props.open} - {props.close} | In stock: {props.stock}
+          {props.open} - {props.close}
         </PharmacyText>
+        {!props.hideStock && (
+          <PharmacyText style={{ ...FONTS.body3 }}>
+            | In stock: {props.stock}
+          </PharmacyText>
+        )}
       </IconTextContainer>
     </MainInfo>
   </TouchableOpacity>
@@ -45,7 +50,7 @@ export const PharmacyComponent = (props) => (
 const PharmacyImage = styled.ImageBackground`
   height: 200px;
   overflow: hidden;
-  border-radius: 5px;
+  border-radius: 8px;
 `;
 
 const MainInfo = styled.View`
