@@ -8,7 +8,7 @@ import { ProductPath } from "../constants/path";
 import { connect } from "react-redux";
 import { useRoute } from "@react-navigation/core";
 import { PharmacyComponent } from "../components/PharmacyComponent";
-import { ProductComponent } from "../components/ProductComponent";
+import { ProductListComponent } from "../components/ProductListComponent";
 
 const PharmacyProductScreen = (props) => {
   const route = useRoute();
@@ -83,7 +83,7 @@ const PharmacyProductScreen = (props) => {
 
   const renderProductList = () => {
     const renderItem = ({ item }) => (
-      <ProductComponent
+      <ProductListComponent
         onPressProduct={() =>
           navigation.navigate(ProductPath, {
             item,

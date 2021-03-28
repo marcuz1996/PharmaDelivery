@@ -21,7 +21,7 @@ import {
 import { ProductPath } from "../constants/path";
 import { LogRegButton } from "../components/LogRegButton";
 import { TextInput } from "react-native";
-import { ProductComponent } from "../components/ProductComponent";
+import { ProductListComponent } from "../components/ProductListComponent";
 import { useNavigation } from "@react-navigation/native";
 
 const HomeScreen = (props) => {
@@ -173,7 +173,7 @@ const HomeScreen = (props) => {
 
   const renderProductList = () => {
     const renderItem = ({ item }) => (
-      <ProductComponent
+      <ProductListComponent
         onPressProduct={() =>
           navigation.navigate(ProductPath, {
             item,

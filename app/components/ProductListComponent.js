@@ -9,7 +9,7 @@ import {
 } from "../constants/palette";
 import { Icon } from "react-native-elements";
 
-export const ProductComponent = (props) => (
+export const ProductListComponent = (props) => (
   <LinearGradient
     start={{ x: 0, y: 0 }}
     end={{ x: 1, y: 0 }}

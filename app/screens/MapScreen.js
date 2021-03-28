@@ -130,7 +130,7 @@ export const MapScreen = () => {
                       <Text style={{ ...FONTS.h2, textAlign: "center" }}>
                         {item.name}
                       </Text>
-                      <View style={{ flexDirection: "row", paddingTop: 10 }}>
+                      <View style={{ flexDirection: "row", paddingTop: 10, paddingLeft: 30 }}>
                         <View style={{ width: "50%", flexDirection: "row" }}>
                           <Icon
                             type="material-community"
@@ -154,7 +154,7 @@ export const MapScreen = () => {
                             color={RAISINBLACK}
                             size={20}
                           />
-                          <Text style={{ ...FONTS.body3, paddingLeft: 4 }}>
+                          <Text style={{ ...FONTS.body3, paddingLeft: 6 }}>
                             {item.open} - {item.close}
                           </Text>
                         </View>
