@@ -1,10 +1,10 @@
 import React from "react";
 import { TouchableOpacity, View, StyleSheet } from "react-native";
 import styled from "styled-components";
-import { FONTS } from "../constants/theme";
 import { LinearGradient } from "expo-linear-gradient";
 import { Icon } from "react-native-elements";
 import { RAISINBLACK, WHITE } from "../constants/palette";
+import { Typography } from "../components/Typography";
 
 export const PharmacyComponent = (props) => (
   <TouchableOpacity style={{ marginBottom: 20 }} onPress={props.onPress}>
@@ -16,7 +16,9 @@ export const PharmacyComponent = (props) => (
       ></LinearGradient>
     </PharmacyImage>
     <MainInfo style={props.mainInfoOverride}>
-      <PharmacyText style={{ ...FONTS.h2 }}>{props.name}</PharmacyText>
+      <Typography variantName="PharmacyInfoTitle" color="white">
+        {props.name}
+      </Typography>
       <Divider />
       <IconTextContainer>
         <Icon
@@ -25,7 +27,9 @@ export const PharmacyComponent = (props) => (
           color={WHITE}
           size={20}
         />
-        <PharmacyText style={{ ...FONTS.body3 }}>{props.address}</PharmacyText>
+        <Typography variantName="PharmacyInfoText" color="white">
+          {props.address}
+        </Typography>
       </IconTextContainer>
       <IconTextContainer>
         <Icon
@@ -34,13 +38,13 @@ export const PharmacyComponent = (props) => (
           color={WHITE}
           size={20}
         />
-        <PharmacyText style={{ ...FONTS.body3 }}>
+        <Typography variantName="PharmacyInfoText" color="white">
           {props.open} - {props.close}
-        </PharmacyText>
+        </Typography>
         {!props.hideStock && (
-          <PharmacyText style={{ ...FONTS.body3 }}>
+          <Typography variantName="PharmacyInfoText" color="white">
             | In stock: {props.stock}
-          </PharmacyText>
+          </Typography>
         )}
       </IconTextContainer>
     </MainInfo>
@@ -56,18 +60,12 @@ const PharmacyImage = styled.ImageBackground`
 const MainInfo = styled.View`
   padding: 0 5%;
   position: absolute;
-  top: 55%;
+  top: 50%;
 `;
 
 const IconTextContainer = styled.View`
   width: 100%;
   flex-direction: row;
-`;
-
-const PharmacyText = styled.Text`
-  color: white;
-  padding-left: 4px;
-  padding-top: 1px;
 `;
 
 const Divider = styled.View`

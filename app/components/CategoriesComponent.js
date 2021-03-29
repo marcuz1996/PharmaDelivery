@@ -3,7 +3,6 @@ import { Text } from "react-native";
 import styled from "styled-components";
 import { FONTS } from "../constants/theme";
 
-
 export const CategoriesComponent = (props) => (
   <CategoryTouchableOpacity
     style={props.TouchableOpacityStyling}

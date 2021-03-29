@@ -1,21 +1,13 @@
 import React, { useEffect, useState } from "react";
-import {
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-  FlatList,
-  View,
-} from "react-native";
+import { Text, StyleSheet, FlatList, View } from "react-native";
 import * as firebase from "firebase";
-import { FONTS, SIZES } from "../constants/theme";
+import { SIZES } from "../constants/theme";
 import { Icon } from "react-native-elements";
 import { connect } from "react-redux";
 import {
   OKICOLOR,
   RAISINBLACK,
   LIGHTBLUE,
-  WHITE,
   LIGHTGREY,
 } from "../constants/palette";
 import { ProductPath } from "../constants/path";
@@ -23,6 +15,7 @@ import { LogRegButton } from "../components/LogRegButton";
 import { TextInput } from "react-native";
 import { ProductListComponent } from "../components/ProductListComponent";
 import { useNavigation } from "@react-navigation/native";
+import { CategoriesComponent } from "../components/CategoriesComponent";
 
 const HomeScreen = (props) => {
   const [search, setSearch] = useState("");
@@ -102,56 +95,22 @@ const HomeScreen = (props) => {
   };
 
   const renderMainCategories = () => {
-    const renderItem = ({ item }) => {
-      return (
-        <TouchableOpacity
-          style={{
-            marginLeft: item.id === 1 ? 10 : 0,
-            padding: 10,
-            paddingBottom: 20,
-            backgroundColor:
-              selectedCategory?.id == item.id ? OKICOLOR : "white",
-            borderRadius: 30,
-            alignItems: "center",
-            justifyContent: "center",
-            marginRight: 10,
-            ...styles.shadow,
-            width: 115,
-            height: 115,
-          }}
-          onPress={() => onSelectedCategory(item)}
-        >
-          <View
-            style={{
-              width: 70,
-              height: 70,
-              borderRadius: 25,
-              alignItems: "center",
-              justifyContent: "center",
-              backgroundColor:
-                selectedCategory?.id == item.id ? "white" : LIGHTBLUE,
-            }}
-          >
-            <Image
-              source={{ uri: item.icon }}
-              style={{
-                width: 50,
-                height: 50,
-              }}
-            />
-          </View>
-          <Text
-            style={{
-              marginTop: 2,
-              color: selectedCategory?.id == item.id ? "white" : "black",
-              ...FONTS.body5,
-            }}
-          >
-            {item.name}
-          </Text>
-        </TouchableOpacity>
-      );
-    };
+    const renderItem = ({ item }) => (
+      <CategoriesComponent
+        TouchableOpacityStyling={{
+          marginLeft: item.id === 1 ? 10 : 0,
+          backgroundColor: selectedCategory?.id == item.id ? OKICOLOR : "white",
+          ...styles.shadow,
+        }}
+        onPress={() => onSelectedCategory(item)}
+        ImageContainerStyling={{
+          backgroundColor:
+            selectedCategory?.id == item.id ? "white" : LIGHTBLUE,
+        }}
+        name={item.name}
+        source={{ uri: item.icon }}
+      />
+    );
 
     return (
       <View style={{ paddingTop: 10 }}>
