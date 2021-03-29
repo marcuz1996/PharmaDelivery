@@ -4,14 +4,32 @@ import { InputTextField } from "../components/InputTextField";
 import * as firebase from "firebase";
 import { OKICOLOR } from "../constants/palette";
 import { LogRegButton } from "../components/LogRegButton";
-import { PurchasePath } from "../constants/path";
+import { PaypalPurchasePath, PurchasePath } from "../constants/path";
 
 const PaymentScreen = ({ navigation }) => {
   const [user, setUser] = useState();
   const [name, setName] = useState("");
+  const [zip, setZip] = useState("");
+  const [houseNumber, setHouseNumber] = useState("");
   const [address, setAddress] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [mail, setMail] = useState("");
+  const [otherInfo, setOtherInfo] = useState("");
+
+  const checkFields = () => {
+    if (
+      name.length &&
+      zip.length &&
+      houseNumber.length &&
+      address.length &&
+      phoneNumber.length &&
+      mail.length
+    ) {
+      return false;
+    } else {
+      return true;
+    }
+  };
 
   /*   useEffect(() => {
     getInfo();
@@ -25,10 +43,9 @@ const PaymentScreen = ({ navigation }) => {
         setUser(snapshot.val());
       });
   }; */
-
   return (
     <>
-      <Text style={styles.title}>Payment Details</Text>
+      <Text style={styles.title}>Shipment Details</Text>
       <View style={styles.container}>
         <InputTextField
           placeholder="Name Surname"
@@ -44,7 +61,7 @@ const PaymentScreen = ({ navigation }) => {
           <View style={{ width: "50%" }}>
             <InputTextField
               placeholder="House number"
-              onChangeText={(val) => setAddress(val)}
+              onChangeText={(val) => setHouseNumber(val)}
               keyboardType="visible-password"
             />
           </View>
@@ -52,7 +69,7 @@ const PaymentScreen = ({ navigation }) => {
           <View style={{ width: "50%" }}>
             <InputTextField
               placeholder="ZIP/CAP"
-              onChangeText={(val) => setAddress(val)}
+              onChangeText={(val) => setZip(val)}
               keyboardType="visible-password"
             />
           </View>
@@ -69,12 +86,18 @@ const PaymentScreen = ({ navigation }) => {
         />
         <InputTextField
           placeholder="Other info for rider"
-          onChangeText={(val) => setMail(val)}
+          onChangeText={(val) => setOtherInfo(val)}
           keyboardType="visible-password"
         />
         <LogRegButton
-          text="PROCEED TO PAYMENT"
+          disabled={checkFields()}
+          text="DEBIT/CREDIT CARD"
           onPress={() => navigation.navigate(PurchasePath)}
+        />
+        <LogRegButton
+          disabled={checkFields()}
+          text="PAYPAL"
+          onPress={() => navigation.navigate(PaypalPurchasePath)}
         />
       </View>
     </>

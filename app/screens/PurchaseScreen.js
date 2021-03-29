@@ -15,7 +15,6 @@ import {
 } from "react-native";
 import { OKICOLOR, WHITE } from "../constants/palette";
 import { stripeCheckoutRedirectHTML } from "../components/StripeCheckout";
-import { RefreshControlComponent } from "react-native";
 
 const PurchaseScreen = (props) => {
   const [user, setUser] = useState();

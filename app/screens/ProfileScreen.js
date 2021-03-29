@@ -49,7 +49,7 @@ export const ProfileScreen = ({ navigation }) => {
       .collection("Purchases")
       .doc(firebase.auth().currentUser.email)
       .onSnapshot((documentSnapshot) => {
-        setPayments(documentSnapshot.data().payments);
+        setPayments(documentSnapshot.data().payments.reverse());
       });
     setIsDBReady(true);
   };

@@ -1,7 +1,7 @@
 export const MAINCOLOR = "#056CF2"; //azzurro
 export const SECONDARYCOLOR = "#005257"; //4335DB viola
 export const LINKCOLOR = "#35D2DB";
-export const BUTTONCOLOR = "#00919B"; //stesso di okicolor
+export const LOCKBUTTONCOLOR = "#266E73";
 export const ERRORCOLOR = "#Ef233C";
 export const OKICOLOR = "#00919B";
 export const GREEN = "#78AE28";

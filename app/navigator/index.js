@@ -37,7 +37,9 @@ import {
   PaymentPath,
   PurchasePath,
   SavedProductPath,
+  PaypalPurchasePath,
 } from "../constants/path";
+import PaypalPurchaseScreen from "../screens/PaypalPurchaseScreen";
 
 const {
   Screen: StackScreen,
@@ -177,6 +179,9 @@ export const Navigator = ({ auth }) => {
             {(props) => (
               <MainLayout component={() => <SavedProductScreen {...props} />} />
             )}
+          </DrawerScreen>
+          <DrawerScreen name={PaypalPurchasePath}>
+            {(props) => <PaypalPurchaseScreen {...props} />}
           </DrawerScreen>
           <DrawerScreen name={PurchasePath}>
             {(props) => <PurchaseScreen {...props} />}

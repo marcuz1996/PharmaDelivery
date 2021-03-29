@@ -12,3 +12,4 @@ export const AboutUsPath = "About us";
 export const PaymentPath = "Payment";
 export const PurchasePath = "Purchase";
 export const SavedProductPath = "Saved";
+export const PaypalPurchasePath = "Paypal";

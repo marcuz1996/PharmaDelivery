@@ -16,6 +16,15 @@ import {
 } from "./app/constants/config";
 import { LIGHTBLUE } from "./app/constants/palette";
 import { cartReducer } from "./app/redux/reducer";
+import { decode, encode } from "base-64";
+
+if (!global.btoa) {
+  global.btoa = encode;
+}
+
+if (!global.atob) {
+  global.atob = decode;
+}
 
 LogBox.ignoreAllLogs(true);
 

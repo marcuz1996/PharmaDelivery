@@ -17,7 +17,11 @@ import {
   WHITE,
 } from "../constants/palette";
 import { LinearGradient } from "expo-linear-gradient";
-import { PaymentPath, PurchasePath } from "../constants/path";
+import {
+  PaymentPath,
+  PaypalPurchasePath,
+  PurchasePath,
+} from "../constants/path";
 
 const ShopCartScreen = (props) => {
   const renderItem = ({ item }) => (
@@ -119,10 +123,6 @@ const ShopCartScreen = (props) => {
       <LogRegButton
         text="BUY"
         onPress={() => props.navigation.navigate(PaymentPath)}
-      />
-      <LogRegButton
-        text="QUICK BUY"
-        onPress={() => props.navigation.navigate(PurchasePath)}
       />
     </View>
   ) : (
