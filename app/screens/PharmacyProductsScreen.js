@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { ScrollView, Text, View, FlatList, StyleSheet } from "react-native";
-import { SIZES } from "../constants/theme";
+import { ScrollView, View, FlatList } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { RAISINBLACK } from "../constants/palette";
 import * as firebase from "firebase";
 import { ProductPath } from "../constants/path";
 import { connect } from "react-redux";
 import { useRoute } from "@react-navigation/core";
 import { PharmacyComponent } from "../components/PharmacyComponent";
 import { ProductListComponent } from "../components/ProductListComponent";
+import { Typography } from "../components/Typography";
 
 const PharmacyProductScreen = (props) => {
   const route = useRoute();
@@ -100,9 +99,9 @@ const PharmacyProductScreen = (props) => {
         map={item.category.map((categoryId) => {
           return (
             <View style={{ flexDirection: "row" }} key={categoryId}>
-              <Text style={{ ...styles.textProduct, paddingLeft: 20 }}>
+              <Typography variantName="TextProduct">
                 Category: {getCategoryByNameId(categoryId)}
-              </Text>
+              </Typography>
             </View>
           );
         })}
@@ -111,7 +110,9 @@ const PharmacyProductScreen = (props) => {
 
     return (
       <>
-        <Text style={styles.title}>Products available in this pharmacy</Text>
+        <Typography variantName="Title">
+          Products available in this pharmacy
+        </Typography>
         <FlatList
           data={productsList}
           keyExtractor={(item) => item.id}
@@ -147,17 +148,3 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(null, mapDispatchToProps)(PharmacyProductScreen);
-
-const styles = StyleSheet.create({
-  textProduct: {
-    fontSize: 14,
-    color: RAISINBLACK,
-    fontFamily: "Montserrat",
-  },
-  title: {
-    fontFamily: "MontserratBold",
-    fontSize: SIZES.h1,
-    lineHeight: 36,
-    textAlign: "center",
-  },
-});

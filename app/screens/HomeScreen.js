@@ -1,21 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Text, StyleSheet, FlatList, View } from "react-native";
+import { StyleSheet, FlatList, View } from "react-native";
 import * as firebase from "firebase";
-import { SIZES } from "../constants/theme";
-import { Icon } from "react-native-elements";
 import { connect } from "react-redux";
-import {
-  OKICOLOR,
-  RAISINBLACK,
-  LIGHTBLUE,
-  LIGHTGREY,
-} from "../constants/palette";
+import { OKICOLOR, LIGHTBLUE } from "../constants/palette";
 import { ProductPath } from "../constants/path";
 import { LogRegButton } from "../components/LogRegButton";
-import { TextInput } from "react-native";
 import { ProductListComponent } from "../components/ProductListComponent";
 import { useNavigation } from "@react-navigation/native";
 import { CategoriesComponent } from "../components/CategoriesComponent";
+import { Typography } from "../components/Typography";
+import { SearchBar } from "../components/SearchBar";
 
 const HomeScreen = (props) => {
   const [search, setSearch] = useState("");
@@ -114,8 +108,7 @@ const HomeScreen = (props) => {
 
     return (
       <View style={{ paddingTop: 10 }}>
-        <Text style={styles.title}>Main Categories</Text>
-
+        <Typography variantName="Title">Main Categories</Typography>
         <FlatList
           data={categories}
           horizontal
@@ -149,9 +142,9 @@ const HomeScreen = (props) => {
         map={item.category.map((categoryId) => {
           return (
             <View style={{ flexDirection: "row" }} key={categoryId}>
-              <Text style={{ ...styles.textProduct, paddingLeft: 20 }}>
+              <Typography variantName="TextProduct">
                 Category: {getCategoryByNameId(categoryId)}
-              </Text>
+              </Typography>
             </View>
           );
         })}
@@ -172,7 +165,7 @@ const HomeScreen = (props) => {
             />
           </View>
         ) : search === "" ? (
-          <Text style={styles.title}>Best selling products</Text>
+          <Typography variantName="Title">Best selling products</Typography>
         ) : null}
         <FlatList
           data={product}
@@ -190,26 +183,7 @@ const HomeScreen = (props) => {
 
   return !isDBReady ? null : (
     <View style={styles.container}>
-      <View style={styles.searchBar}>
-        <Icon
-          style={{ paddingLeft: 10 }}
-          type="font-awesome-5"
-          name="search"
-          color={LIGHTGREY}
-          size={20}
-        />
-        <TextInput
-          style={{
-            flex: 1,
-            paddingLeft: 10,
-            fontFamily: "Montserrat",
-            fontSize: 18,
-          }}
-          value={search}
-          placeholder="Search products"
-          onChangeText={(text) => searchFilter(text)}
-        />
-      </View>
+      <SearchBar value={search} onChangeText={(text) => searchFilter(text)}></SearchBar>
       {search === "" ? renderMainCategories() : null}
       {renderProductList()}
     </View>
@@ -220,11 +194,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  textProduct: {
-    fontSize: 14,
-    color: RAISINBLACK,
-    fontFamily: "Montserrat",
-  },
   shadow: {
     shadowColor: "#000",
     shadowOffset: {
@@ -234,24 +203,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 3,
     elevation: 1,
-  },
-  title: {
-    fontFamily: "MontserratBold",
-    fontSize: SIZES.h1,
-    lineHeight: 36,
-    textAlign: "center",
-  },
-  searchBar: {
-    flexDirection: "row",
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: RAISINBLACK,
-    borderRadius: 100,
-    marginTop: 10,
-    marginRight: 15,
-    marginLeft: 15,
-    padding: 3,
-    alignContent: "center",
-    alignItems: "center",
   },
 });
 

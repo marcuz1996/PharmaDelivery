@@ -1,7 +1,5 @@
 import React from "react";
-import { Text } from "react-native";
 import styled from "styled-components";
-import { FONTS } from "../constants/theme";
 import { Typography } from "./Typography";
 
 export const CategoriesComponent = (props) => (
