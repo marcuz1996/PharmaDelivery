@@ -16,7 +16,7 @@ export const PharmacyComponent = (props) => (
       ></LinearGradient>
     </PharmacyImage>
     <MainInfo style={props.mainInfoOverride}>
-      <Typography variantName="PharmacyInfoTitle" color="white">
+      <Typography variantName="body2" color="white">
         {props.name}
       </Typography>
       <Divider />
@@ -27,7 +27,7 @@ export const PharmacyComponent = (props) => (
           color={WHITE}
           size={20}
         />
-        <Typography variantName="PharmacyInfoText" color="white">
+        <Typography variantName="body3" color="white">
           {props.address}
         </Typography>
       </IconTextContainer>
@@ -38,11 +38,11 @@ export const PharmacyComponent = (props) => (
           color={WHITE}
           size={20}
         />
-        <Typography variantName="PharmacyInfoText" color="white">
+        <Typography variantName="body3" color="white">
           {props.open} - {props.close}
         </Typography>
         {!props.hideStock && (
-          <Typography variantName="PharmacyInfoText" color="white">
+          <Typography variantName="body3" color="white">
             | In stock: {props.stock}
           </Typography>
         )}

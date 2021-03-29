@@ -99,7 +99,7 @@ const PharmacyProductScreen = (props) => {
         map={item.category.map((categoryId) => {
           return (
             <View style={{ flexDirection: "row" }} key={categoryId}>
-              <Typography variantName="TextProduct">
+              <Typography variantName="body4">
                 Category: {getCategoryByNameId(categoryId)}
               </Typography>
             </View>
@@ -110,7 +110,7 @@ const PharmacyProductScreen = (props) => {
 
     return (
       <>
-        <Typography variantName="Title">
+        <Typography variantName="body1">
           Products available in this pharmacy
         </Typography>
         <FlatList

@@ -9,7 +9,7 @@ import { ProductListComponent } from "../components/ProductListComponent";
 import { useNavigation } from "@react-navigation/native";
 import { CategoriesComponent } from "../components/CategoriesComponent";
 import { Typography } from "../components/Typography";
-import { SearchBar } from "../components/SearchBar";
+import { Searchbar } from "react-native-paper";
 
 const HomeScreen = (props) => {
   const [search, setSearch] = useState("");
@@ -108,7 +108,7 @@ const HomeScreen = (props) => {
 
     return (
       <View style={{ paddingTop: 10 }}>
-        <Typography variantName="Title">Main Categories</Typography>
+        <Typography variantName="body1">Main Categories</Typography>
         <FlatList
           data={categories}
           horizontal
@@ -142,7 +142,7 @@ const HomeScreen = (props) => {
         map={item.category.map((categoryId) => {
           return (
             <View style={{ flexDirection: "row" }} key={categoryId}>
-              <Typography variantName="TextProduct">
+              <Typography variantName="body4">
                 Category: {getCategoryByNameId(categoryId)}
               </Typography>
             </View>
@@ -165,7 +165,7 @@ const HomeScreen = (props) => {
             />
           </View>
         ) : search === "" ? (
-          <Typography variantName="Title">Best selling products</Typography>
+          <Typography variantName="body1">Best selling products</Typography>
         ) : null}
         <FlatList
           data={product}
@@ -183,7 +183,11 @@ const HomeScreen = (props) => {
 
   return !isDBReady ? null : (
     <View style={styles.container}>
-      <SearchBar value={search} onChangeText={(text) => searchFilter(text)}></SearchBar>
+      <Searchbar
+        placeholder={"Search products"}
+        value={search}
+        onChangeText={(text) => searchFilter(text)}
+      />
       {search === "" ? renderMainCategories() : null}
       {renderProductList()}
     </View>

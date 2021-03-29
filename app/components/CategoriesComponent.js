@@ -10,7 +10,7 @@ export const CategoriesComponent = (props) => (
     <ImageContainer style={props.ImageContainerStyling}>
       <Image source={props.source} />
     </ImageContainer>
-    <Typography variantName="CategoryName">{props.name}</Typography>
+    <Typography variantName="body5">{props.name}</Typography>
   </CategoryTouchableOpacity>
 );
 

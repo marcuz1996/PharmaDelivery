@@ -22,7 +22,7 @@ export const MapModalComponent = (props) => (
         <InternalView>
           <PharmacyImage source={props.source} />
           <Typography
-            variantName="PharmacyInfoTitle"
+            variantName="body2"
             style={{ alignSelf: "center" }}
           >
             {props.name}
@@ -35,7 +35,7 @@ export const MapModalComponent = (props) => (
                 color={RAISINBLACK}
                 size={20}
               />
-              <Typography variantName="PharmacyInfoText">
+              <Typography variantName="body3">
                 {props.address}
               </Typography>
             </IconAndTextView>
@@ -46,7 +46,7 @@ export const MapModalComponent = (props) => (
                 color={RAISINBLACK}
                 size={20}
               />
-              <Typography variantName="PharmacyInfoText">
+              <Typography variantName="body3">
                 {props.open} - {props.close}
               </Typography>
             </IconAndTextView>

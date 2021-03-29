@@ -16,6 +16,7 @@ import { LogRegButton } from "../components/LogRegButton";
 import { ScrollView } from "react-native";
 import { PharmacyProductsPath } from "../constants/path";
 import { PharmacyComponent } from "../components/PharmacyComponent";
+import { Typography } from "../components/Typography";
 
 const ProductScreen = (props) => {
   const [categories, setCategories] = useState([]);
@@ -24,7 +25,6 @@ const ProductScreen = (props) => {
   const { item } = route.params;
   const [productQty, setQuantity] = useState(1);
   const [pharmacies, setPharmacies] = useState([]);
-  const [iconSaved, setIconSaved] = useState(true);
 
   useEffect(() => {
     loadElements();
@@ -102,7 +102,7 @@ const ProductScreen = (props) => {
 
   let categoriesIcons = item.category.map((index) => {
     return (
-      <View style={{ flexDirection: "row" }} key={index}>
+      <View style={{ width: "15%" }} key={index}>
         <Image
           source={
             categories.length > 0 ? { uri: categories[index - 1].icon } : null
@@ -110,7 +110,6 @@ const ProductScreen = (props) => {
           style={{
             width: 20,
             height: 20,
-            marginRight: 10,
           }}
         />
       </View>
@@ -119,10 +118,10 @@ const ProductScreen = (props) => {
 
   let categoriesNames = item.category.map((index) => {
     return (
-      <View style={{ flexDirection: "row" }} key={index}>
-        <Text style={{ ...FONTS.body3, color: LIGHTGREY }}>
+      <View style={{ width: "50%" }} key={index}>
+        <Typography variantName="body3" style={{ color: LIGHTGREY }}>
           {categories.length > 0 ? categories[index - 1].name : null}
-        </Text>
+        </Typography>
       </View>
     );
   });
@@ -239,38 +238,58 @@ const ProductScreen = (props) => {
           </View>
 
           {/* Categories */}
-          <View
-            style={{
-              flexDirection: "row",
-              marginTop: 10,
-            }}
-          >
-            {categoriesIcons}
-            {categoriesNames}
+          <View style={{ flexDirection: "row" }}>
+            <View
+              style={{
+                flexDirection: "row",
+                marginTop: 10,
+                width: "50%",
+                marginLeft: 30,
+              }}
+            >
+              {categoriesIcons}
+              {categoriesNames}
+            </View>
+            <TouchableOpacity
+              onPress={() => {
+                handleClick(item.id);
+              }}
+              style={{ width: "50%" }}
+            >
+              <View
+                style={{
+                  flexDirection: "row",
+                  backgroundColor: LIGHTGREY,
+                  borderRadius: 10,
+                  marginRight: 20,
+                }}
+              >
+                <Typography
+                  variantName="body4"
+                  style={{ width: "75%", marginTop: "7%" }}
+                >
+                  Add to Favourites
+                </Typography>
+                {!saved.length ? null : saved.includes(item.id) ? (
+                  <Icon
+                    style={styles.buttonProduct}
+                    type="material-community"
+                    name={"heart"}
+                    color={ERRORCOLOR}
+                    size={32}
+                  />
+                ) : (
+                  <Icon
+                    style={styles.buttonProduct}
+                    type="material-community"
+                    name={"heart-outline"}
+                    color={ERRORCOLOR}
+                    size={32}
+                  />
+                )}
+              </View>
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity
-            onPress={() => {
-              handleClick(item.id);
-            }}
-          >
-            {!saved.length ? null : saved.includes(item.id) ? (
-              <Icon
-                style={styles.buttonProduct}
-                type="material-community"
-                name={"heart"}
-                color={ERRORCOLOR}
-                size={32}
-              />
-            ) : (
-              <Icon
-                style={styles.buttonProduct}
-                type="material-community"
-                name={"heart-outline"}
-                color={ERRORCOLOR}
-                size={32}
-              />
-            )}
-          </TouchableOpacity>
           {/* Order Button */}
           <View
             style={{
@@ -310,7 +329,9 @@ const ProductScreen = (props) => {
 
     return (
       <>
-        <Text style={styles.title}>Where to find this product</Text>
+        <Typography variantName={"body1"}>
+          Where to find this product
+        </Typography>
         <FlatList
           data={pharmacyList}
           keyExtractor={(item) => item.id}
@@ -334,12 +355,6 @@ const ProductScreen = (props) => {
 };
 
 const styles = StyleSheet.create({
-  title: {
-    fontFamily: "MontserratBold",
-    fontSize: SIZES.h1,
-    lineHeight: 36,
-    textAlign: "center",
-  },
   buttonProduct: {
     textAlign: "center",
     justifyContent: "center",
