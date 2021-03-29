@@ -2,6 +2,7 @@ import React from "react";
 import { Text } from "react-native";
 import styled from "styled-components";
 import { FONTS } from "../constants/theme";
+import { Typography } from "./Typography";
 
 export const CategoriesComponent = (props) => (
   <CategoryTouchableOpacity
@@ -11,14 +12,7 @@ export const CategoriesComponent = (props) => (
     <ImageContainer style={props.ImageContainerStyling}>
       <Image source={props.source} />
     </ImageContainer>
-    <Text
-      style={{
-        marginTop: 2,
-        ...FONTS.body5,
-      }}
-    >
-      {props.name}
-    </Text>
+    <Typography variantName="CategoryName">{props.name}</Typography>
   </CategoryTouchableOpacity>
 );
 
