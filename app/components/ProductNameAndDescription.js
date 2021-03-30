@@ -1,8 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { Typography } from "./Typography";
-import { Dimensions } from "react-native";
-const { width } = Dimensions.get("window");
 
 export const ProductNameAndDescription = (props) => (
   <ContainerView>
@@ -17,7 +15,6 @@ export const ProductNameAndDescription = (props) => (
 );
 
 const ContainerView = styled.View`
-  width: ${width};
   align-items: center;
   margin-top: 15px;
   padding-right: 20px;
