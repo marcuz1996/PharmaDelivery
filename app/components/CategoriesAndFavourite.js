@@ -70,9 +70,9 @@ export const CategoriesAndFavourite = (props) => (
 
 const CategoriesView = styled.View`
   flex-direction: row;
-  margin-top: 10px;
+  margin-top: 12px;
   width: 50%;
-  margin-left: 30px;
+  margin-left: 50px;
 `;
 
 const IconsAndTextView = styled.View`
