@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     alignSelf: "center",
     width: "100%",
-    height: "60%",
+    height: "70%",
     bottom: 20,
   },
 });

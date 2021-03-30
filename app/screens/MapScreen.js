@@ -83,12 +83,12 @@ export const MapScreen = () => {
               address={item.address}
               open={item.open}
               close={item.close}
-               /* onPress={
-                (navigation.navigate(PharmacyProductsPath, {
+              onPress={() => {
+                navigation.navigate(PharmacyProductsPath, {
                   item,
-                }),
-                setModalVisible(modalVisible.map(() => false))) */
-              
+                });
+                  setModalVisible(modalVisible.map(() => false));
+              }}
             />
           </Marker>
         ))}
@@ -108,5 +108,4 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height,
   },
-
 });

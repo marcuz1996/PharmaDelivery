@@ -1,22 +1,17 @@
 import React, { useEffect, useState } from "react";
-import {
-  Text,
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  Image,
-  FlatList,
-} from "react-native";
-import { Icon } from "react-native-elements";
+import { View, Image, FlatList } from "react-native";
 import * as firebase from "firebase";
-import { ERRORCOLOR, LIGHTGREY, RAISINBLACK } from "../constants/palette";
+import { LIGHTGREY } from "../constants/palette";
 import { connect } from "react-redux";
-import { SIZES, FONTS } from "../constants/theme";
+import { SIZES } from "../constants/theme";
 import { LogRegButton } from "../components/LogRegButton";
 import { ScrollView } from "react-native";
 import { PharmacyProductsPath } from "../constants/path";
 import { PharmacyComponent } from "../components/PharmacyComponent";
 import { Typography } from "../components/Typography";
+import { ProductAndButton } from "../components/ProductAndButton";
+import { ProductNameAndDescription } from "../components/ProductNameAndDescription";
+import { CategoriesAndFavourite } from "../components/CategoriesAndFavourite";
 
 const ProductScreen = (props) => {
   const [categories, setCategories] = useState([]);
@@ -73,7 +68,6 @@ const ProductScreen = (props) => {
 
   const handleClick = (id) => {
     if (!saved.includes(id)) {
-      //console.log(item.id);
       firebase
         .firestore()
         .collection("Purchases")
@@ -83,7 +77,6 @@ const ProductScreen = (props) => {
         });
     }
     if (saved.includes(id)) {
-      //console.log(item.id);
       firebase
         .firestore()
         .collection("Purchases")
@@ -138,173 +131,42 @@ const ProductScreen = (props) => {
 
   function renderProductInfo() {
     return (
-      <View
-        horizontal
-        pagingEnabled
-        scrollEventThrottle={16}
-        snapToAlignment="center"
-        showsHorizontalScrollIndicator={false}
-      >
-        <View style={{ alignItems: "center" }}>
-          <View style={{ height: SIZES.height * 0.35 }}>
-            <View
-              style={{ borderBottomColor: RAISINBLACK, borderBottomWidth: 1 }}
-            >
-              <Image
-                source={{ uri: item.image }}
-                style={{
-                  width: SIZES.width,
-                  height: "100%",
-                }}
-              />
-            </View>
+      <View style={{ alignItems: "center" }}>
+        <ProductAndButton
+          source={{ uri: item.image }}
+          onPressMinus={() => editOrder("-")}
+          productQty={productQty}
+          onPressPlus={() => editOrder("+")}
+        />
+        <ProductNameAndDescription
+          name={item.name}
+          description={item.description}
+          price={item.price}
+        />
+        <CategoriesAndFavourite
+          categoriesIcons={categoriesIcons}
+          categoriesNames={categoriesNames}
+          saved={saved}
+          onPress={() => {
+            handleClick(item.id);
+          }}
+          id={item.id}
+        />
 
-            {/* Quantity */}
-            <View
-              style={{
-                position: "absolute",
-                bottom: -20,
-                width: SIZES.width,
-                height: 50,
-                justifyContent: "center",
-                flexDirection: "row",
-              }}
-            >
-              <TouchableOpacity
-                style={{
-                  width: 50,
-                  backgroundColor: "white",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderTopLeftRadius: 25,
-                  borderBottomLeftRadius: 25,
-                  borderTopWidth: 1,
-                  borderBottomWidth: 1,
-                  borderLeftWidth: 1,
-                }}
-                onPress={() => editOrder("-")}
-              >
-                <Text style={{ ...FONTS.body1 }}>-</Text>
-              </TouchableOpacity>
-
-              <View
-                style={{
-                  width: 50,
-                  backgroundColor: "white",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderTopColor: RAISINBLACK,
-                  borderTopWidth: 1,
-                  borderBottomColor: RAISINBLACK,
-                  borderBottomWidth: 1,
-                }}
-              >
-                <Text style={{ ...FONTS.h2 }}>{productQty}</Text>
-              </View>
-              <TouchableOpacity
-                style={{
-                  width: 50,
-                  backgroundColor: "white",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderTopRightRadius: 25,
-                  borderBottomRightRadius: 25,
-                  borderTopWidth: 1,
-                  borderBottomWidth: 1,
-                  borderRightWidth: 1,
-                }}
-                onPress={() => editOrder("+")}
-              >
-                <Text style={{ ...FONTS.body1 }}>+</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-
-          {/* Name & Description */}
-          <View
-            style={{
-              width: SIZES.width,
-              alignItems: "center",
-              marginTop: 15,
-              paddingHorizontal: SIZES.padding * 2,
+        {/* Order Button */}
+        <View
+          style={{
+            width: SIZES.width * 0.9,
+            bottom: 20,
+          }}
+        >
+          <LogRegButton
+            text="Add to Cart"
+            onPress={() => {
+              handleAddToCart(item, productQty, props);
+              setQuantity(1);
             }}
-          >
-            <Text
-              style={{ marginVertical: 10, textAlign: "center", ...FONTS.h2 }}
-            >
-              {item.name} - {item.price}€
-            </Text>
-            <Text style={{ ...FONTS.body3 }}>{item.description}</Text>
-          </View>
-
-          {/* Categories */}
-          <View style={{ flexDirection: "row" }}>
-            <View
-              style={{
-                flexDirection: "row",
-                marginTop: 10,
-                width: "50%",
-                marginLeft: 30,
-              }}
-            >
-              {categoriesIcons}
-              {categoriesNames}
-            </View>
-            <TouchableOpacity
-              onPress={() => {
-                handleClick(item.id);
-              }}
-              style={{ width: "50%" }}
-            >
-              <View
-                style={{
-                  flexDirection: "row",
-                  backgroundColor: LIGHTGREY,
-                  borderRadius: 10,
-                  marginRight: 20,
-                }}
-              >
-                <Typography
-                  variantName="body4"
-                  style={{ width: "75%", marginTop: "7%" }}
-                >
-                  Add to Favourites
-                </Typography>
-                {!saved.length ? null : saved.includes(item.id) ? (
-                  <Icon
-                    style={styles.buttonProduct}
-                    type="material-community"
-                    name={"heart"}
-                    color={ERRORCOLOR}
-                    size={32}
-                  />
-                ) : (
-                  <Icon
-                    style={styles.buttonProduct}
-                    type="material-community"
-                    name={"heart-outline"}
-                    color={ERRORCOLOR}
-                    size={32}
-                  />
-                )}
-              </View>
-            </TouchableOpacity>
-          </View>
-          {/* Order Button */}
-          <View
-            style={{
-              width: SIZES.width * 0.9,
-              marginBottom: 10,
-            }}
-          >
-            <LogRegButton
-              text="Add to Cart"
-              onPress={() => {
-                handleAddToCart(item, productQty, props);
-                setQuantity(1);
-              }}
-            />
-          </View>
+          />
         </View>
       </View>
     );
@@ -353,15 +215,6 @@ const ProductScreen = (props) => {
     </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  buttonProduct: {
-    textAlign: "center",
-    justifyContent: "center",
-    alignContent: "center",
-    marginTop: 5,
-  },
-});
 
 const handleAddToCart = (product, productQty, props) => {
   props.addToCart(product, productQty);

@@ -21,6 +21,12 @@ const styles = StyleSheet.create({
     paddingTop: 1,
     fontWeight: Platform === "ios" ? "600" : "bold",
   },
+  body2Alternative: {
+    fontFamily: "MontserratBold", 
+    fontSize: 22, 
+    lineHeight: 30,
+    fontWeight: Platform === "ios" ? "600" : "bold",
+  },
   body3: {
     fontFamily: "Montserrat", 
     fontSize: 16, 
@@ -41,4 +47,5 @@ const styles = StyleSheet.create({
     lineHeight: 22,
     marginTop: 2,
   },
+  
 });

@@ -13,3 +13,4 @@ export const DARKGREY = "#475152";
 
 export const GREENBG = "rgba(53, 219, 103, 0.5)";
 export const REDBG = "rgba(219, 53, 53, 0.5)";
+export const REDTRANSPARENCY = "rgba(219, 53, 53, 0.1)";
