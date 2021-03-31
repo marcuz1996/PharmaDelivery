@@ -8,7 +8,6 @@ import {
   LINKCOLOR,
 } from "../constants/palette";
 import { TouchableOpacity } from "react-native-gesture-handler";
-
 import { InputTextField } from "../components/InputTextField";
 import { LogRegButton } from "../components/LogRegButton";
 import * as firebase from "firebase";
@@ -19,6 +18,8 @@ export const SignupScreen = ({ navigation }) => {
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
   const [address, setAddress] = useState("");
+  const [houseNumber, setHouseNumber] = useState("");
+  const [zip, setZip] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [mail, setMail] = useState("");
   const [pass, setPass] = useState("");
@@ -26,13 +27,16 @@ export const SignupScreen = ({ navigation }) => {
   const [isValidPass, setIsValidPass] = useState(true);
   const [isValidMail, setIsValidMail] = useState(true);
   const [isMatchingPass, setIsMatchingPass] = useState(true);
+  const [isValidField, setIsValidField] = useState(true);
 
   const authenticate = () => {
     setIsMatchingPass(true);
     setIsValidMail(true);
     setIsValidPass(true);
-    const check = passCheck();
-    if (check) {
+    setIsValidField(true);
+    const checkPass = passCheck();
+    const checkFields = fieldsCheck();
+    if (checkPass && checkFields) {
       firebase
         .auth()
         .createUserWithEmailAndPassword(mail, pass)
@@ -44,6 +48,8 @@ export const SignupScreen = ({ navigation }) => {
             name: name,
             surname: surname,
             address: address,
+            houseNumber: houseNumber,
+            zip: zip,
             phoneNumber: phoneNumber,
           };
           firebase
@@ -76,43 +82,86 @@ export const SignupScreen = ({ navigation }) => {
     return true;
   };
 
+  const fieldsCheck = () => {
+    const mailValidator = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (
+      name.length < 2 ||
+      name.length > 20 ||
+      surname.length < 2 ||
+      surname.length > 20 ||
+      !/^\d+$/.test(houseNumber) ||
+      houseNumber.length < 1 ||
+      houseNumber.length > 4 ||
+      !/^\d+$/.test(zip) ||
+      zip.length != 5 ||
+      !/^\d+$/.test(phoneNumber) ||
+      phoneNumber.length < 8 ||
+      phoneNumber.length > 10 ||
+      !mailValidator.test(mail.toLowerCase())
+    ) {
+      setIsValidField(false);
+      return false;
+    } else {
+      return true;
+    }
+  };
   return (
     <View style={styles.container}>
       <Text style={styles.title}>CREATE ACCOUNT</Text>
+      {isValidField ? null : (
+        <ErrorMessage
+          style={{ paddingLeft: 14 }}
+          text="Some fields were not filled in correctly or were empty! Please insert your correct data."
+        />
+      )}
       <InputTextField
         iconName="account-outline"
         iconType="material-community"
         placeholder="Name"
         onChangeText={(val) => setName(val)}
-        keyboardType="visible-password"
+        keyboardType="email-address"
       />
       <InputTextField
         iconName="account-outline"
         iconType="material-community"
         placeholder="Surname"
         onChangeText={(val) => setSurname(val)}
-        keyboardType="visible-password"
+        keyboardType="email-address"
       />
       <InputTextField
         iconName="map-marker-outline"
         iconType="material-community"
         placeholder="Address"
         onChangeText={(val) => setAddress(val)}
-        keyboardType="visible-password"
+        keyboardType="email-address"
+      />
+      <InputTextField
+        iconName="map-marker-outline"
+        iconType="material-community"
+        placeholder="House number"
+        onChangeText={(val) => setHouseNumber(val)}
+        keyboardType="numeric"
+      />
+      <InputTextField
+        iconName="map-marker-outline"
+        iconType="material-community"
+        placeholder="ZIP code"
+        onChangeText={(val) => setZip(val)}
+        keyboardType="numeric"
       />
       <InputTextField
         iconName="phone-outline"
         iconType="material-community"
         placeholder="Phone number"
         onChangeText={(val) => setPhoneNumber(val)}
-        keyboardType="visible-password"
+        keyboardType="numeric"
       />
       <InputTextField
         iconName="email-outline"
         iconType="material-community"
         placeholder="E-mail"
         onChangeText={(val) => setMail(val)}
-        keyboardType="visible-password"
+        keyboardType="email-address"
       />
       <View>
         {isValidMail ? null : (
@@ -147,7 +196,7 @@ export const SignupScreen = ({ navigation }) => {
       />
       <View>
         {isMatchingPass ? null : (
-          <ErrorMessage text="password and confir password does not match!" />
+          <ErrorMessage text="Password and confirm password does not match!" />
         )}
       </View>
       <LogRegButton text="SIGN UP" onPress={() => authenticate()} />

@@ -55,7 +55,7 @@ export const LoginScreen = ({ navigation, onLogin }) => {
             iconType="material-community"
             placeholder="E-mail"
             onChangeText={(val) => setMail(val)}
-            keyboardType="visible-password"
+            keyboardType="email-address"
           />
           <InputTextField
             iconName="lock-outline"

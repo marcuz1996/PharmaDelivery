@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, View, StyleSheet } from "react-native";
 import { Icon } from "react-native-elements";
-import { DARKGREY, LIGHTGREY, OKICOLOR } from "../constants/palette";
+import { DARKGREY, OKICOLOR } from "../constants/palette";
 
 export const AboutUsScreen = () => {
   return (

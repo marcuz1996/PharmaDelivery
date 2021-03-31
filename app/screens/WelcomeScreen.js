@@ -1,9 +1,7 @@
-import React, { useState } from "react";
-import { StyleSheet, View, Text, Image, LogBox } from "react-native";
+import React from "react";
+import { StyleSheet, View, Text, Image } from "react-native";
 import AppIntroSlider from "react-native-app-intro-slider";
-import { LIGHTBLUE, MAINCOLOR, WHITE } from "../constants/palette";
-
-//LogBox.ignoreAllLogs(true);
+import { LIGHTBLUE, WHITE } from "../constants/palette";
 
 export const WelcomeScreen = ({ onFinish }) => {
   const renderItem = ({ item }) => (
