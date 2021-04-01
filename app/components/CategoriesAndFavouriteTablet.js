@@ -5,7 +5,7 @@ import { ERRORCOLOR } from "../constants/palette";
 import { StyleSheet, View, TouchableOpacity } from "react-native";
 import { Icon } from "react-native-elements";
 
-export const CategoriesAndFavourite = (props) => (
+export const CategoriesAndFavouriteTablet = (props) => (
   <View style={{ flexDirection: "row" }}>
     <CategoriesView>
       {props.categoriesIcons}
@@ -18,7 +18,7 @@ export const CategoriesAndFavourite = (props) => (
             variantName="body3"
             style={{ width: "55%", marginTop: "7%" }}
           >
-            Save element
+            Save elementTablet
           </Typography>
           <TouchableOpacity onPress={props.onPress}>
             <Icon
@@ -51,7 +51,7 @@ export const CategoriesAndFavourite = (props) => (
             variantName="body3"
             style={{ width: "55%", marginTop: "7%" }}
           >
-            Save element
+            Save elementTablet
           </Typography>
           <TouchableOpacity onPress={props.onPress}>
             <Icon
