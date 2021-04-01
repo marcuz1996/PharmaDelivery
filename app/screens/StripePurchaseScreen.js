@@ -40,6 +40,7 @@ const StripePurchaseScreen = (props) => {
           phoneNumber: shipmentDetail.phoneNumber,
           mail: shipmentDetail.mail,
           otherInfo: shipmentDetail.otherInfo,
+          products: props.items,
         }),
       });
   };

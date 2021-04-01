@@ -33,7 +33,7 @@ const PaymentScreen = ({ navigation }) => {
       .ref("Users/" + firebase.auth().currentUser.uid)
       .on("value", (snapshot) => {
         setUser(snapshot.val());
-        setName(snapshot.val().name);
+        setName(snapshot.val().name + " " + snapshot.val().surname);
         setZip(snapshot.val().zip);
         setHouseNumber(snapshot.val().houseNumber);
         setAddress(snapshot.val().address);

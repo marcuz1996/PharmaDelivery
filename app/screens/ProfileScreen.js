@@ -217,7 +217,11 @@ export const ProfileScreen = ({ navigation }) => {
                         style={{
                           ...styles.paymentsView,
                           backgroundColor:
-                            element.status === "OK" ? GREENBG : REDBG,
+                            element.status === "OK" ||
+                            element.status === "SHIPPED" ||
+                            element.status === "DELIVERED"
+                              ? GREENBG
+                              : REDBG,
                         }}
                       >
                         <Text style={{ ...styles.payments, marginLeft: 5 }}>
