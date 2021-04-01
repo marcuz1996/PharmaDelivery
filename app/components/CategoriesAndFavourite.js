@@ -4,6 +4,7 @@ import { Typography } from "./Typography";
 import { ERRORCOLOR } from "../constants/palette";
 import { StyleSheet, View, TouchableOpacity } from "react-native";
 import { Icon } from "react-native-elements";
+import * as Device from 'expo-device';
 
 export const CategoriesAndFavourite = (props) => (
   <View style={{ flexDirection: "row" }}>
