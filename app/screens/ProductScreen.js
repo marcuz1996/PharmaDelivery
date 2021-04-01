@@ -12,6 +12,8 @@ import { Typography } from "../components/Typography";
 import { ProductAndButton } from "../components/ProductAndButton";
 import { ProductNameAndDescription } from "../components/ProductNameAndDescription";
 import { CategoriesAndFavourite } from "../components/CategoriesAndFavourite";
+import { CategoriesAndFavouriteTablet } from "../components/CategoriesAndFavouriteTablet";
+import * as Device from 'expo-device';
 
 const ProductScreen = (props) => {
   const [categories, setCategories] = useState([]);
@@ -20,9 +22,13 @@ const ProductScreen = (props) => {
   const { item } = route.params;
   const [productQty, setQuantity] = useState(1);
   const [pharmacies, setPharmacies] = useState([]);
+  const [deviceId, setDeviceId] = useState(null);
 
   useEffect(() => {
     loadElements();
+    Device.getDeviceTypeAsync().then((deviceType) => {
+      setDeviceId(deviceType);
+  });
   }, []);
 
   const loadElements = async () => {
@@ -65,6 +71,8 @@ const ProductScreen = (props) => {
       });
     setPharmacies(temp2);
   };
+
+  console.log(deviceId);
 
   const handleClick = (id) => {
     if (!saved.includes(id)) {
@@ -143,15 +151,25 @@ const ProductScreen = (props) => {
           description={item.description}
           price={item.price}
         />
-        <CategoriesAndFavourite
+        {deviceId == 1 ? <CategoriesAndFavourite
           categoriesIcons={categoriesIcons}
           categoriesNames={categoriesNames}
           saved={saved}
           onPress={() => {
             handleClick(item.id);
           }}
-          id={item.id}
-        />
+          id={item.id} 
+        /> : <CategoriesAndFavouriteTablet
+        categoriesIcons={categoriesIcons}
+        categoriesNames={categoriesNames}
+        saved={saved}
+        onPress={() => {
+          handleClick(item.id);
+        }}
+        id={item.id}
+        /> 
+      }
+
 
         {/* Order Button */}
         <View
