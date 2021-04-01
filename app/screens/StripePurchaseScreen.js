@@ -20,9 +20,10 @@ import { stripeCheckoutRedirectHTML } from "../components/StripeCheckout";
 const StripePurchaseScreen = (props) => {
   const { route } = props;
   const { shipmentDetail } = route.params;
+  const [webviewRef, setWebviewRef] = useState();
+  const [successfulPayment, setSuccessfulPayment] = useState(false);
 
   const updatePaymentList = (status) => {
-    console.log(shipmentDetail);
     firebase
       .firestore()
       .collection("Purchases")
@@ -45,6 +46,7 @@ const StripePurchaseScreen = (props) => {
   // Called everytime the URL stats to load in the webview
   const onLoadStart = (syntheticEvent) => {
     const { nativeEvent } = syntheticEvent;
+    //console.log(nativeEvent);
     if (nativeEvent.url === STRIPE.SUCCESS_URL) {
       showMessage({
         message: "Success!",
@@ -53,6 +55,7 @@ const StripePurchaseScreen = (props) => {
         icon: "success",
         duration: 2500,
       });
+      setSuccessfulPayment(true);
       handleEmpty(props);
       updatePaymentList("OK");
       props.navigation.navigate(HomePath);
@@ -71,14 +74,22 @@ const StripePurchaseScreen = (props) => {
     }
   };
 
+  const reloadPage = () => {
+    setSuccessfulPayment(false);
+    webviewRef.reload();
+  };
+
   return (
     <SafeAreaView style={styles.androidSafeArea}>
       <Header comeback />
       <WebView
+        ref={(WEBVIEW_REF) => {
+          setWebviewRef(WEBVIEW_REF);
+        }}
         originWhitelist={["*"]}
         source={{ html: stripeCheckoutRedirectHTML(shipmentDetail.mail) }}
         onLoadStart={onLoadStart}
-        //onError={console.log("a")}
+        //onError={successfulPayment ? reloadPage() : console.log("ref doesn't exist")}
         //onHttpError={console.log("b")}
       />
     </SafeAreaView>

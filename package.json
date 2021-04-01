@@ -19,6 +19,7 @@
     "base-64": "^1.0.0",
     "expo": "~40.0.0",
     "expo-av": "~8.7.0",
+    "expo-device": "~2.4.0",
     "expo-font": "~8.4.0",
     "expo-google-app-auth": "^8.1.4",
     "expo-google-sign-in": "~8.4.0",
@@ -42,6 +43,7 @@
     "react-native-linear-gradient": "^2.5.6",
     "react-native-maps": "0.27.1",
     "react-native-paper": "^4.7.1",
+    "react-native-progress": "^4.1.2",
     "react-native-reanimated": "~1.13.0",
     "react-native-safe-area-context": "3.1.9",
     "react-native-screens": "~2.15.2",
@@ -54,8 +56,7 @@
     "react-redux": "^7.2.2",
     "react-stripe-checkout": "^2.6.3",
     "redux": "^4.0.5",
-    "styled-components": "^5.2.1",
-    "expo-device": "~2.4.0"
+    "styled-components": "^5.2.1"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",

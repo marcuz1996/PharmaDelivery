@@ -13,3 +13,4 @@ export const PaymentPath = "Payment";
 export const StripePurchasePath = "Stripe";
 export const SavedProductPath = "Saved";
 export const PaypalPurchasePath = "Paypal";
+export const ShipmentStatusPath = "Shipment";

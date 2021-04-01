@@ -19,175 +19,184 @@ import { PrivacyScreen } from "../screens/PrivacyScreen";
 import StripePurchaseScreen from "../screens/StripePurchaseScreen";
 import { AboutUsScreen } from "../screens/AboutUsScreen";
 import PaymentScreen from "../screens/PaymentScreen";
+import ShipmentStatusScreen from "../screens/ShipmentStatusScreen";
 import { ForgotPasswordScreen } from "../screens/ForgotPasswordScreen";
 import SavedProductScreen from "../screens/SavedProductScreen";
 import { PageWrapper } from "../components/PageWrapper";
 import {
-	LoginPath,
-	RegisterPath,
-	HomePath,
-	MapPath,
-	ProfilePath,
-	PharmacyProductsPath,
-	ProductPath,
-	ShopCartPath,
-	ForgotPassPath,
-	PrivacyPath,
-	AboutUsPath,
-	PaymentPath,
-	StripePurchasePath,
-	SavedProductPath,
-	PaypalPurchasePath,
+  LoginPath,
+  RegisterPath,
+  HomePath,
+  MapPath,
+  ProfilePath,
+  PharmacyProductsPath,
+  ProductPath,
+  ShopCartPath,
+  ForgotPassPath,
+  PrivacyPath,
+  AboutUsPath,
+  PaymentPath,
+  StripePurchasePath,
+  SavedProductPath,
+  PaypalPurchasePath,
+  ShipmentStatusPath,
 } from "../constants/path";
 import PaypalPurchaseScreen from "../screens/PaypalPurchaseScreen";
 
 const {
-	Screen: StackScreen,
-	Navigator: StackNavigator,
+  Screen: StackScreen,
+  Navigator: StackNavigator,
 } = createStackNavigator();
 const {
-	Screen: DrawerScreen,
-	Navigator: DrawerNavigator,
+  Screen: DrawerScreen,
+  Navigator: DrawerNavigator,
 } = createDrawerNavigator();
 
 const MainLayout = ({
-	component,
-	hideHeader = false,
-	isScrollView = true,
-	comeback = false,
+  component,
+  hideHeader = false,
+  isScrollView = true,
+  comeback = false,
 }) => (
-	<PageWrapper
-		hideHeader={hideHeader}
-		isScrollView={isScrollView}
-		comeback={comeback}
-	>
-		{component()}
-	</PageWrapper>
+  <PageWrapper
+    hideHeader={hideHeader}
+    isScrollView={isScrollView}
+    comeback={comeback}
+  >
+    {component()}
+  </PageWrapper>
 );
 export const Navigator = ({ auth }) => {
-	const [welcome, setWelcome] = useState(false);
-	const [isAuth, setIsAuth] = useState(auth);
+  const [welcome, setWelcome] = useState(false);
+  const [isAuth, setIsAuth] = useState(auth);
 
-	return welcome ? (
-		<WelcomeScreen onFinish={() => setWelcome(false)} />
-	) : (
-		<NavigationContainer>
-			{!isAuth ? (
-				<StackNavigator
-					screenOptions={{ headerShown: false }}
-					initialRouteName={LoginPath}
-				>
-					<StackScreen name={LoginPath}>
-						{(props) => (
-							<MainLayout
-								component={() => (
-									<LoginScreen {...props} onLogin={() => setIsAuth(true)} />
-								)}
-								hideHeader
-							/>
-						)}
-					</StackScreen>
+  return welcome ? (
+    <WelcomeScreen onFinish={() => setWelcome(false)} />
+  ) : (
+    <NavigationContainer>
+      {!isAuth ? (
+        <StackNavigator
+          screenOptions={{ headerShown: false }}
+          initialRouteName={LoginPath}
+        >
+          <StackScreen name={LoginPath}>
+            {(props) => (
+              <MainLayout
+                component={() => (
+                  <LoginScreen {...props} onLogin={() => setIsAuth(true)} />
+                )}
+                hideHeader
+              />
+            )}
+          </StackScreen>
 
-					<StackScreen name={RegisterPath}>
-						{(props) => (
-							<MainLayout
-								component={() => <SignupScreen {...props} />}
-								hideHeader
-							/>
-						)}
-					</StackScreen>
+          <StackScreen name={RegisterPath}>
+            {(props) => (
+              <MainLayout
+                component={() => <SignupScreen {...props} />}
+                hideHeader
+              />
+            )}
+          </StackScreen>
 
-					<StackScreen name={ForgotPassPath}>
-						{(props) => (
-							<MainLayout
-								component={() => <ForgotPasswordScreen {...props} display />}
-								hideHeader
-							/>
-						)}
-					</StackScreen>
-				</StackNavigator>
-			) : (
-				<DrawerNavigator
-					initialRouteName={HomePath}
-					backBehavior="history"
-					drawerContent={(props) => (
-						<DrawerMenu {...props} onLogout={() => setIsAuth(false)} />
-					)}
-				>
-					<DrawerScreen name={HomePath}>
-						{(props) => (
-							<MainLayout
-								isScrollView={false}
-								component={() => <HomeScreen {...props} />}
-							/>
-						)}
-					</DrawerScreen>
-					<DrawerScreen name={MapPath}>
-						{(props) => (
-							<MainLayout component={() => <MapScreen {...props} />} />
-						)}
-					</DrawerScreen>
-					<DrawerScreen name={ProfilePath}>
-						{(props) => (
-							<MainLayout component={() => <ProfileScreen {...props} />} />
-						)}
-					</DrawerScreen>
-					<DrawerScreen name={PharmacyProductsPath}>
-						{(props) => (
-							<MainLayout
-								component={() => <PharmacyProductsScreen {...props} />}
-							/>
-						)}
-					</DrawerScreen>
-					<DrawerScreen name={ProductPath}>
-						{(props) => (
-							<MainLayout
-								comeback
-								isScrollView={false}
-								component={() => <ProductScreen {...props} />}
-							/>
-						)}
-					</DrawerScreen>
-					<DrawerScreen name={ShopCartPath}>
-						{(props) => (
-							<MainLayout component={() => <ShopCartScreen {...props} />} />
-						)}
-					</DrawerScreen>
-					<DrawerScreen name={PrivacyPath}>
-						{(props) => (
-							<MainLayout component={() => <PrivacyScreen {...props} />} />
-						)}
-					</DrawerScreen>
-					<DrawerScreen name={AboutUsPath}>
-						{(props) => (
-							<MainLayout component={() => <AboutUsScreen {...props} />} />
-						)}
-					</DrawerScreen>
-					<DrawerScreen name={PaymentPath}>
-						{(props) => (
-							<MainLayout component={() => <PaymentScreen {...props} />} />
-						)}
-					</DrawerScreen>
-					<DrawerScreen name={ForgotPassPath}>
-						{(props) => (
-							<MainLayout
-								component={() => <ForgotPasswordScreen {...props} />}
-							/>
-						)}
-					</DrawerScreen>
-					<DrawerScreen name={SavedProductPath}>
-						{(props) => (
-							<MainLayout component={() => <SavedProductScreen {...props} />} />
-						)}
-					</DrawerScreen>
-					<DrawerScreen name={PaypalPurchasePath}>
-						{(props) => <PaypalPurchaseScreen {...props} />}
-					</DrawerScreen>
-					<DrawerScreen name={StripePurchasePath}>
-						{(props) => <StripePurchaseScreen {...props} />}
-					</DrawerScreen>
-				</DrawerNavigator>
-			)}
-		</NavigationContainer>
-	);
+          <StackScreen name={ForgotPassPath}>
+            {(props) => (
+              <MainLayout
+                component={() => <ForgotPasswordScreen {...props} display />}
+                hideHeader
+              />
+            )}
+          </StackScreen>
+        </StackNavigator>
+      ) : (
+        <DrawerNavigator
+          initialRouteName={HomePath}
+          backBehavior="history"
+          drawerContent={(props) => (
+            <DrawerMenu {...props} onLogout={() => setIsAuth(false)} />
+          )}
+        >
+          <DrawerScreen name={HomePath}>
+            {(props) => (
+              <MainLayout
+                isScrollView={false}
+                component={() => <HomeScreen {...props} />}
+              />
+            )}
+          </DrawerScreen>
+          <DrawerScreen name={MapPath}>
+            {(props) => (
+              <MainLayout component={() => <MapScreen {...props} />} />
+            )}
+          </DrawerScreen>
+          <DrawerScreen name={ProfilePath}>
+            {(props) => (
+              <MainLayout component={() => <ProfileScreen {...props} />} />
+            )}
+          </DrawerScreen>
+          <DrawerScreen name={PharmacyProductsPath}>
+            {(props) => (
+              <MainLayout
+                component={() => <PharmacyProductsScreen {...props} />}
+              />
+            )}
+          </DrawerScreen>
+          <DrawerScreen name={ProductPath}>
+            {(props) => (
+              <MainLayout
+                comeback
+                isScrollView={false}
+                component={() => <ProductScreen {...props} />}
+              />
+            )}
+          </DrawerScreen>
+          <DrawerScreen name={ShopCartPath}>
+            {(props) => (
+              <MainLayout component={() => <ShopCartScreen {...props} />} />
+            )}
+          </DrawerScreen>
+          <DrawerScreen name={PrivacyPath}>
+            {(props) => (
+              <MainLayout component={() => <PrivacyScreen {...props} />} />
+            )}
+          </DrawerScreen>
+          <DrawerScreen name={AboutUsPath}>
+            {(props) => (
+              <MainLayout component={() => <AboutUsScreen {...props} />} />
+            )}
+          </DrawerScreen>
+          <DrawerScreen name={PaymentPath}>
+            {(props) => (
+              <MainLayout component={() => <PaymentScreen {...props} />} />
+            )}
+          </DrawerScreen>
+          <DrawerScreen name={ForgotPassPath}>
+            {(props) => (
+              <MainLayout
+                component={() => <ForgotPasswordScreen {...props} />}
+              />
+            )}
+          </DrawerScreen>
+          <DrawerScreen name={SavedProductPath}>
+            {(props) => (
+              <MainLayout component={() => <SavedProductScreen {...props} />} />
+            )}
+          </DrawerScreen>
+          <DrawerScreen name={ShipmentStatusPath}>
+            {(props) => (
+              <MainLayout
+                component={() => <ShipmentStatusScreen {...props} />}
+              />
+            )}
+          </DrawerScreen>
+          <DrawerScreen name={PaypalPurchasePath}>
+            {(props) => <PaypalPurchaseScreen {...props} />}
+          </DrawerScreen>
+          <DrawerScreen name={StripePurchasePath}>
+            {(props) => <StripePurchaseScreen {...props} />}
+          </DrawerScreen>
+        </DrawerNavigator>
+      )}
+    </NavigationContainer>
+  );
 };

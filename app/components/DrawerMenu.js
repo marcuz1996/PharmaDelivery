@@ -12,6 +12,7 @@ import {
   AboutUsPath,
   ShopCartPath,
   SavedProductPath,
+  ShipmentStatusPath,
 } from "../constants/path";
 import { OKICOLOR } from "../constants/palette";
 
@@ -81,6 +82,19 @@ export const DrawerMenu = (props) => {
               label={ShopCartPath}
               onPress={() => {
                 props.navigation.navigate(ShopCartPath);
+              }}
+            />
+            <DrawerItem
+              icon={({ size }) => (
+                <Icon
+                  name="truck-delivery-outline"
+                  color={OKICOLOR}
+                  size={size}
+                />
+              )}
+              label={ShipmentStatusPath}
+              onPress={() => {
+                props.navigation.navigate(ShipmentStatusPath);
               }}
             />
           </Drawer.Section>
