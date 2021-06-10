@@ -21,10 +21,7 @@ export const AndroidMapModalComponent = (props) => (
       <ExternalView>
         <InternalView>
           <PharmacyImage source={props.source} />
-          <Typography
-            variantName="body2"
-            style={{ alignSelf: "center" }}
-          >
+          <Typography variantName="body2" style={{ alignSelf: "center" }}>
             {props.name}
           </Typography>
           <InfoContainerView>
@@ -35,9 +32,7 @@ export const AndroidMapModalComponent = (props) => (
                 color={RAISINBLACK}
                 size={20}
               />
-              <Typography variantName="body3">
-                {props.address}
-              </Typography>
+              <Typography variantName="body3">{props.address}</Typography>
             </IconAndTextView>
             <IconAndTextView>
               <Icon
@@ -59,7 +54,7 @@ export const AndroidMapModalComponent = (props) => (
 );
 
 const ExternalView = styled.View`
-  flex: 0.7;
+  flex: 0.5;
   background-color: ${WHITE};
   border-radius: 10px;
   justify-content: center;
