@@ -34,23 +34,23 @@ export const ForgotPasswordScreen = ({ navigation, display }) => {
   return (
     <>
       <View style={styles.container}>
-        <Text style={styles.title}>ACCESS PROBLEM?</Text>
+        <Text style={styles.title}>ACCESS PROBLEMS?</Text>
         <Text style={styles.text}>
-          Insert your E-mail address and we send you a link to recover your
+          Insert your e-mail address and we will send you a link to recover your
           account.
         </Text>
         <InputTextField
           iconName="email-outline"
           iconType="material-community"
           iconSize={35}
-          placeholder="insert you email address"
+          placeholder="Your e-mail address"
           onChangeText={(val) => setMail(val)}
           keyboardType="default"
         />
         {isValidMail ? null : (
-          <ErrorMessage text="Please insert a valid mail!" />
+          <ErrorMessage text="Please insert a valid e-mail!" />
         )}
-        <LogRegButton text="forgot" onPress={() => handleForgot()} />
+        <LogRegButton text="Send Link" onPress={() => handleForgot()} />
       </View>
       {display && (
         <>

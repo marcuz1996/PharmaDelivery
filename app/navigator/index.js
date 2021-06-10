@@ -43,14 +43,10 @@ import {
 } from "../constants/path";
 import PaypalPurchaseScreen from "../screens/PaypalPurchaseScreen";
 
-const {
-  Screen: StackScreen,
-  Navigator: StackNavigator,
-} = createStackNavigator();
-const {
-  Screen: DrawerScreen,
-  Navigator: DrawerNavigator,
-} = createDrawerNavigator();
+const { Screen: StackScreen, Navigator: StackNavigator } =
+  createStackNavigator();
+const { Screen: DrawerScreen, Navigator: DrawerNavigator } =
+  createDrawerNavigator();
 
 const MainLayout = ({
   component,

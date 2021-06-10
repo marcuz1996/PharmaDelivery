@@ -6,7 +6,7 @@ import { Icon } from "react-native-elements";
 import { Modal, TouchableOpacity, StyleSheet } from "react-native";
 import { LogRegButton } from "../components/LogRegButton";
 
-export const MapModalComponent = (props) => (
+export const IOSMapModalComponent = (props) => (
   <Modal
     animationType="slide"
     transparent={true}

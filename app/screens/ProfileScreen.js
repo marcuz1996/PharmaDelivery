@@ -5,6 +5,7 @@ import {
   StyleSheet,
   ActivityIndicator,
   TextInput,
+  TouchableOpacity
 } from "react-native";
 import * as Animatable from "react-native-animatable";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -19,7 +20,7 @@ import {
   REDBG,
   WHITE,
 } from "../constants/palette";
-import { TouchableOpacity } from "react-native-gesture-handler";
+// import { TouchableOpacity } from "react-native-gesture-handler";
 import { ForgotPassPath } from "../constants/path";
 import { ErrorMessage } from "../components/ErrorMessage";
 
@@ -173,7 +174,7 @@ export const ProfileScreen = ({ navigation }) => {
             style={styles.link}
             onPress={() => navigation.navigate(ForgotPassPath)}
           >
-            Reset you password
+            Reset your password
           </Text>
         </TouchableOpacity>
 

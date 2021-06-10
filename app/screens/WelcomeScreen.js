@@ -25,8 +25,7 @@ const slides = [
   {
     key: "s1",
     title: "LET'S START",
-    text:
-      "Do you need medicine?\nor maybe your doctor makes you some medical prescriptions",
+    text: "Do you need medicines?\n Did your doctor write you a medical prescription?",
     image: require("../assets/medicine2.png"),
   },
   {
@@ -38,14 +37,13 @@ const slides = [
   {
     key: "s3",
     title: "ONLINE PAYMENTS",
-    text:
-      "Once you choose your medicine\ncomplete your payments thorugh the app",
+    text: "Once you choose your medicine,\ncomplete your payments through the app",
     image: require("../assets/mobile_pay2.png"),
   },
   {
     key: "s4",
     title: "DELIVERY",
-    text: "In a short time you will receive your purchases at your home",
+    text: "In a short time you will receive your purchases at home",
     image: require("../assets/package_arrived2.png"),
   },
 ];
