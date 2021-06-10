@@ -85,6 +85,8 @@ export const ProfileScreen = ({ navigation }) => {
           surname: surname,
           address: address,
           phoneNumber: phoneNumber,
+          houseNumber: houseNumber,
+          zip: zip,
         });
       tempUser.updateEmail(mail);
       setChangeSetting(false);
@@ -92,7 +94,8 @@ export const ProfileScreen = ({ navigation }) => {
   };
 
   const fieldsCheck = () => {
-    const mailValidator = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const mailValidator =
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (
       name.length < 2 ||
       name.length > 20 ||

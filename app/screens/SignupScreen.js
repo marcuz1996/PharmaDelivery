@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
+import { showMessage } from "react-native-flash-message";
 import {
   LIGHTGREY,
   SECONDARYCOLOR,
@@ -56,6 +57,13 @@ export const SignupScreen = ({ navigation }) => {
             .database()
             .ref("Users/" + response.user.uid)
             .set(data);
+          showMessage({
+            message: "Success!",
+            description: "Registration made successfully",
+            type: "success",
+            icon: "success",
+            duration: 2500,
+          });
           navigation.navigate(LoginPath);
         })
         .catch((error) => {
@@ -83,7 +91,8 @@ export const SignupScreen = ({ navigation }) => {
   };
 
   const fieldsCheck = () => {
-    const mailValidator = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const mailValidator =
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (
       name.length < 2 ||
       name.length > 20 ||

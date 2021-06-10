@@ -36,7 +36,7 @@ export const ForgotPasswordScreen = ({ navigation, display }) => {
       <View style={styles.container}>
         <Text style={styles.title}>ACCESS PROBLEM?</Text>
         <Text style={styles.text}>
-          Insert you E-mail address and we send you a link to recover your
+          Insert your E-mail address and we send you a link to recover your
           account.
         </Text>
         <InputTextField
