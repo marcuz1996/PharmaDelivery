@@ -3,7 +3,12 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import ProgressBar from "react-native-progress/Bar";
 import { LogRegButton } from "../components/LogRegButton";
-import { ERRORCOLOR, LIGHTBLUE, OKICOLOR } from "../constants/palette";
+import {
+  ERRORCOLOR,
+  LIGHTBLUE,
+  LIGHTGREY,
+  OKICOLOR,
+} from "../constants/palette";
 
 function ShipmentStatusScreen(props) {
   const [payments, setPayments] = useState([]);
@@ -28,9 +33,9 @@ function ShipmentStatusScreen(props) {
   return !payments.length ? null : (
     <View style={styles.container}>
       <LogRegButton text="REFRESH" onPress={() => refreshPage()} />
-      {payments.map((element) => {
+      {payments.map((element, index) => {
         return (
-          <View key={element.time} style={styles.shipmentContainer}>
+          <View key={element.time + index} style={styles.shipmentContainer}>
             <View style={styles.statusBar}>
               <Text style={styles.orderStatus}>
                 {element.status === "OK"
@@ -196,11 +201,15 @@ const styles = StyleSheet.create({
   },
   shipmentContainer: {
     paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: LIGHTGREY,
+    paddingHorizontal: 7.5,
   },
   statusBar: {
     flexDirection: "row",
     justifyContent: "center",
     paddingVertical: 2,
+    marginBottom: 15,
   },
   orderStatus: {
     fontFamily: "MontserratBold",
