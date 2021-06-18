@@ -127,7 +127,7 @@ const ShopCartScreen = (props) => {
     </View>
   ) : (
     <Text style={{ ...styles.text, textAlign: "center", paddingTop: 20 }}>
-      Your shopping chart is empty!
+      Your shopping cart is empty!
     </Text>
   );
 };

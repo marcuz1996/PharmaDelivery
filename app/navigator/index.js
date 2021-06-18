@@ -63,7 +63,7 @@ const MainLayout = ({
   </PageWrapper>
 );
 export const Navigator = ({ auth }) => {
-  const [welcome, setWelcome] = useState(false);
+  const [welcome, setWelcome] = useState(true);
   const [isAuth, setIsAuth] = useState(auth);
 
   return welcome ? (
